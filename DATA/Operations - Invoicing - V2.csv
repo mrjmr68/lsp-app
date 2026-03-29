@@ -1,0 +1,143 @@
+"Where the repair takes place: SYSTEM,AHU,CU,LV,
+REF,DUCT",What is being repaired,Classification - Varies across categories but same within category.,Classification - Varies across categories but same within category.,Classification - Varies across categories but same within category.,Classification - Varies across categories but same within category.,,Brief breakdown of repair steps,,"What we have been charging
+
+Zero values indicate that there is not adequate historical informatioin for a price.",,,Variance from Historical Price,Pricing cannot be known in advance.,Should we normally fix this in one visit?,"Travel Time
+HOURS
+.5 HR for One Shot
+2 HR for Return","How long the actual repair takes to diagnose and correct
+HOURS
+Minimum set at .5",,,,,,,,Our Cost,,Our Cost,,Our Cost,,Our Cost,,Our Cost,
+Location,Component,Action,Cat 1,Cat 2,Cat 3,Repair Code,Repair Notes,QB Repair Description,Historic Price,Flat Rate,Column 34,Delta,Variable,One Shot,Travel Time,Work Time,Total Time,Labor Cost,Material Cost,Profit,Profit / HR,Margin,Part 1,Part 1 $,Part 2,Part 2 $,Part 3,Part 3 $,Refrigerant,Refrigerant $,Materials,Material $,? / Note
+AHU,Capacitor,Replace,,,,AHU - Capacitor - Replace,Replace capacitor > test operation,"Diagnosis: Tested the Air Handler Unit blower assembly and identified a failed run capacitor reading well below rating.
+Repair Completed: Discharged and replaced the defective capacitor with a new OEM-rated component. Verified the blower motor is now drawing correct amperage and the system is operating at full airflow capacity.",$233,$265,$265,$32,FALSE,TRUE,0.5,0.5,1,$90,$30,$145,$145,55%,Capacitor - Single,10,,,,,,,Standard,20,
+AHU,Coil,Clean,,,,AHU - Coil - Clean,Vacuum coil > apply no-rinse cleaner > verify airflow,"Diagnosis: Performed an inspection of the indoor Air Handler Unit and identified significant dust and debris accumulation on the evaporator coil, causing restricted airflow and reduced heat transfer.
+
+Repair Completed: Thoroughly vacuumed the coil face to remove heavy particulate. Applied a professional-grade, no-rinse antimicrobial cleaner to deep-clean the fins and verified that airflow has been restored.",$195,$215,$215,$20,FALSE,TRUE,0.5,0.5,1,$90,$20,$105,$105,49%,,,,,,,,,Standard,20,
+AHU,Cond Lines,Clear,,,,AHU - Cond Lines - Clear,Clear condensate drain line - vacuum or air > includes one cut and coupling > verify drainage,"Diagnosis: Identified a blockage in the primary condensate drain line, causing water backup in the drain pan and triggering the safety float switch to shut down the system.
+
+Repair Completed: Cleared the line and verified proper system drainage and operation.",$165,$195,$195,$30,FALSE,TRUE,0.5,0.5,1,$90,$5,$100,$100,51%,,,,,,,,,Minimal,5,
+AHU,Control Board,Replace,,,,AHU - Control Board - Replace,Replace blower control board > repair damaged wiring > test operation,"Diagnosis: Inspected indoor Air Handler Unit and identified a failed integrated control board with visible burn marks; confirmed board was failing to send voltage to the blower motor.
+
+Repair Completed: Disconnected electrical supply and replaced the faulty OEM board. Verified all wire terminations, restored power, and confirmed the system cycles correctly through all stages.",$456,$455,$455,-$1,FALSE,TRUE,0.5,1,1.5,$135,$70,$250,$167,55%,Control Board - Blower,50,,,,,,,Standard,20,
+AHU,Drain Pan,Replace,,,,AHU - Drain Pan - Replace,Remove existing drain pan > install new drain pan > verify drainage > test operation,"Diagnosis: Inspected the indoor Air Handler Unit and identified a cracked/corroded primary drain pan that was leaking moisture into the cabinet and bypassing the condensate line.
+
+Repair Completed: Disconnected the drain assembly and removed the compromised pan. Installed a new OEM-rated drain pan, re-established all plumbing connections, and verified proper drainage.",$850,"$1,010","$1,010",$160,FALSE,FALSE,2,3,5,$450,$60,$500,$100,50%,Drain Pan,40,,,,,,,Standard,20,
+AHU,Evap Coil,Replace,,,,AHU - Evap Coil - Replace,Recover refrigerant > remove evaporator coil > install new coil > pressure test > evacuate system > recharge - pricing based on $350 coil adjust as needed,"Diagnosis: Isolated a non-repairable refrigerant leak within the indoor evaporator coil using electronic leak detection; confirmed the coil integrity was compromised and causing system-wide cooling failure.
+
+Repair Completed: Recovered all refrigerant to EPA standards and replaced the faulty coil with a new OEM assembly. Successfully performed a high-pressure nitrogen test, evacuated the system to a deep vacuum (below 500 microns), and recharged with new refrigerant to factory specifications.","$1,675","$1,675","$1,795",$0,TRUE,FALSE,2,4,6,$540,$510,$625,$104,37%,Coil - Evaporator,350,,,,,8,$120,Brazing,40,
+AHU,Limit / Sequencer,Replace,,,,AHU - Limit / Sequencer - Replace,Replace limit switch or sequencer > verify safe operation,"Diagnosis: Identified a faulty limit switch or heat sequencer failing to engage/disengage the electric heat strips correctly.
+
+Repair Completed: Replaced the defective component and verified all safety limits and temperature rises are within manufacturer specifications.",$211,$308,$308,$97,FALSE,TRUE,0.5,1,1.5,$135,$20,$153,$102,50%,Limit / Sequencer,15,,,,,,,Minimal,5,
+AHU,Motor,Replace,Forward,,,AHU - Motor - Replace - Forward,Replace accessible blower motor > secure wiring > test operation,"Diagnosis: Confirmed a failed blower motor (accessible) with an open winding or seized bearing preventing air circulation.
+
+Repair Completed: Replaced the motor and secured all internal wiring; verified proper rotation and system airflow during a full cycle test.",$673,$942,$942,$269,FALSE,FALSE,2,1.5,3.5,$315,$305,$322,$92,34%,Motor,285,,,,,,,Standard,20,
+AHU,Motor,Replace,Transverse,,,AHU - Motor - Replace - Transverse,Remove blower assembly > replace motor in non-removable housing > reassemble > test operation,"Diagnosis: Identified a failed blower motor located within a non-removable housing, requiring full assembly disassembly.
+
+Repair Completed: Removed the blower assembly, replaced the transverse motor, and reassembled the unit; verified smooth operation and correct amp draws.",$922,"$1,200","$1,200",$278,FALSE,FALSE,2,3,5,$450,$305,$445,$89,37%,Motor,285,,,,,,,Standard,20,
+CU,Capacitor,Replace,,,,CU - Capacitor - Replace,Replace capacitor > test operation,"Diagnosis: Found a failed dual-run capacitor in the outdoor condenser, preventing the compressor or fan motor from starting.
+
+Repair Completed: Replaced the faulty capacitor with a new capacitor matching system requirements and verified that all outdoor components are starting and running correctly.",$250,$265,$265,$15,FALSE,TRUE,0.5,0.5,1,$90,$35,$140,$140,53%,Capacitor - Dual,15,,,,,,,Standard,20,
+CU,Compressor,Replace,,,,CU - Compressor - Replace,Recover refrigerant > remove failed compressor > install new compressor > replace filter/drier > pressure test > evacuate system > recharge,"Diagnosis: Diagnosed a failed compressor with an internal mechanical failure or electrical short to ground.
+
+Repair Completed: Recovered refrigerant, replaced the compressor and liquid line filter/drier, pressure tested, evacuated, and recharged the system to factory specs.","$2,023","$2,495","$2,495",$472,TRUE,FALSE,2,6,8,$720,$960,$695,$87,28%,Compressor,800,,,,,8,$120,Brazing,40,
+CU,Condenser Coil,Replace,,,,CU - Condenser Coil - Replace,Recover refrigerant > remove evaporator coil > install new coil > pressure test > evacuate system > recharge - pricing based on $450 coil adjust as needed,"Diagnosis: Identified a major refrigerant leak at the condenser coil.
+
+Repair Completed: Recovered refrigerant, replaced the condenser coil, performed a nitrogen leak test, evacuated the system, and restored the full refrigerant charge.","$1,520","$1,885","$1,885",$365,TRUE,FALSE,2,6,8,$720,$450,$715,$89,38%,Coil - Condenser,450,,,,,,,,0,
+CU,Contactor,Replace,,,,CU - Contactor - Replace,Replace contactor > verify operation,"Diagnosis: Found pitted or welded contactor points causing intermittent operation or a constant ""stuck on"" condition for the outdoor unit.
+
+Repair Completed: Replaced the defective contactor and verified proper voltage delivery to the compressor and fan motor.",$332,$365,$365,$33,FALSE,TRUE,0.5,1,1.5,$135,$30,$200,$133,55%,Contactor,25,,,,,,,Minimal,5,
+CU,Control Board,Replace,,,,CU - Control Board - Replace,Replace control board > verify wiring > test operation,"Diagnosis: Confirmed the outdoor defrost or logic board was faulty, preventing the condenser from cycling or defrosting correctly.
+
+Repair Completed: Installed a new OEM control board, verified all wiring terminations, and tested the unit's sequence of operation.",$342,$345,$345,$3,FALSE,TRUE,0.5,0.5,1,$90,$85,$170,$170,49%,Control Board - Defrost,65,,,,,,,Standard,20,
+CU,Control Board,Reset,,,,CU - Control Board - Reset,Reset control board > verify operation,"Diagnosis: Found the outdoor unit locked out due to a temporary fault or power surge.
+
+Repair Completed: Performed a hard reset of the control board and monitored system operation to ensure the fault did not immediately reoccur.",$195,$195,$195,$0,FALSE,TRUE,0.5,0.5,1,$90,$5,$100,$100,51%,,,,,,,,,Minimal,5,
+CU,Motor,Replace,,,,CU - Motor - Replace,Replace condenser fan motor > secure wiring > test operation,"Diagnosis: Confirmed the condenser fan motor had failed, leading to high system pressures and thermal cutout.
+
+Repair Completed: Replaced the fan motor, secured the wiring, and verified proper heat rejection from the outdoor coil.",$275,$368,$368,$93,FALSE,TRUE,0.5,0.75,1.25,$113,$90,$165,$132,45%,Motor,70,,,,,,,Standard,20,
+CU,Power,Cross Wired,,,,CU - Power - Cross Wired,Disconnect all power > Adjust and reconnect whips,"Diagnosis: Confirmed condensing unit was wired to the incorrect apartment electrical circuit; identified cross-wired whips at the outdoor units.
+
+Repair Completed: Swapped the electrical whips/connections between the units to align with the correct apartment panels. Verified proper power supply and thermostat communication for both systems.",,$525,$525,$525,FALSE,TRUE,0.5,2,2.5,$225,$0,$300,$120,57%,,,,,,,,,,0,
+CU,Pres Switch,Replace,,,,CU - Pres Switch - Replace,Recover refrigerant > replace pressure switch > pressure test > evacuate system > recharge,"Diagnosis: Identified a faulty high or low-pressure safety switch giving false readings and locking out the system.
+
+Repair Completed: Recovered refrigerant, replaced the defective pressure switch, pressure tested, evacuated, and recharged the system.",$865,$985,$985,$120,FALSE,FALSE,2,2.5,4.5,$405,$95,$455,$101,46%,Press Switch,25,,,,,2,$30,Brazing,40,
+CU,Rev Valve,Replace,,,,CU - Rev Valve - Replace,Recover refrigerant > replace reversing valve > pressure test > evacuate system > recharge,"Diagnosis: Found the heat pump reversing valve stuck or bypassing internally, preventing the system from switching modes.
+
+Repair Completed: Recovered refrigerant, brazed in a new reversing valve, pressure tested, evacuated, and recharged the system to specifications.",$918,"$1,597","$1,597",$679,FALSE,FALSE,2,4.5,6.5,$585,$242,$650,$100,41%,Rev Valve,82,,,,,8,$120,Brazing,40,
+CU,TXV,Replace,,,,CU - TXV - Replace,Recover refrigerant > replace TXV > pressure test > evacuate system > recharge,"Diagnosis: Identified a failed Thermal Expansion Valve (TXV) causing a refrigerant restriction and poor cooling performance.
+
+Repair Completed: Recovered refrigerant, replaced the TXV and filter/drier, pressure tested, evacuated, and recharged the system to ensure proper superheat/subcooling.",$828,"$1,305","$1,170",$477,FALSE,TRUE,0.5,3,3.5,$315,$235,$500,$143,38%,TXV,75,,,,,8,$120,Brazing,40,
+FU,Draft Inducer,Replace,,,,FU - Draft Inducer - Replace,Remove blower assembly > install new assembly and motor > test operation,"Diagnosis: Identified a failed draft inducer motor assembly; confirmed the motor was either seized, had an open internal winding, or the centrifugal wheel was damaged, preventing the pressure switch from closing.
+
+Repair Completed: Removed the defective inducer assembly and cleaned the mounting surface. Installed a new OEM-rated draft induction motor and housing, verified the gasket seal, and confirmed proper venting and pressure switch engagement during the ignition sequence.",$650,$810,$810,$160,FALSE,FALSE,2,1.5,3.5,$315,$155,$340,$97,42%,Draft Assembly,155,,,,,,,,0,
+FU,Gas Valve,Replace,,,,FU - Gas Valve - Replace,Shut off gas > remove gas valve > install new gas valve > leak check > verify manifold pressure > test operation,"Diagnosis: Confirmed the gas valve was failing to open or maintain proper manifold pressure, preventing burner ignition.
+
+Repair Completed: Replaced the gas valve, performed a gas leak check, adjusted manifold pressure to factory specs, and verified safe ignition.",$860,$865,$865,$5,FALSE,FALSE,2,2,4,$360,$105,$400,$100,46%,Gas Valve,85,,,,,,,Standard,20,
+SYS,Attic/Crawl AHU,Change Out,,,,SYS - Attic/Crawl AHU - Change Out,Remove existing system > install new AHU > reconnect duct > reconnect electrical > reconnect drain > reconnect refrigerant lines > test operation,"Diagnosis: Conducted a complete evaluation and determined that the existing system has reached the end of its functional lifespan, exhibiting multiple component failures and overall inefficiency.
+
+Repair Completed: System Change Out
+> Decommissioned and removed the existing indoor and outdoor units. 
+> Installed a new AHRI matched system.
+> Conduct system pressure test and evacuated system to below 500 microns.
+> Flushed refrigerant lines, connect primary and secondary drainage systems, and complete high and low-voltage electrical connections. 
+> Performed a comprehensive startup, verified refrigerant subcooling/superheat, and confirmed the system is operating at peak factory performance.","$5,800","$5,830","$5,930",$30,TRUE,FALSE,2,16,18,"$1,620","$2,480","$1,800",$100,31%,Condenser,1400,AHU,850,Furnace,,2,$30,Install,200,
+SYS,Ducts,Reset,Fire Damper,,,SYS - Ducts - Reset - Fire Damper,Replace fusible link > verify damper operation,"Diagnosis: Identified a tripped fire damper in the ductwork due to a failed fusible link, blocking airflow.
+
+Repair Completed: Replaced the fusible link, reset the damper to the open position, and verified proper airflow through the affected zone.",$257,$425,$425,$168,FALSE,TRUE,0.5,1,1.5,$135,$25,$265,$177,62%,Fusible Link,5,,,,,,,Standard,20,
+SYS,LV,Repair,Heat Strip,,,SYS - LV - Repair - Heat Strip,Repair low voltage wiring to heat strips > verify operation,"Diagnosis: Found damaged or loose low-voltage control wiring leading to the electric heat strip assembly.
+
+Repair Completed: Repaired the control wiring and verified that the heat strips engage and disengage correctly on demand.",$250,$190,$190,-$60,FALSE,TRUE,0.5,0.5,1,$90,$5,$95,$95,50%,,,,,,,,,Minimal,5,
+SYS,LV,Repair,Rev Valve,,,SYS - LV - Repair - Rev Valve,Repair low voltage wiring to reversing valve > verify operation,"Diagnosis: Identified a wiring fault in the low-voltage circuit for the reversing valve solenoid.
+
+Repair Completed: Repaired the compromised wiring and verified the heat pump now successfully switches between heating and cooling modes.",$195,$190,$190,-$5,FALSE,TRUE,0.5,0.5,1,$90,$5,$95,$95,50%,,,,,,,,,Minimal,5,
+SYS,LV,Repair,Short,,,SYS - LV - Repair - Short,Trace low voltage short > isolate fault > repair wiring > verify operation,"Diagnosis: Located a low-voltage short circuit that was causing the transformer to trip or fuses to blow.
+
+Repair Completed: Traced and isolated the wiring fault, repaired the shorted section, and verified stable low-voltage operation.",$229,$325,$325,$96,FALSE,TRUE,0.5,1,1.5,$135,$20,$170,$113,52%,,,,,,,,,Standard,20,
+SYS,LV,Repair,Thermostat,,,SYS - LV - Repair - Thermostat,Repair low voltage wiring at thermostat > verify operation,"Diagnosis: Found a break or poor connection in the low-voltage thermostat wire between the Thermostat and the equipment.
+
+Repair Completed: Repaired the thermostat wiring and verified all signals are reaching the control boards correctly.",$195,$190,$190,-$5,FALSE,TRUE,0.5,0.5,1,$90,$5,$95,$95,50%,,,,,,,,,Minimal,5,
+SYS,MIN,None,,,,SYS - MIN - None,No issues found - system operating properly at time of inspection,"Diagnosis: Conducted a full system inspection and performance test as requested.
+
+Repair Completed: No mechanical or electrical issues were found; the system is operating within manufacturer specifications at this time.",$195,$165,$165,-$30,FALSE,TRUE,0.5,0.25,0.75,$68,$5,$92,$123,56%,,,,,,,,,Minimal,5,
+SYS,MIN,Reser Power,AHU,,,SYS - MIN - Reser Power - AHU,Reset breaker or restore power to AHU - non-HVAC issue > verify operation,"Diagnosis: Found the indoor unit was non-functional due to a tripped breaker or disconnected power source.
+
+Repair Completed: Reset the circuit breaker and verified the Air Handler is receiving proper voltage and operating correctly.",$195,$165,$165,-$30,FALSE,TRUE,0.5,0.25,0.75,$68,$5,$92,$123,56%,,,,,,,,,Minimal,5,
+SYS,MIN,Reset,Fire Stat,,,SYS - MIN - Reset - Fire Stat,Reset fire stat > verify operation > confirm temperature limits,"Diagnosis: Identified that the fire stat had tripped, cutting power to the HVAC system.
+
+Repair Completed: Reset the fire stat and verified that return air temperatures are within safe limits for normal operation.",$195,$165,$165,-$30,FALSE,TRUE,0.5,0.25,0.75,$68,$5,$92,$123,56%,,,,,,,,,Minimal,5,
+SYS,MIN,Reset Power,CU,,,SYS - MIN - Reset Power - CU,Reset breaker or restore power to condenser - non-HVAC issue > verify operation,"Diagnosis: Identified that the outdoor condenser was non-functional due to a tripped breaker or disconnected service switch.
+
+Repair Completed: Restored power to the unit and verified the compressor and fan are cycling correctly.",$195,$165,$165,-$30,FALSE,TRUE,0.5,0.25,0.75,$68,$5,$92,$123,56%,,,,,,,,,Minimal,5,
+SYS,MIN,Set,Thermostat,,,SYS - MIN - Set - Thermostat,Thermostat set incorrectly or off - adjust settings > verify operation,"Diagnosis: System was found to be non-operational due to incorrect thermostat settings or user-programming errors.
+
+Repair Completed: Adjusted thermostat settings to the correct mode and temperature; educated the customer on proper thermostat operation.",$195,$165,$165,-$30,FALSE,TRUE,0.5,0.25,0.75,$68,$5,$92,$123,56%,,,,,,,,,Minimal,5,
+SYS,REF,Repair,Leak,Easy,,SYS - REF - Repair - Leak - Easy,Schrader core or service valve leak - repair or replace > evacuate system > recharge,"Diagnosis: Found a minor refrigerant leak at a Schrader core or service valve cap.
+
+Repair Completed: Replaced the faulty core/seal and restored the refrigerant charge to factory levels.",$359,$425,$425,$66,FALSE,TRUE,0.5,1,1.5,$135,$65,$180,$120,42%,,,,,,,3,$45,Standard,20,
+SYS,REF,Repair,Leak,In Wall,,SYS - REF - Repair - Leak - In Wall,In-wall leak - locate leak > recover refrigerant > braze repair > pressure test > evacuate system > recharge,"Diagnosis: Located a refrigerant leak within the line set inside a wall cavity.
+
+Repair Completed: Recovered refrigerant, performed a braze repair at the leak site, pressure tested, evacuated, and recharged the system.","$1,200","$1,440","$1,440",$240,TRUE,FALSE,2,6,8,$720,$20,$700,$88,49%,,,,,,,,,Standard,20,
+SYS,REF,Repair,Leak,NLF,,SYS - REF - Repair - Leak - NLF,No leak found - recharge system > monitor operation,"Diagnosis: System was low on charge but no active leak was found after an initial search.
+
+Repair Completed: Added refrigerant to bring the system to factory specs - monitor for future leaks.",$276,$350,$350,$74,FALSE,TRUE,0.5,0.75,1.25,$113,$50,$142,$114,41%,,,,,,,3,$45,Minimal,5,Separate search charge??
+SYS,REF,Repair,Leak,Pump Down,,SYS - REF - Repair - Leak - Pump Down,Pump down system > braze repair > pressure test > evacuate system > recharge,"Diagnosis: Identified a repairable leak in the high-side or outdoor section of the system.
+
+Repair Completed: Pumped down the refrigerant, performed a braze repair, pressure tested the line, evacuated, and restored full operation.",$894,$815,$815,-$79,FALSE,TRUE,0.5,3,3.5,$315,$70,$400,$114,49%,,,,,,,2,$30,Brazing,40,
+SYS,REF,Repair,Leak,Recover,,SYS - REF - Repair - Leak - Recover,Recover refrigerant > braze repair > pressure test > evacuate system > recharge,"Diagnosis: Located a refrigerant leak requiring a full system recovery for safe repair.
+
+Repair Completed: Recovered refrigerant, brazed the leak, performed a nitrogen pressure test, evacuated to a deep vacuum, and recharged the system.",$950,"$1,345","$1,345",$395,FALSE,FALSE,2,4,6,$540,$160,$525,$88,39%,,,,,,,8,$120,Brazing,40,
+SYS,REF,Repair,Restriction,,,SYS - REF - Repair - Restriction,Pump down system > clean metering device > replace filter/drier > evacuate system > recharge,"Diagnosis: Identified a restriction in the refrigerant circuit, likely at the metering device or filter/drier.
+
+Repair Completed: Pumped down the system, cleaned/replaced the metering device and filter/drier, evacuated, and verified proper flow.",$360,"$1,040","$1,040",$680,TRUE,FALSE,2,2,4,$360,$160,$400,$100,38%,,,,,,,8,$120,Brazing,40,
+SYS,Thermostat,Replace,,,,SYS - Thermostat - Replace,Remove thermostat > install new thermostat > program > verify operation,"Diagnosis: Confirmed the existing thermostat was faulty or unresponsive to user inputs.
+
+Repair Completed: Installed and programmed a new thermostat; verified that the system responds correctly to calls for fan, heat, and cool.",$335,$385,$385,$50,FALSE,TRUE,0.5,0.75,1.25,$113,$60,$212,$170,55%,Thermostat,55,,,,,,,Minimal,5,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+POSSIBLE ADDITIONS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+AHU,Coil,Defrost & Clean,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Constant,Value,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Labor Cost,90,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Travel Time,0.5,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Ref Cost,15,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Profit / Hr Target,100,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

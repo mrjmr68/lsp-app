@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc --noEmit)",
+      "Bash(ls -la app/jobs/[id]/)",
+      "Bash(lsof -i :3000)",
+      "Bash(netstat -ano)",
+      "mcp__Claude_Preview__preview_start"
+    ]
+  }
+}

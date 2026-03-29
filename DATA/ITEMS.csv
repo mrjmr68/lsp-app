@@ -1,0 +1,29 @@
+Product/Service Name,Category,Cost
+Coil - Condenser,Coils/Valves,450
+Coil - Evaporator,Coils/Valves,350
+Gas Valve,Coils/Valves,175
+Reversing Valve,Coils/Valves,85
+TXV,Coils/Valves,115
+Capacitor - Dual,Electrical,15
+Capacitor - Single,Electrical,10
+Control Board - Blower,Electrical,35
+Control Board - Defrost,Electrical,65
+Limit/Sequencer,Electrical,17
+Contactor - 24/240V,Electrical,25
+AHU,Equipment,0
+Furnace,Equipment,0
+Heat Pump,Equipment,0
+Materials - Brazing,Materials,50
+Materials - Changeout,Materials,250
+Materials - Minimal,Materials,5
+Materials - Standard,Materials,20
+Pressure Switch,Misc Items,18
+Thermostat,Misc Items,55
+Blower Motor,Motors/Compressors,285
+Compressor,Motors/Compressors,850
+Condenser Motor,Motors/Compressors,70
+Draft Inducer Assembly,Motors/Compressors,240
+R32 Refrigerant,Refrigerant,18
+R410A Refrigerant,Refrigerant,15
+Labor - Hour,Services,90
+Profit,Services,0

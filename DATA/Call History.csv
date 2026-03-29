@@ -1,0 +1,1228 @@
+﻿customer,location,unit,job_date,diagnosis,diagnosis_raw,invoice_subtotal,tax_rate,invoice_tax,invoice_total
+Wynnefield Properties,Abbey Crossing,405/4D,06/06/25 1:19 PM,CU - Compressor - Replace,,"$1,293.50",6.75%,$87.31,"$1,380.81"
+Wynnefield Properties,Abbey Crossing,302/3B,06/12/25 5:17 AM,SYS - LV - Repair - Thermostat,,$215.35,6.75%,$14.54,$229.89
+Wynnefield Properties,Abbey Crossing,1F,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$440.00,6.75%,$29.70,$469.70
+Wynnefield Properties,Abbey Crossing,4L,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Abbey Crossing,101,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$187.50,6.75%,$12.66,$200.16
+Wynnefield Properties,Abbey Crossing,101,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$382.00,6.75%,$25.79,$407.79
+Wynnefield Properties,Abbey Crossing,206,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$360.00,6.75%,$24.30,$384.30
+Wynnefield Properties,Abbey Crossing,212,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$283.75,6.75%,$19.15,$302.90
+Wynnefield Properties,Abbey Crossing,3D,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$165.00,6.75%,$11.14,$176.14
+Wynnefield Properties,Abbey Crossing,3F,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$178.50,6.75%,$12.05,$190.55
+Wynnefield Properties,Abbey Crossing,4D,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$322.00,6.75%,$21.74,$343.74
+Wynnefield Properties,Addington Ridge,3730-2C,05/27/25 11:02 AM,AHU - Control Board - Replace,,$438.74,6.75%,$29.61,$468.35
+Wynnefield Properties,Addington Ridge,3730-2F,07/21/25 7:04 AM,AHU - Control Board - Replace,,$583.00,6.75%,$39.35,$622.35
+Wynnefield Properties,Addington Ridge,3730-3N,07/08/25 11:24 AM,AHU - Control Board - Replace,,$482.86,6.75%,$32.59,$515.45
+Wynnefield Properties,Addington Ridge,3730-2I,05/08/25 1:00 PM,CU - Capacitor - Replace,,$232.52,6.75%,$15.70,$248.22
+Wynnefield Properties,Addington Ridge,3730 1C,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,633.62",6.75%,$110.27,"$1,743.89"
+Wynnefield Properties,Addington Ridge,3730 2G,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,647.12",6.75%,$111.18,"$1,758.30"
+Wynnefield Properties,Addington Ridge,3730-3C,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,730.00",6.75%,$116.78,"$1,846.78"
+Wynnefield Properties,Addington Ridge,3730-1A,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$250.00,6.75%,$16.88,$266.88
+Wynnefield Properties,Addington Ridge,3730-1N,07/07/25 8:35 AM,AHU - Motor - Replace - Forward,,$858.20,6.75%,$57.93,$916.13
+Wynnefield Properties,Addington Ridge,3730-2B,07/08/25 11:32 AM,AHU - Motor - Replace - Transverse,,"$1,107.50",6.75%,$74.76,"$1,182.26"
+Wynnefield Properties,Addington Ridge,3726-3B,05/29/25 9:20 AM,SYS - MIN - Reset Power - CU,,$167.50,6.75%,$11.31,$178.81
+Wynnefield Properties,Addington Ridge,1P,05/07/25 1:02 PM,CU - Compressor - Replace,,"$1,073.50",6.75%,$72.46,"$1,145.96"
+Wynnefield Properties,Addington Ridge,2-1B,08/18/25 8:17 AM,CU - Compressor - Replace,,"$2,238.50",6.75%,$151.10,"$2,389.60"
+Wynnefield Properties,Addington Ridge,3730 1J,08/11/25 11:36 AM,CU - Compressor - Replace,,"$2,238.50",6.75%,$151.10,"$2,389.60"
+Wynnefield Properties,Addington Ridge,3730-1J,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,190.45",6.75%,$80.36,"$1,270.81"
+Wynnefield Properties,Addington Ridge,3730-2A,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,194.50",6.75%,$148.13,"$2,342.63"
+Wynnefield Properties,Addington Ridge,Club,05/27/25 11:02 AM,CU - Compressor - Replace,,"$3,066.60",6.75%,$207.00,"$3,273.60"
+Wynnefield Properties,Addington Ridge,3726-2D,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$248.87,6.75%,$16.80,$265.67
+Wynnefield Properties,Addington Ridge,3730 3I,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$570.22,6.75%,$38.49,$608.71
+Wynnefield Properties,Addington Ridge,3030-1O,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$244.00,6.75%,$16.47,$260.47
+Wynnefield Properties,Addington Ridge,3726-2C,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$299.00,6.75%,$20.18,$319.18
+Wynnefield Properties,Addington Ridge,3730-1K,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$283.00,6.75%,$19.10,$302.10
+Wynnefield Properties,Addington Ridge,3730-2A,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$261.00,6.75%,$17.62,$278.62
+Wynnefield Properties,Addington Ridge,3730-3C,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$192.50,6.75%,$12.99,$205.49
+Wynnefield Properties,Addington Ridge,3726-1B,06/19/25 8:56 AM,SYS - REF - Repair - Leak - Easy,,$363.00,6.75%,$24.50,$387.50
+Wynnefield Properties,Addington Ridge,3726-2A,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$387.75,6.75%,$26.17,$413.92
+Wynnefield Properties,Addington Ridge,3730 2L,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$305.00,6.75%,$20.59,$325.59
+Wynnefield Properties,Addington Ridge,3730-2C,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$278.50,6.75%,$18.80,$297.30
+Wynnefield Properties,Addington Ridge,3730-3I,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Addington Ridge,1-1P,08/15/25 6:34 AM,SYS - REF - Repair - Leak - Recover,,$837.00,6.75%,$56.50,$893.50
+Wynnefield Properties,Addington Ridge,3726-3C,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$701.00,6.75%,$47.32,$748.32
+Wynnefield Properties,Addington Ridge,3726-2B,06/26/25 12:47 PM,SYS - REF - Repair - Leak - NLF,,$245.00,6.75%,$16.54,$261.54
+Wynnefield Properties,Addington Ridge,3730-1E,05/13/25 1:02 PM,SYS - REF - Repair - Leak - NLF,,$228.75,6.75%,$15.44,$244.19
+Wynnefield Properties,Admiral Pointe,2-U,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,662.50",6.75%,$112.22,"$1,774.72"
+Wynnefield Properties,Admiral Pointe,2A,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,716.00",6.75%,$115.83,"$1,831.83"
+Wynnefield Properties,Admiral Pointe,2H,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,706.20",6.75%,$115.17,"$1,821.37"
+Wynnefield Properties,Admiral Pointe,2M,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,687.96",6.75%,$113.94,"$1,801.90"
+Wynnefield Properties,Admiral Pointe,2N,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,667.20",6.75%,$112.54,"$1,779.74"
+Wynnefield Properties,Admiral Pointe,2nd floor central hall,06/17/25 10:37 AM,AHU - Evap Coil - Replace,,"$1,622.20",6.75%,$109.50,"$1,731.70"
+Wynnefield Properties,Admiral Pointe,3-C,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,671.96",6.75%,$112.86,"$1,784.82"
+Wynnefield Properties,Admiral Pointe,3A,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$2,080.92",6.75%,$140.46,"$2,221.38"
+Wynnefield Properties,Admiral Pointe,3F,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,685.20",6.75%,$113.75,"$1,798.95"
+Wynnefield Properties,Admiral Pointe,3L,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,857.40",6.75%,$125.37,"$1,982.77"
+Wynnefield Properties,Admiral Pointe,Office,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,672.50",6.75%,$112.89,"$1,785.39"
+Wynnefield Properties,Admiral Pointe,1T,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Admiral Pointe,1Q,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",6.75%,$322.03,"$5,092.83"
+Wynnefield Properties,Admiral Pointe,2T,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,078.50",6.75%,$275.30,"$4,353.80"
+Wynnefield Properties,Admiral Pointe,3-L,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,556.00",6.75%,$307.53,"$4,863.53"
+Wynnefield Properties,Admiral Pointe,1C,06/12/25 11:24 AM,CU - Control Board - Replace,,$230.00,6.75%,$15.53,$245.53
+Wynnefield Properties,Admiral Pointe,1K,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Admiral Pointe,1Q,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Admiral Pointe,3G,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$217.00,6.75%,$14.65,$231.65
+Wynnefield Properties,Admiral Pointe,3K,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$328.00,6.75%,$22.14,$350.14
+Wynnefield Properties,Admiral Pointe,2M,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$395.00,6.75%,$26.66,$421.66
+Wynnefield Properties,Admiral Pointe,Gathering Room,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,"$1,273.50",6.75%,$85.96,"$1,359.46"
+Wynnefield Properties,Ardsley Commons,102,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,874.70",7.00%,$131.23,"$2,005.93"
+Wynnefield Properties,Ardsley Commons,207,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,874.70",7.00%,$131.23,"$2,005.93"
+Wynnefield Properties,Ardsley Commons,301,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,621.20",7.00%,$113.48,"$1,734.68"
+Wynnefield Properties,Ardsley Commons,????,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,687.96",7.00%,$118.16,"$1,806.12"
+Wynnefield Properties,Ardsley Commons,211,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,399.70",7.00%,$307.98,"$4,707.68"
+Wynnefield Properties,Ashton Way,A-304,07/09/25 9:17 AM,AHU - Motor - Replace - Forward,,$858.20,7.00%,$60.07,$918.27
+Wynnefield Properties,Ashton Way,A207,09/03/25 8:06 AM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Ashton Way,B202,06/20/25 7:42 AM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Ashton Way,B304,07/28/25 11:20 AM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Ashton Way,B-308,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$463.00,7.00%,$32.41,$495.41
+Wynnefield Properties,Ashton Way,B205,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$272.00,7.00%,$19.04,$291.04
+Wynnefield Properties,Ashton Way,A-105,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$220.00,7.00%,$15.40,$235.40
+Wynnefield Properties,Ashton Way,B-207,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Ashton Way,B-308,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Aspen Pointe,949-304,07/18/25 6:18 AM,AHU - Evap Coil - Replace,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Aspen Pointe,944-203,07/29/25 7:38 AM,CU - Contactor - Replace,,$338.00,6.75%,$22.82,$360.82
+Wynnefield Properties,Aspen Pointe,944-103,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$55.00,6.75%,$3.71,$58.71
+Wynnefield Properties,Aspen Pointe,944-204,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$55.00,6.75%,$3.71,$58.71
+Wynnefield Properties,Aspen Pointe,945-104,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$347.00,6.75%,$23.42,$370.42
+Wynnefield Properties,Aspen Pointe,949-202,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$302.50,6.75%,$20.42,$322.92
+Wynnefield Properties,Aspen Pointe,968-101,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Aspen Pointe,948-301,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$569.72,6.75%,$38.46,$608.18
+Wynnefield Properties,Aspen Pointe,948-301,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,"$1,142.00",6.75%,$77.09,"$1,219.09"
+Wynnefield Properties,Aspen Pointe,968-202,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,"$1,489.00",6.75%,$100.51,"$1,589.51"
+Wynnefield Properties,Autumn Crest,910,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,621.20",7.00%,$113.48,"$1,734.68"
+Wynnefield Properties,Autumn Crest,1008,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,656.00",7.00%,$115.92,"$1,771.92"
+Wynnefield Properties,Autumn Crest,1012,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$3,817.00",7.00%,$267.19,"$4,084.19"
+Wynnefield Properties,Autumn Crest,1022,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,703.46",7.00%,$119.24,"$1,822.70"
+Wynnefield Properties,Autumn Crest,1114,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,647.00",7.00%,$115.29,"$1,762.29"
+Wynnefield Properties,Autumn Crest,1140,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,712.20",7.00%,$119.85,"$1,832.05"
+Wynnefield Properties,Autumn Crest,1201,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$2,808.00",7.00%,$196.56,"$3,004.56"
+Wynnefield Properties,Autumn Crest,1217,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,719.00",7.00%,$120.33,"$1,839.33"
+Wynnefield Properties,Autumn Crest,1219,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,732.50",7.00%,$121.28,"$1,853.78"
+Wynnefield Properties,Autumn Crest,1223,07/07/25 1:00 PM,AHU - Evap Coil - Replace,,"$1,613.20",7.00%,$112.92,"$1,726.12"
+Wynnefield Properties,Autumn Crest,904,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Autumn Crest,914,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Autumn Crest,916,07/03/25 10:44 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Autumn Crest,916,07/21/25 9:54 AM,AHU - Cond Lines - Clear,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Autumn Crest,918,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Autumn Crest,920,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$165.00,7.00%,$11.55,$176.55
+Wynnefield Properties,Autumn Crest,926,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Autumn Crest,928,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Autumn Crest,928,07/17/25 1:02 PM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Autumn Crest,1002,08/06/25 11:21 AM,AHU - Cond Lines - Clear,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Autumn Crest,1010,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Autumn Crest,1010,07/25/25 9:42 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Autumn Crest,1012,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$125.00,7.00%,$8.75,$133.75
+Wynnefield Properties,Autumn Crest,1012,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$162.00,7.00%,$11.34,$173.34
+Wynnefield Properties,Autumn Crest,1024,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Autumn Crest,1028,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$125.00,7.00%,$8.75,$133.75
+Wynnefield Properties,Autumn Crest,1028,08/18/25 8:26 AM,AHU - Cond Lines - Clear,,$118.00,7.00%,$8.26,$126.26
+Wynnefield Properties,Autumn Crest,1032,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Autumn Crest,1042,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$125.00,7.00%,$8.75,$133.75
+Wynnefield Properties,Autumn Crest,1044,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Autumn Crest,1108,06/24/25 7:54 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Autumn Crest,1134,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Autumn Crest,1144,06/16/25 11:21 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Autumn Crest,1217,06/24/25 7:55 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Autumn Crest,1219,07/01/25 5:38 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Autumn Crest,1223,07/17/25 1:02 PM,AHU - Cond Lines - Clear,,$173.00,7.00%,$12.11,$185.11
+Wynnefield Properties,Autumn Crest,1225,06/09/25 12:22 PM,AHU - Cond Lines - Clear,,$212.00,7.00%,$14.84,$226.84
+Wynnefield Properties,Autumn Crest,1231,06/19/25 5:53 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Autumn Crest,1233,07/21/25 9:54 AM,AHU - Cond Lines - Clear,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Autumn Crest,1247,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Autumn Crest,1247,07/21/25 9:54 AM,AHU - Cond Lines - Clear,,$162.00,7.00%,$11.34,$173.34
+Wynnefield Properties,Autumn Crest,1140-20,08/07/25 7:52 AM,AHU - Cond Lines - Clear,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Autumn Crest,Clubhouse,06/12/25 8:55 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Autumn Crest,901,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$936.38,7.00%,$65.55,"$1,001.93"
+Wynnefield Properties,Autumn Crest,908,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,212.00",7.00%,$84.84,"$1,296.84"
+Wynnefield Properties,Autumn Crest,912,07/29/25 8:46 AM,AHU - Motor - Replace - Transverse,,"$1,107.50",7.00%,$77.53,"$1,185.03"
+Wynnefield Properties,Autumn Crest,928,07/21/25 9:54 AM,AHU - Motor - Replace - Transverse,,"$1,107.50",7.00%,$77.53,"$1,185.03"
+Wynnefield Properties,Autumn Crest,930,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",7.00%,$80.50,"$1,230.50"
+Wynnefield Properties,Autumn Crest,1002,08/15/25 1:38 PM,AHU - Motor - Replace - Transverse,,"$1,107.50",7.00%,$77.53,"$1,185.03"
+Wynnefield Properties,Autumn Crest,1034,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",7.00%,$80.50,"$1,230.50"
+Wynnefield Properties,Autumn Crest,1048,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$478.54,7.00%,$33.50,$512.04
+Wynnefield Properties,Autumn Crest,1114,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",7.00%,$80.50,"$1,230.50"
+Wynnefield Properties,Autumn Crest,1144,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",7.00%,$80.50,"$1,230.50"
+Wynnefield Properties,Autumn Crest,1146,06/13/25 12:25 PM,AHU - Motor - Replace - Transverse,,"$1,107.50",7.00%,$77.53,"$1,185.03"
+Wynnefield Properties,Autumn Crest,1213,07/11/25 5:56 AM,AHU - Motor - Replace - Transverse,,"$1,107.50",7.00%,$77.53,"$1,185.03"
+Wynnefield Properties,Autumn Crest,1227,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,212.00",7.00%,$84.84,"$1,296.84"
+Wynnefield Properties,Autumn Crest,1231,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,358.00",7.00%,$95.06,"$1,453.06"
+Wynnefield Properties,Autumn Crest,904,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",7.00%,$333.96,"$5,104.76"
+Wynnefield Properties,Autumn Crest,916,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",7.00%,$333.96,"$5,104.76"
+Wynnefield Properties,Autumn Crest,1004,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",7.00%,$333.96,"$5,104.76"
+Wynnefield Properties,Autumn Crest,clubhouse,09/02/25 8:25 AM,SYS - TOTAL - Change Out - Attic/Crawl AHU ,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Autumn Crest,1010,05/27/25 11:02 AM,CU - Capacitor - Replace,,$221.52,7.00%,$15.51,$237.03
+Wynnefield Properties,Autumn Crest,1038,09/02/25 5:13 AM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Autumn Crest,1044,05/27/25 11:02 AM,CU - Capacitor - Replace,,$292.00,7.00%,$20.44,$312.44
+Wynnefield Properties,Autumn Crest,1223,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,229.40",7.00%,$156.06,"$2,385.46"
+Wynnefield Properties,Autumn Crest,1227,05/27/25 11:02 AM,CU - Pres Switch - Replace,,$173.00,7.00%,$12.11,$185.11
+Wynnefield Properties,Autumn Crest,906,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$257.00,7.00%,$17.99,$274.99
+Wynnefield Properties,Autumn Crest,1010,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$257.54,7.00%,$18.03,$275.57
+Wynnefield Properties,Autumn Crest,1012,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$226.50,7.00%,$15.86,$242.36
+Wynnefield Properties,Autumn Crest,1044,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$316.46,7.00%,$22.15,$338.61
+Wynnefield Properties,Autumn Crest,1247,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$251.00,7.00%,$17.57,$268.57
+Wynnefield Properties,Autumn Crest,904,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$256.54,7.00%,$17.96,$274.50
+Wynnefield Properties,Autumn Crest,912,08/11/25 5:25 AM,SYS - LV - Repair - Short,,$244.00,7.00%,$17.08,$261.08
+Wynnefield Properties,Autumn Crest,1004,06/04/25 8:53 AM,SYS - LV - Repair - Short,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Autumn Crest,1013,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$295.00,7.00%,$20.65,$315.65
+Wynnefield Properties,Autumn Crest,1025,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Autumn Crest,1026,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$70.00,7.00%,$4.90,$74.90
+Wynnefield Properties,Autumn Crest,1030,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$262.50,7.00%,$18.38,$280.88
+Wynnefield Properties,Autumn Crest,1148,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$247.50,7.00%,$17.33,$264.83
+Wynnefield Properties,Autumn Crest,1231,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Autumn Crest,1231,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$204.00,7.00%,$14.28,$218.28
+Wynnefield Properties,Autumn Crest,1241,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$82.50,7.00%,$5.78,$88.28
+Wynnefield Properties,Autumn Crest,1241,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$192.50,7.00%,$13.48,$205.98
+Wynnefield Properties,Autumn Crest,902,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$161.00,7.00%,$11.27,$172.27
+Wynnefield Properties,Avondale Trace,5188-2A,05/27/25 11:02 AM,SYS - MIN - Reser Power - AHU,,$220.00,6.75%,$14.85,$234.85
+Wynnefield Properties,Avondale Trace,5188-2F,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,140.00",6.75%,$76.95,"$1,216.95"
+Wynnefield Properties,Avondale Trace,5196-3E,06/30/25 7:00 AM,AHU - Cond Lines - Clear,,$206.00,6.75%,$13.91,$219.91
+Wynnefield Properties,Avondale Trace,5188-2E,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$503.80,6.75%,$34.01,$537.81
+Wynnefield Properties,Avondale Trace,5184-2D,05/27/25 11:02 AM,CU - Control Board - Reset,,$107.00,6.75%,$7.22,$114.22
+Wynnefield Properties,Avondale Trace,5188-2F,05/27/25 11:02 AM,CU - Capacitor - Replace,,$249.45,6.75%,$16.84,$266.29
+Wynnefield Properties,Avondale Trace,5196-1b,05/22/25 10:39 AM,CU - Capacitor - Replace,,$162.00,6.75%,$10.94,$172.94
+Wynnefield Properties,Avondale Trace,5184-2G,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,221.00",6.75%,$82.42,"$1,303.42"
+Wynnefield Properties,Avondale Trace,5188-1G,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,149.00",6.75%,$77.56,"$1,226.56"
+Wynnefield Properties,Avondale Trace,5196-3B,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,337.50",6.75%,$90.28,"$1,427.78"
+Wynnefield Properties,Avondale Trace,5196-3E,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,331.00",6.75%,$89.84,"$1,420.84"
+Wynnefield Properties,Avondale Trace,5184-3E,05/27/25 11:02 AM,CU - Pres Switch - Replace,,$250.00,6.75%,$16.88,$266.88
+Wynnefield Properties,Avondale Trace,5196-3G,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$308.00,6.75%,$20.79,$328.79
+Wynnefield Properties,Avondale Trace,5184-2B,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Avondale Trace,5188-1E,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$299.00,6.75%,$20.18,$319.18
+Wynnefield Properties,Avondale Trace,5196-2C,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$118.00,6.75%,$7.97,$125.97
+Wynnefield Properties,Avondale Trace,5196-3B,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$118.00,6.75%,$7.97,$125.97
+Wynnefield Properties,Avondale Trace,5184-3E,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$427.00,6.75%,$28.82,$455.82
+Wynnefield Properties,Avondale Trace,5188-1F,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$348.50,6.75%,$23.52,$372.02
+Wynnefield Properties,Avondale Trace,5188-2D,05/22/25 11:38 AM,SYS - REF - Repair - Leak - NLF,,$240.00,6.75%,$16.20,$256.20
+Wynnefield Properties,Brightleaf Terrace,64-211,05/21/25 9:44 AM,SYS - MIN - Reser Power - AHU,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Brightleaf Terrace,2272-305,06/02/25 9:54 AM,AHU - Evap Coil - Replace,,"$1,399.00",7.00%,$97.93,"$1,496.93"
+Wynnefield Properties,Brightleaf Terrace,2372-107,05/20/25 3:59 AM,AHU - Evap Coil - Replace,,"$1,399.00",7.00%,$97.93,"$1,496.93"
+Wynnefield Properties,Brightleaf Terrace,2264-205,07/10/25 12:17 PM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Brightleaf Terrace,2364-102,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$250.00,7.00%,$17.50,$267.50
+Wynnefield Properties,Brightleaf Terrace,2364-108,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$110.00,7.00%,$7.70,$117.70
+Wynnefield Properties,Brightleaf Terrace,2364-206,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$173.00,7.00%,$12.11,$185.11
+Wynnefield Properties,Brightleaf Terrace,2364-302,06/17/25 1:37 PM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Brightleaf Terrace,2364-306,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$294.00,7.00%,$20.58,$314.58
+Wynnefield Properties,Brightleaf Terrace,2364-310,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Brightleaf Terrace,2372-100,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Brightleaf Terrace,2372-101,08/22/25 10:54 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Brightleaf Terrace,2372-102,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Brightleaf Terrace,2372-103,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Brightleaf Terrace,2372-200,06/18/25 4:54 AM,AHU - Cond Lines - Clear,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Brightleaf Terrace,2372-201,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Brightleaf Terrace,2372-207,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$110.00,7.00%,$7.70,$117.70
+Wynnefield Properties,Brightleaf Terrace,2372-208,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Brightleaf Terrace,2372-300,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Brightleaf Terrace,2372-301,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Brightleaf Terrace,2372-307,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Brightleaf Terrace,2372-307,06/18/25 4:53 AM,AHU - Cond Lines - Clear,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Brightleaf Terrace,72-200,06/26/25 7:14 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Brightleaf Terrace,72-308,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$125.00,7.00%,$8.75,$133.75
+Wynnefield Properties,Brightleaf Terrace,2372-205,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,525.00",7.00%,$106.75,"$1,631.75"
+Wynnefield Properties,Brightleaf Terrace,2372-302,05/27/25 11:02 AM,CU - Compressor - Replace,,$165.00,7.00%,$11.55,$176.55
+Wynnefield Properties,Brightleaf Terrace,2372-304,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,525.00",7.00%,$106.75,"$1,631.75"
+Wynnefield Properties,Brightleaf Terrace,2672-205,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,147.50",7.00%,$80.33,"$1,227.83"
+Wynnefield Properties,Brightleaf Terrace,3272-302,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,262.00",7.00%,$88.34,"$1,350.34"
+Wynnefield Properties,Brightleaf Terrace,64-105,07/28/25 11:06 AM,CU - Compressor - Replace,,"$1,366.00",7.00%,$95.62,"$1,461.62"
+Wynnefield Properties,Brightleaf Terrace,64-207,05/21/25 8:43 AM,CU - Compressor - Replace,,"$1,293.50",7.00%,$90.55,"$1,384.05"
+Wynnefield Properties,Brightleaf Terrace,2364-210,07/09/25 1:25 PM,SYS - Ducts - Reset - Fire Damper,,$316.00,7.00%,$22.12,$338.12
+Wynnefield Properties,Brightleaf Terrace,2372-210,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Brightleaf Terrace,64-305,06/26/25 7:11 AM,SYS - Ducts - Reset - Fire Damper,,$316.00,7.00%,$22.12,$338.12
+Wynnefield Properties,Brightleaf Terrace,69-210,08/01/25 12:11 PM,SYS - Ducts - Reset - Fire Damper,,$329.00,7.00%,$23.03,$352.03
+Wynnefield Properties,Brightleaf Terrace,72-103,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$125.00,7.00%,$8.75,$133.75
+Wynnefield Properties,Brightleaf Terrace,72-303,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$125.00,7.00%,$8.75,$133.75
+Wynnefield Properties,Brightleaf Terrace,2364-300,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$156.00,7.00%,$10.92,$166.92
+Wynnefield Properties,Brightleaf Terrace,2372-103,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,"$1,283.00",7.00%,$89.81,"$1,372.81"
+Wynnefield Properties,Brightleaf Terrace,office,07/09/25 1:26 PM,SYS - LV - Repair - Thermostat,,$215.35,7.00%,$15.07,$230.42
+Wynnefield Properties,Brightleaf Terrace,2364-205,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$107.00,7.00%,$7.49,$114.49
+Wynnefield Properties,Brightleaf Terrace,100 - Unit 202,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$115.00,7.00%,$8.05,$123.05
+Wynnefield Properties,Brightleaf Terrace,100 - Unit 203,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$87.50,7.00%,$6.13,$93.63
+Wynnefield Properties,Brightleaf Terrace,100-102,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$87.50,7.00%,$6.13,$93.63
+Wynnefield Properties,Brightleaf Terrace,100-107,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$87.50,7.00%,$6.13,$93.63
+Wynnefield Properties,Brightleaf Terrace,100-110,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Brightleaf Terrace,100-202,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Brightleaf Terrace,100-305,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$87.50,7.00%,$6.13,$93.63
+Wynnefield Properties,Brightleaf Terrace,200 - Unit 209,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$170.00,7.00%,$11.90,$181.90
+Wynnefield Properties,Brightleaf Terrace,2364-106,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Brightleaf Terrace,2364-305,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$110.00,7.00%,$7.70,$117.70
+Wynnefield Properties,Brightleaf Terrace,2364-305,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Brightleaf Terrace,2371-100,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Brightleaf Terrace,2372-106,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$137.50,7.00%,$9.63,$147.13
+Wynnefield Properties,Brightleaf Terrace,2372-108,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$110.00,7.00%,$7.70,$117.70
+Wynnefield Properties,Brightleaf Terrace,2372-208,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$272.00,7.00%,$19.04,$291.04
+Wynnefield Properties,Brightleaf Terrace,2372-309,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Brightleaf Terrace,2372-310,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Brightleaf Terrace,3264-207,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$88.00,7.00%,$6.16,$94.16
+Wynnefield Properties,Brightleaf Terrace,64-305,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$97.50,7.00%,$6.83,$104.33
+Wynnefield Properties,Brightleaf Terrace,All Units,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$990.00,7.00%,$69.30,"$1,059.30"
+Wynnefield Properties,Brightleaf Terrace,2264-102,05/29/25 8:01 AM,SYS - LV - Repair - Short,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Brightleaf Terrace,2272-307,06/02/25 9:54 AM,SYS - LV - Repair - Short,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Brightleaf Terrace,2364-210,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$96.00,7.00%,$6.72,$102.72
+Wynnefield Properties,Brightleaf Terrace,2372-208,08/22/25 10:52 AM,SYS - LV - Repair - Short,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Brightleaf Terrace,64-304,07/28/25 12:20 PM,SYS - LV - Repair - Short,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Brightleaf Terrace,2372-208,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Britton Village,2282-103,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$294.00,7.00%,$20.58,$314.58
+Wynnefield Properties,Britton Village,2282-103,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Britton Village,2284-104,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Britton Village,2284-204,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$204.00,7.00%,$14.28,$218.28
+Wynnefield Properties,Britton Village,2284-207,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$204.00,7.00%,$14.28,$218.28
+Wynnefield Properties,Britton Village,2284-209,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$204.00,7.00%,$14.28,$218.28
+Wynnefield Properties,Britton Village,2284-209,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$294.00,7.00%,$20.58,$314.58
+Wynnefield Properties,Britton Village,2284-210,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Britton Village,2284-301,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Britton Village,2284-304,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$204.00,7.00%,$14.28,$218.28
+Wynnefield Properties,Britton Village,2286-110,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Britton Village,2286-203,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$250.00,7.00%,$17.50,$267.50
+Wynnefield Properties,Britton Village,2286-306,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$250.00,7.00%,$17.50,$267.50
+Wynnefield Properties,Britton Village,2286-310,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$204.00,7.00%,$14.28,$218.28
+Wynnefield Properties,Britton Village,2286-309,07/07/25 8:00 AM,AHU - Motor - Replace - Forward,,$858.20,7.00%,$60.07,$918.27
+Wynnefield Properties,Britton Village,2282-103,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,394.00",7.00%,$97.58,"$1,491.58"
+Wynnefield Properties,Britton Village,2282-103,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,053.00",7.00%,$143.71,"$2,196.71"
+Wynnefield Properties,Britton Village,2284-310,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,415.00",7.00%,$99.05,"$1,514.05"
+Wynnefield Properties,Britton Village,2284-311,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,349.00",7.00%,$94.43,"$1,443.43"
+Wynnefield Properties,Britton Village,2286-106,06/30/25 12:04 PM,CU - Compressor - Replace,,"$2,663.50",7.00%,$186.45,"$2,849.95"
+Wynnefield Properties,Britton Village,2286-211,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,293.50",7.00%,$90.55,"$1,384.05"
+Wynnefield Properties,Britton Village,2286-301,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,421.00",7.00%,$99.47,"$1,520.47"
+Wynnefield Properties,Britton Village,2286-304,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,315.00",7.00%,$92.05,"$1,407.05"
+Wynnefield Properties,Britton Village,2284-104,05/27/25 11:02 AM,CU - Rev Valve - Replace,,"$1,173.00",7.00%,$82.11,"$1,255.11"
+Wynnefield Properties,Britton Village,Britton Office Unit,08/25/25 8:05 AM,CU - Rev Valve - Replace,,"$1,252.28",7.00%,$87.66,"$1,339.94"
+Wynnefield Properties,Britton Village,2282-103,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$495.00,7.00%,$34.65,$529.65
+Wynnefield Properties,Britton Village,2282-103,05/22/25 9:15 AM,SYS - Ducts - Reset - Fire Damper,,$173.00,7.00%,$12.11,$185.11
+Wynnefield Properties,Britton Village,2284-103,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$345.00,7.00%,$24.15,$369.15
+Wynnefield Properties,Britton Village,2284-108,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Britton Village,2286-100,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$345.00,7.00%,$24.15,$369.15
+Wynnefield Properties,Britton Village,2286-104,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$464.00,7.00%,$32.48,$496.48
+Wynnefield Properties,Britton Village,2286-108,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Britton Village,2286-203,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$321.00,7.00%,$22.47,$343.47
+Wynnefield Properties,Britton Village,2286-203,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Britton Village,2286-203,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Britton Village,2286-211,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$314.00,7.00%,$21.98,$335.98
+Wynnefield Properties,Britton Village,2284-110,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$299.00,7.00%,$20.93,$319.93
+Wynnefield Properties,Britton Village,2284-210,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$308.00,7.00%,$21.56,$329.56
+Wynnefield Properties,Britton Village,2284-210,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$281.00,7.00%,$19.67,$300.67
+Wynnefield Properties,Britton Village,2284-301,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$110.00,7.00%,$7.70,$117.70
+Wynnefield Properties,Britton Village,2286-110,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$359.05,7.00%,$25.13,$384.18
+Wynnefield Properties,Britton Village,2286-203,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$319.54,7.00%,$22.37,$341.91
+Wynnefield Properties,Britton Village,2286-207,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$110.00,7.00%,$7.70,$117.70
+Wynnefield Properties,Britton Village,2284-102,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$235.00,7.00%,$16.45,$251.45
+Wynnefield Properties,Britton Village,2286-302,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Britton Village,2286-104,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$629.00,7.00%,$44.03,$673.03
+Wynnefield Properties,Britton Village,2286-200,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$934.00,7.00%,$65.38,$999.38
+Wynnefield Properties,Britton Village,2284-311,05/27/25 11:02 AM,SYS - REF - Repair - Leak - NLF,,$305.00,7.00%,$21.35,$326.35
+Wynnefield Properties,Britton Village,2286-104,05/27/25 11:02 AM,SYS - REF - Repair - Leak - NLF,,$305.00,7.00%,$21.35,$326.35
+Wynnefield Properties,Cannon Place,605,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Cannon Place,608,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Cannon Place,109,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,644.70",6.75%,$313.52,"$4,958.22"
+Wynnefield Properties,Cannon Place,201,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",6.75%,$322.03,"$5,092.83"
+Wynnefield Properties,Cannon Place,301,07/21/25 10:37 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",6.75%,$322.03,"$5,092.83"
+Wynnefield Properties,Cannon Place,307,05/20/25 12:02 PM,SYS - TOTAL - Change Out - Wall Mount,,"$4,644.70",6.75%,$313.52,"$4,958.22"
+Wynnefield Properties,Cannon Place,404,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,518.70",6.75%,$305.01,"$4,823.71"
+Wynnefield Properties,Cannon Place,501,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,643.50",6.75%,$313.44,"$4,956.94"
+Wynnefield Properties,Cannon Place,504,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,520.00",6.75%,$305.10,"$4,825.10"
+Wynnefield Properties,Cannon Place,505,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,653.25",6.75%,$314.09,"$4,967.34"
+Wynnefield Properties,Cannon Place,506,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,502.00",6.75%,$303.89,"$4,805.89"
+Wynnefield Properties,Cannon Place,602,06/09/25 5:48 PM,SYS - TOTAL - Change Out - Wall Mount,,"$4,644.70",6.75%,$313.52,"$4,958.22"
+Wynnefield Properties,Cannon Place,701,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,468.20",6.75%,$301.60,"$4,769.80"
+Wynnefield Properties,Cannon Place,702,08/07/25 5:51 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",6.75%,$322.03,"$5,092.83"
+Wynnefield Properties,Cannon Place,706,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,644.70",6.75%,$313.52,"$4,958.22"
+Wynnefield Properties,Cannon Place,902,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,207.50",6.75%,$351.51,"$5,559.01"
+Wynnefield Properties,Cannon Place,906,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,644.70",6.75%,$313.52,"$4,958.22"
+Wynnefield Properties,Cannon Place,Office,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Attic/Crawl AHU ,,"$6,401.78",6.75%,$432.12,"$6,833.90"
+Wynnefield Properties,Cannon Place,702,07/22/25 9:45 AM,CU - Capacitor - Replace,,$248.00,6.75%,$16.74,$264.74
+Wynnefield Properties,Cannon Place,604,05/20/25 12:03 PM,CU - Pres Switch - Replace,,$85.00,6.75%,$5.74,$90.74
+Wynnefield Properties,Cannon Place,306,05/27/25 11:02 AM,CU - Rev Valve - Replace,,$220.00,6.75%,$14.85,$234.85
+Wynnefield Properties,Cannon Place,605,08/27/25 5:52 AM,CU - TXV - Replace,,$891.00,6.75%,$60.14,$951.14
+Wynnefield Properties,Cannon Place,903,05/20/25 8:34 AM,CU - TXV - Replace,,"$1,020.21",6.75%,$68.86,"$1,089.07"
+Wynnefield Properties,Cannon Place,806,05/22/25 5:51 AM,SYS - LV - Repair - Short,,$85.00,6.75%,$5.74,$90.74
+Wynnefield Properties,Cannon Place,906,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Cannon Place,905,09/03/25 4:23 AM,SYS - REF - Repair - Leak - NLF,,$276.50,6.75%,$18.66,$295.16
+Wynnefield Properties,Carolina Terrace,713,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,555.50",7.25%,$402.77,"$5,958.27"
+Wynnefield Properties,Carolina Terrace,1108,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$3,954.00",7.25%,$286.67,"$4,240.67"
+Wynnefield Properties,Carolina Terrace,851,06/13/25 12:07 PM,SYS - LV - Repair - Thermostat,,$215.35,7.25%,$15.61,$230.96
+Wynnefield Properties,Carolina Terrace,713,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$0.00,7.25%,$0.00,$0.00
+Wynnefield Properties,Caroline Courtyard,119,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$330.00,7.00%,$23.10,$353.10
+Wynnefield Properties,Caroline Courtyard,322,06/03/25 10:27 AM,AHU - Cond Lines - Clear,,$184.00,7.00%,$12.88,$196.88
+Wynnefield Properties,Caroline Courtyard,227,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",7.00%,$80.50,"$1,230.50"
+Wynnefield Properties,Caroline Courtyard,314,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",7.00%,$80.50,"$1,230.50"
+Wynnefield Properties,Caroline Courtyard,320,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",7.00%,$80.50,"$1,230.50"
+Wynnefield Properties,Caroline Courtyard,322,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,967.00",7.00%,$347.69,"$5,314.69"
+Wynnefield Properties,Caroline Courtyard,322,05/27/25 11:02 AM,CU - Compressor - Replace,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Caroline Courtyard,336,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$932.50,7.00%,$65.28,$997.78
+Wynnefield Properties,Caswyck Trail,02-2B,08/01/25 5:23 AM,AHU - Evap Coil - Replace,,"$1,613.20",6.75%,$108.89,"$1,722.09"
+Wynnefield Properties,Caswyck Trail,4402-1E,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,748.00",6.75%,$117.99,"$1,865.99"
+Wynnefield Properties,Caswyck Trail,4404-2G,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,578.45",6.75%,$106.55,"$1,685.00"
+Wynnefield Properties,Caswyck Trail,4406-1F,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,645.70",6.75%,$111.08,"$1,756.78"
+Wynnefield Properties,Caswyck Trail,4406-2C,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,712.20",6.75%,$115.57,"$1,827.77"
+Wynnefield Properties,Caswyck Trail,4406-2G,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,665.95",6.75%,$112.45,"$1,778.40"
+Wynnefield Properties,Caswyck Trail,4402-2C,06/18/25 12:07 PM,AHU - Cond Lines - Clear,,$206.00,6.75%,$13.91,$219.91
+Wynnefield Properties,Caswyck Trail,4404-2H,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Caswyck Trail,4406 3C,07/16/25 6:15 AM,AHU - Cond Lines - Clear,,$151.00,6.75%,$10.19,$161.19
+Wynnefield Properties,Caswyck Trail,4402-2A,06/30/25 9:21 AM,AHU - Motor - Replace - Forward,,$858.20,6.75%,$57.93,$916.13
+Wynnefield Properties,Caswyck Trail,4402-3G,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,262.00",6.75%,$85.19,"$1,347.19"
+Wynnefield Properties,Caswyck Trail,4402-3H,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,232.12",6.75%,$83.17,"$1,315.29"
+Wynnefield Properties,Caswyck Trail,4404-3A,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,056.00",6.75%,$71.28,"$1,127.28"
+Wynnefield Properties,Caswyck Trail,4402-1E,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,053.00",6.75%,$138.58,"$2,191.58"
+Wynnefield Properties,Caswyck Trail,4406-3G,07/01/25 2:00 PM,CU - Compressor - Replace,,"$2,663.50",6.75%,$179.79,"$2,843.29"
+Wynnefield Properties,Caswyck Trail,4404-2D,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$336.00,6.75%,$22.68,$358.68
+Wynnefield Properties,Caswyck Trail,4406-3A,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$336.50,6.75%,$22.71,$359.21
+Wynnefield Properties,Caswyck Trail,4406-3B,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$305.00,6.75%,$20.59,$325.59
+Wynnefield Properties,Caswyck Trail,4402-2E,07/14/25 11:44 AM,SYS - LV - Repair - Short,,$85.00,6.75%,$5.74,$90.74
+Wynnefield Properties,Caswyck Trail,4404-3C,06/30/25 9:22 AM,SYS - REF - Repair - Leak - Easy,,$327.00,6.75%,$22.07,$349.07
+Wynnefield Properties,Caswyck Trail,4406-2H,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$552.84,6.75%,$37.32,$590.16
+Wynnefield Properties,Caswyck Trail,4404-2H,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$541.00,6.75%,$36.52,$577.52
+Wynnefield Properties,Central Gardens,Clubhouse,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$770.00,6.75%,$51.98,$821.98
+Wynnefield Properties,Coley Jenkins,134,05/27/25 11:02 AM,CU - Capacitor - Replace,,$295.00,6.75%,$19.91,$314.91
+Wynnefield Properties,Coley Jenkins,137,09/11/25 7:38 AM,AHU - Cond Lines - Clear,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Coley Jenkins,110,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",6.75%,$77.63,"$1,227.63"
+Wynnefield Properties,Coley Jenkins,110,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$810.48,6.75%,$54.71,$865.19
+Wynnefield Properties,Coley Jenkins,107,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,162.00",6.75%,$348.44,"$5,510.44"
+Wynnefield Properties,Coley Jenkins,116,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,504.70",6.75%,$304.07,"$4,808.77"
+Wynnefield Properties,Coley Jenkins,118,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,497.50",6.75%,$303.58,"$4,801.08"
+Wynnefield Properties,Coley Jenkins,119,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",6.75%,$322.03,"$5,092.83"
+Wynnefield Properties,Coley Jenkins,120,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,140.00",6.75%,$346.95,"$5,486.95"
+Wynnefield Properties,Coley Jenkins,127,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,509.70",6.75%,$304.40,"$4,814.10"
+Wynnefield Properties,Coley Jenkins,129,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,382.00",6.75%,$363.29,"$5,745.29"
+Wynnefield Properties,Coley Jenkins,131,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,005.50",6.75%,$337.87,"$5,343.37"
+Wynnefield Properties,Coley Jenkins,132,06/30/25 11:23 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,082.00",6.75%,$343.04,"$5,425.04"
+Wynnefield Properties,Coley Jenkins,136,06/05/25 6:53 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,644.70",6.75%,$313.52,"$4,958.22"
+Wynnefield Properties,Coley Jenkins,138,06/23/25 9:17 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,082.00",6.75%,$343.04,"$5,425.04"
+Wynnefield Properties,Coley Jenkins,139,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,502.00",6.75%,$303.89,"$4,805.89"
+Wynnefield Properties,Coley Jenkins,140,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,162.00",6.75%,$348.44,"$5,510.44"
+Wynnefield Properties,Coley Jenkins,Hallway,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Attic/Crawl AHU ,,"$6,007.58",6.75%,$405.51,"$6,413.09"
+Wynnefield Properties,Coley Jenkins,Hallways,06/26/25 10:34 AM,SYS - TOTAL - Change Out - Attic/Crawl AHU ,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Coley Jenkins,Office,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Attic/Crawl AHU ,,"$6,326.00",6.75%,$427.01,"$6,753.01"
+Wynnefield Properties,Coley Jenkins,109,05/27/25 11:02 AM,CU - Capacitor - Replace,,$322.00,6.75%,$21.74,$343.74
+Wynnefield Properties,Coley Jenkins,136,05/27/25 11:02 AM,CU - Capacitor - Replace,,$471.83,6.75%,$31.85,$503.68
+Wynnefield Properties,Coley Jenkins,105,05/27/25 11:02 AM,CU - TXV - Replace,,$690.00,6.75%,$46.58,$736.58
+Wynnefield Properties,Coley Jenkins,116,05/27/25 11:02 AM,CU - TXV - Replace,,$492.00,6.75%,$33.21,$525.21
+Wynnefield Properties,Coley Jenkins,103,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$250.00,6.75%,$16.88,$266.88
+Wynnefield Properties,Coley Jenkins,115,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$215.35,6.75%,$14.54,$229.89
+Wynnefield Properties,Coley Jenkins,131,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$324.45,6.75%,$21.90,$346.35
+Wynnefield Properties,Coley Jenkins,135,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$324.45,6.75%,$21.90,$346.35
+Wynnefield Properties,Coley Jenkins,138,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$333.00,6.75%,$22.48,$355.48
+Wynnefield Properties,Coley Jenkins,105,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$477.44,6.75%,$32.23,$509.67
+Wynnefield Properties,Coley Jenkins,105,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Coley Jenkins,135,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$195.00,6.75%,$13.16,$208.16
+Wynnefield Properties,Coley Jenkins,Office,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$373.00,6.75%,$25.18,$398.18
+Wynnefield Properties,Coley Jenkins,132,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Coley Jenkins,139,06/10/25 6:15 AM,SYS - REF - Repair - Leak - NLF,,$470.00,6.75%,$31.73,$501.73
+Wynnefield Properties,Colonial Ridge,106-13,07/30/25 5:18 PM,,AHU - Blower Wheel,$296.00,6.75%,$19.98,$315.98
+Wynnefield Properties,Colonial Ridge,126-37,05/27/25 11:02 AM,AHU - Control Board - Replace,,$438.26,6.75%,$29.58,$467.84
+Wynnefield Properties,Colonial Ridge,142-18,05/27/25 11:02 AM,AHU - Control Board - Replace,,$389.48,6.75%,$26.29,$415.77
+Wynnefield Properties,Colonial Ridge,119-13,05/27/25 11:02 AM,CU - Capacitor - Replace,,$138.75,6.75%,$9.37,$148.12
+Wynnefield Properties,Colonial Ridge,106-12,07/22/25 7:45 AM,AHU - Cond Lines - Clear,,$129.00,6.75%,$8.71,$137.71
+Wynnefield Properties,Colonial Ridge,119-10,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$294.00,6.75%,$19.85,$313.85
+Wynnefield Properties,Colonial Ridge,119-33,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,6.75%,$8.71,$137.71
+Wynnefield Properties,Colonial Ridge,119-37,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$294.00,6.75%,$19.85,$313.85
+Wynnefield Properties,Colonial Ridge,119-37,05/30/25 7:10 AM,AHU - Cond Lines - Clear,,$184.00,6.75%,$12.42,$196.42
+Wynnefield Properties,Colonial Ridge,126-17,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,6.75%,$10.40,$164.40
+Wynnefield Properties,Colonial Ridge,126-30,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$272.00,6.75%,$18.36,$290.36
+Wynnefield Properties,Colonial Ridge,126-32,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Colonial Ridge,142-10,06/24/25 6:48 AM,AHU - Cond Lines - Clear,,$206.00,6.75%,$13.91,$219.91
+Wynnefield Properties,Colonial Ridge,142-26,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Colonial Ridge,142-28,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$277.50,6.75%,$18.73,$296.23
+Wynnefield Properties,Colonial Ridge,142-30,06/25/25 9:11 AM,AHU - Cond Lines - Clear,,$206.00,6.75%,$13.91,$219.91
+Wynnefield Properties,Colonial Ridge,142-33,07/11/25 9:08 AM,AHU - Cond Lines - Clear,,$206.00,6.75%,$13.91,$219.91
+Wynnefield Properties,Colonial Ridge,106-20,05/27/25 11:02 AM,AHU - Motor - Replace - Forward,,$489.00,6.75%,$33.01,$522.01
+Wynnefield Properties,Colonial Ridge,106-13,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",6.75%,$77.63,"$1,227.63"
+Wynnefield Properties,Colonial Ridge,119-25,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Colonial Ridge,119-11,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,509.70",6.75%,$304.40,"$4,814.10"
+Wynnefield Properties,Colonial Ridge,119-15,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,449.50",6.75%,$367.84,"$5,817.34"
+Wynnefield Properties,Colonial Ridge,119-21,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,237.00",6.75%,$353.50,"$5,590.50"
+Wynnefield Properties,Colonial Ridge,119-26,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",6.75%,$322.03,"$5,092.83"
+Wynnefield Properties,Colonial Ridge,119-28,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,408.70",6.75%,$297.59,"$4,706.29"
+Wynnefield Properties,Colonial Ridge,119-31,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,449.50",6.75%,$367.84,"$5,817.34"
+Wynnefield Properties,Colonial Ridge,119-33,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",6.75%,$322.03,"$5,092.83"
+Wynnefield Properties,Colonial Ridge,119-37,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,237.00",6.75%,$353.50,"$5,590.50"
+Wynnefield Properties,Colonial Ridge,126-13,06/09/25 8:48 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,653.50",6.75%,$314.11,"$4,967.61"
+Wynnefield Properties,Colonial Ridge,126-17,06/24/25 6:49 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,082.00",6.75%,$343.04,"$5,425.04"
+Wynnefield Properties,Colonial Ridge,126-20,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,237.00",6.75%,$353.50,"$5,590.50"
+Wynnefield Properties,Colonial Ridge,126-21,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,648.00",6.75%,$313.74,"$4,961.74"
+Wynnefield Properties,Colonial Ridge,126-23,08/19/25 10:52 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",6.75%,$322.03,"$5,092.83"
+Wynnefield Properties,Colonial Ridge,126-35,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,237.00",6.75%,$353.50,"$5,590.50"
+Wynnefield Properties,Colonial Ridge,126-38,06/16/25 11:35 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,082.00",6.75%,$343.04,"$5,425.04"
+Wynnefield Properties,Colonial Ridge,142-26,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,229.50",6.75%,$352.99,"$5,582.49"
+Wynnefield Properties,Colonial Ridge,142-30,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,237.00",6.75%,$353.50,"$5,590.50"
+Wynnefield Properties,Colonial Ridge,142-33,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",6.75%,$322.03,"$5,092.83"
+Wynnefield Properties,Colonial Ridge,142-37,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,399.70",6.75%,$296.98,"$4,696.68"
+Wynnefield Properties,Colonial Ridge,Clubhouse,06/12/25 1:01 PM,SYS - TOTAL - Change Out - Attic/Crawl AHU ,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Colonial Ridge,Office,06/27/25 3:36 AM,SYS - TOTAL - Change Out - Attic/Crawl AHU ,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Colonial Ridge,106-22,05/27/25 11:02 AM,CU - Capacitor - Replace,,$220.02,6.75%,$14.85,$234.87
+Wynnefield Properties,Colonial Ridge,119-11,05/27/25 11:02 AM,CU - Capacitor - Replace,,$264.36,6.75%,$17.84,$282.20
+Wynnefield Properties,Colonial Ridge,119-18,05/27/25 11:02 AM,CU - Capacitor - Replace,,$374.55,6.75%,$25.28,$399.83
+Wynnefield Properties,Colonial Ridge,119-30,05/27/25 11:02 AM,CU - Capacitor - Replace,,$383.74,6.75%,$25.90,$409.64
+Wynnefield Properties,Colonial Ridge,126-38,06/12/25 12:56 PM,CU - Capacitor - Replace,,$220.45,6.75%,$14.88,$235.33
+Wynnefield Properties,Colonial Ridge,142-11,05/27/25 11:02 AM,CU - Capacitor - Replace,,$237.75,6.75%,$16.05,$253.80
+Wynnefield Properties,Colonial Ridge,Office,06/25/25 9:13 AM,,,$580.00,6.75%,$39.15,$619.15
+Wynnefield Properties,Colonial Ridge,119-28,05/22/25 10:38 AM,CU - Compressor - Replace,,"$1,293.50",6.75%,$87.31,"$1,380.81"
+Wynnefield Properties,Colonial Ridge,119-35,06/02/25 9:01 AM,CU - Motor - Replace,,$430.00,6.75%,$29.03,$459.03
+Wynnefield Properties,Colonial Ridge,126-38,07/15/25 11:55 AM,CU - TXV - Replace,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Colonial Ridge,126-17,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$195.00,6.75%,$13.16,$208.16
+Wynnefield Properties,Colonial Ridge,106-12,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$388.87,6.75%,$26.25,$415.12
+Wynnefield Properties,Colonial Ridge,106-23,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$333.00,6.75%,$22.48,$355.48
+Wynnefield Properties,Colonial Ridge,126-26,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$248.87,6.75%,$16.80,$265.67
+Wynnefield Properties,Colonial Ridge,126-32,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$424.57,6.75%,$28.66,$453.23
+Wynnefield Properties,Colonial Ridge,119-13,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$93.50,6.75%,$6.31,$99.81
+Wynnefield Properties,Colonial Ridge,119-23,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Colonial Ridge,119-25,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$125.00,6.75%,$8.44,$133.44
+Wynnefield Properties,Colonial Ridge,119-37,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$125.40,6.75%,$8.46,$133.86
+Wynnefield Properties,Colonial Ridge,142-16,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$634.00,6.75%,$42.80,$676.80
+Wynnefield Properties,Colonial Ridge,142-17,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$250.00,6.75%,$16.88,$266.88
+Wynnefield Properties,Colonial Ridge,142-30,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$134.20,6.75%,$9.06,$143.26
+Wynnefield Properties,Colonial Ridge,119-17,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$165.00,6.75%,$11.14,$176.14
+Wynnefield Properties,Colonial Ridge,126-20,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Commercial,Wynnefield Office,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$852.45,6.75%,$57.54,$909.99
+Wynnefield Properties,Conrad Corners,421,07/10/25 6:48 AM,SYS - MIN - Reser Power - AHU,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Conrad Corners,122,07/07/25 9:12 AM,AHU - Evap Coil - Replace,,"$1,622.20",6.75%,$109.50,"$1,731.70"
+Wynnefield Properties,Conrad Corners,232,05/14/25 9:42 AM,CU - Control Board - Replace,,$455.92,6.75%,$30.77,$486.69
+Wynnefield Properties,Conrad Corners,308,05/27/25 11:02 AM,CU - Capacitor - Replace,,$168.80,6.75%,$11.39,$180.19
+Wynnefield Properties,Conrad Corners,409,05/27/25 11:02 AM,CU - Capacitor - Replace,,$240.00,6.75%,$16.20,$256.20
+Wynnefield Properties,Conrad Corners,132,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$259.00,6.75%,$17.48,$276.48
+Wynnefield Properties,Conrad Corners,224,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$281.00,6.75%,$18.97,$299.97
+Wynnefield Properties,Conrad Corners,127,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$541.00,6.75%,$36.52,$577.52
+Wynnefield Properties,Conrad Corners,411,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$220.00,6.75%,$14.85,$234.85
+Wynnefield Properties,Conrad Corners,419,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$268.75,6.75%,$18.14,$286.89
+Wynnefield Properties,Conrad Corners,122,05/27/25 11:02 AM,SYS - REF - Repair - Leak - NLF,,$240.00,6.75%,$16.20,$256.20
+Wynnefield Properties,Conrad Corners,400-419,05/27/25 11:02 AM,SYS - REF - Repair - Leak - NLF,,$167.50,6.75%,$11.31,$178.81
+Wynnefield Properties,Covington Way,B-107,05/27/25 11:02 AM,AHU - Control Board - Replace,,$313.65,7.00%,$21.96,$335.61
+Wynnefield Properties,Covington Way,B-213,05/27/25 11:02 AM,AHU - Control Board - Replace,,$355.16,7.00%,$24.86,$380.02
+Wynnefield Properties,Covington Way,B318,07/28/25 6:29 AM,AHU - Control Board - Replace,,$583.00,7.00%,$40.81,$623.81
+Wynnefield Properties,Covington Way,C-311,05/27/25 11:02 AM,AHU - Control Board - Replace,,$357.16,7.00%,$25.00,$382.16
+Wynnefield Properties,Covington Way,D-104,05/27/25 11:02 AM,AHU - Control Board - Replace,,$355.16,7.00%,$24.86,$380.02
+Wynnefield Properties,Covington Way,D-211,05/27/25 11:02 AM,AHU - Control Board - Replace,,$355.16,7.00%,$24.86,$380.02
+Wynnefield Properties,Covington Way,D-216,06/23/25 3:14 AM,AHU - Control Board - Replace,,$482.86,7.00%,$33.80,$516.66
+Wynnefield Properties,Covington Way,D-224,05/27/25 11:02 AM,AHU - Control Board - Replace,,$291.65,7.00%,$20.42,$312.07
+Wynnefield Properties,Covington Way,D215,07/11/25 3:16 AM,AHU - Control Board - Replace,,$482.86,7.00%,$33.80,$516.66
+Wynnefield Properties,Covington Way,D217,07/22/25 12:16 PM,AHU - Control Board - Replace,,$583.00,7.00%,$40.81,$623.81
+Wynnefield Properties,Covington Way,D-107,05/27/25 11:02 AM,SYS - MIN - Reser Power - AHU,,$80.00,7.00%,$5.60,$85.60
+Wynnefield Properties,Covington Way,B-209,06/12/25 12:55 PM,CU - Capacitor - Replace,,$277.35,7.00%,$19.41,$296.76
+Wynnefield Properties,Covington Way,B-213,07/08/25 9:37 AM,CU - Capacitor - Replace,,$232.52,7.00%,$16.28,$248.80
+Wynnefield Properties,Covington Way,D-214,06/23/25 10:31 AM,CU - Capacitor - Replace,,$232.52,7.00%,$16.28,$248.80
+Wynnefield Properties,Covington Way,B-317,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,712.20",7.00%,$119.85,"$1,832.05"
+Wynnefield Properties,Covington Way,B-318,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,712.20",7.00%,$119.85,"$1,832.05"
+Wynnefield Properties,Covington Way,C102,08/19/25 6:40 AM,AHU - Evap Coil - Replace,,"$1,622.20",7.00%,$113.55,"$1,735.75"
+Wynnefield Properties,Covington Way,D-220,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,622.46",7.00%,$113.57,"$1,736.03"
+Wynnefield Properties,Covington Way,B-103,06/23/25 10:31 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Covington Way,B-216,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Covington Way,C 311,07/10/25 8:58 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Covington Way,C-104,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Covington Way,C-205,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Covington Way,C-208,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Covington Way,C-312,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Covington Way,C205,08/19/25 1:22 PM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Covington Way,C206,07/30/25 8:54 AM,AHU - Cond Lines - Clear,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Covington Way,D110,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Covington Way,D223,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$180.00,7.00%,$12.60,$192.60
+Wynnefield Properties,Covington Way,102,05/21/25 8:53 AM,AHU - Motor - Replace - Forward,,$695.74,7.00%,$48.70,$744.44
+Wynnefield Properties,Covington Way,C-310,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,140.54",7.00%,$79.84,"$1,220.38"
+Wynnefield Properties,Covington Way,B212,07/22/25 12:31 PM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Covington Way,D-325,05/27/25 11:02 AM,CU - Capacitor - Replace,,$162.80,7.00%,$11.40,$174.20
+Wynnefield Properties,Covington Way,D109,05/27/25 11:02 AM,CU - Capacitor - Replace,,$317.00,7.00%,$22.19,$339.19
+Wynnefield Properties,Covington Way,D219,05/27/25 11:02 AM,CU - Capacitor - Replace,,$176.45,7.00%,$12.35,$188.80
+Wynnefield Properties,Covington Way,D222,06/04/25 1:18 PM,CU - Capacitor - Replace,,$176.45,7.00%,$12.35,$188.80
+Wynnefield Properties,Covington Way,D223,07/25/25 8:08 AM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Covington Way,D328,05/19/25 8:07 AM,CU - Capacitor - Replace,,$221.85,7.00%,$15.53,$237.38
+Wynnefield Properties,Covington Way,B-211,06/23/25 11:43 AM,CU - Compressor - Replace,,"$2,663.50",7.00%,$186.45,"$2,849.95"
+Wynnefield Properties,Covington Way,D-215,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$330.00,7.00%,$23.10,$353.10
+Wynnefield Properties,Covington Way,B104,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$512.17,7.00%,$35.85,$548.02
+Wynnefield Properties,Covington Way,B317,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$541.00,7.00%,$37.87,$578.87
+Wynnefield Properties,Covington Way,D-103,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$125.00,7.00%,$8.75,$133.75
+Wynnefield Properties,Covington Way,D-215,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Covington Way,D-220,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Covington Way,D215,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$305.00,7.00%,$21.35,$326.35
+Wynnefield Properties,Covington Way,D326,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$272.00,7.00%,$19.04,$291.04
+Wynnefield Properties,Covington Way,D-109,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$286.00,7.00%,$20.02,$306.02
+Wynnefield Properties,Covington Way,D108,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,"$1,202.00",7.00%,$84.14,"$1,286.14"
+Wynnefield Properties,Eden Chase,B-202,07/01/25 5:05 AM,AHU - Motor - Replace - Forward,,$858.20,7.00%,$60.07,$918.27
+Wynnefield Properties,Eden Chase,207,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",7.00%,$80.50,"$1,230.50"
+Wynnefield Properties,Eden Chase,B-302,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$974.00,7.00%,$68.18,"$1,042.18"
+Wynnefield Properties,Eden Chase,A-301,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,399.70",7.00%,$307.98,"$4,707.68"
+Wynnefield Properties,Eden Chase,A211,06/09/25 8:05 AM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Eden Chase,A312,06/24/25 12:55 PM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Eden Chase,107,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,133.40",7.00%,$149.34,"$2,282.74"
+Wynnefield Properties,Eden Chase,A-108,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,052.98",7.00%,$143.71,"$2,196.69"
+Wynnefield Properties,Eden Chase,A-207,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,567.50",7.00%,$179.73,"$2,747.23"
+Wynnefield Properties,Eden Chase,A312,09/08/25 12:52 PM,CU - Compressor - Replace,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Eden Chase,B-205,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,052.98",7.00%,$143.71,"$2,196.69"
+Wynnefield Properties,Eden Chase,A-304,09/05/25 10:13 AM,,SYS - Ducts - Repair - Insulation,$670.00,7.00%,$46.90,$716.90
+Wynnefield Properties,Eden Chase,A 207,05/27/25 11:02 AM,SYS - REF - Repair - Leak - NLF,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Eden Chase,A206,05/27/25 11:02 AM,SYS - REF - Repair - Restriction,,$360.00,7.00%,$25.20,$385.20
+Wynnefield Properties,Edgewood Place,1200-302,07/22/25 3:51 AM,AHU - Control Board - Replace,,$583.00,7.00%,$40.81,$623.81
+Wynnefield Properties,Edgewood Place,1400-104,05/27/25 11:02 AM,AHU - Control Board - Replace,,$330.50,7.00%,$23.14,$353.64
+Wynnefield Properties,Edgewood Place,2000-203,07/30/25 11:36 AM,AHU - Control Board - Replace,,$583.00,7.00%,$40.81,$623.81
+Wynnefield Properties,Edgewood Place,1200-101,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,784.88",7.00%,$124.94,"$1,909.82"
+Wynnefield Properties,Edgewood Place,1800-102,08/15/25 10:22 AM,AHU - Evap Coil - Replace,,"$1,622.20",7.00%,$113.55,"$1,735.75"
+Wynnefield Properties,Edgewood Place,1800-203,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,936.20",7.00%,$135.53,"$2,071.73"
+Wynnefield Properties,Edgewood Place,1600-104,09/12/25 6:34 AM,AHU - Cond Lines - Clear,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Edgewood Place,1400-304,05/27/25 11:02 AM,AHU - Limit / Sequencer - Replace,,$211.24,7.00%,$14.79,$226.03
+Wynnefield Properties,Edgewood Place,1800-201,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,657.00",7.00%,$325.99,"$4,982.99"
+Wynnefield Properties,Edgewood Place,2000-302,06/12/25 5:43 AM,CU - Capacitor - Replace,,$220.45,7.00%,$15.43,$235.88
+Wynnefield Properties,Edgewood Place,1400-301,06/23/25 7:52 AM,CU - Compressor - Replace,,"$2,663.50",7.00%,$186.45,"$2,849.95"
+Wynnefield Properties,Edgewood Place,1800-104,05/12/25 8:40 AM,CU - Contactor - Replace,,$338.00,7.00%,$23.66,$361.66
+Wynnefield Properties,Edgewood Place,1200-303,05/27/25 11:02 AM,CU - Motor - Replace,,$125.00,7.00%,$8.75,$133.75
+Wynnefield Properties,Edgewood Place,1200-104,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$330.00,7.00%,$23.10,$353.10
+Wynnefield Properties,Edgewood Place,,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$24.00,7.00%,$1.68,$25.68
+Wynnefield Properties,Edgewood Place,1200-201,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$465.00,7.00%,$32.55,$497.55
+Wynnefield Properties,Edgewood Place,1200-201,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$250.00,7.00%,$17.50,$267.50
+Wynnefield Properties,Edgewood Place,2000-101,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$987.00,7.00%,$69.09,"$1,056.09"
+Wynnefield Properties,Edgewood Place,1200-201,06/11/25 4:12 AM,SYS - REF - Repair - Leak - NLF,,$470.00,7.00%,$32.90,$502.90
+Wynnefield Properties,Edgewood Place,1400-103,07/30/25 11:51 AM,SYS - REF - Repair - Leak - NLF,,$222.50,7.00%,$15.58,$238.08
+Wynnefield Properties,Elmsley Trail,518-203,09/15/25 8:19 AM,AHU - Motor - Replace - Forward,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Elmsley Trail,518-211,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$784.00,6.75%,$52.92,$836.92
+Wynnefield Properties,Elmsley Trail,522-301,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,262.00",6.75%,$85.19,"$1,347.19"
+Wynnefield Properties,Elmsley Trail,518-205,05/27/25 11:02 AM,CU - Capacitor - Replace,,$256.00,6.75%,$17.28,$273.28
+Wynnefield Properties,Elmsley Trail,522-301,05/16/25 1:59 PM,SYS - Ducts - Reset - Fire Damper,,$316.00,6.75%,$21.33,$337.33
+Wynnefield Properties,Elmsley Trail,518-102,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$256.00,6.75%,$17.28,$273.28
+Wynnefield Properties,Elmsley Trail,522-203,05/27/25 11:02 AM,SYS - REF - Repair - Leak - NLF,,$273.00,6.75%,$18.43,$291.43
+Wynnefield Properties,Forest Park Crossing,A-105,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,730.00",7.00%,$121.10,"$1,851.10"
+Wynnefield Properties,Forest Park Crossing,C-206,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,080.23",7.00%,$75.62,"$1,155.85"
+Wynnefield Properties,Forest Park Crossing,D-100,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,262.00",7.00%,$88.34,"$1,350.34"
+Wynnefield Properties,Forest Park Crossing,D-205,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,122.36",7.00%,$78.57,"$1,200.93"
+Wynnefield Properties,Forest Park Crossing,B-103,05/27/25 11:02 AM,CU - Capacitor - Replace,,$210.80,7.00%,$14.76,$225.56
+Wynnefield Properties,Forest Park Crossing,C-103,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,052.98",7.00%,$143.71,"$2,196.69"
+Wynnefield Properties,Forest Park Crossing,D-203,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$308.00,7.00%,$21.56,$329.56
+Wynnefield Properties,Forest Park Crossing,B 103,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$241.95,7.00%,$16.94,$258.89
+Wynnefield Properties,Forest Park Crossing,D101,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$299.45,7.00%,$20.96,$320.41
+Wynnefield Properties,Forest Park Crossing,A-107,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$311.50,7.00%,$21.81,$333.31
+Wynnefield Properties,Forest Park Crossing,C-103,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$363.00,7.00%,$25.41,$388.41
+Wynnefield Properties,Forest Park Crossing,A-103,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,"$1,281.00",7.00%,$89.67,"$1,370.67"
+Wynnefield Properties,Forest Park Crossing,A-105,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$857.50,7.00%,$60.03,$917.53
+Wynnefield Properties,Forest Park Crossing,C-201,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,"$1,233.00",7.00%,$86.31,"$1,319.31"
+Wynnefield Properties,Forestdale Meadows,1098-305,07/30/25 10:31 AM,SYS - MIN - Reser Power - AHU,,$195.00,6.75%,$13.16,$208.16
+Wynnefield Properties,Forestdale Meadows,Office,08/20/25 11:42 AM,AHU - Evap Coil - Replace,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Forestdale Meadows,1046-303,06/23/25 2:39 PM,AHU - Cond Lines - Clear,,$206.00,6.75%,$13.91,$219.91
+Wynnefield Properties,Forestdale Meadows,1046-304,06/27/25 3:36 AM,AHU - Cond Lines - Clear,,$206.00,6.75%,$13.91,$219.91
+Wynnefield Properties,Forestdale Meadows,1075-303,06/09/25 9:24 AM,AHU - Cond Lines - Clear,,$195.00,6.75%,$13.16,$208.16
+Wynnefield Properties,Forestdale Meadows,1098-301,06/23/25 2:40 PM,AHU - Cond Lines - Clear,,$206.00,6.75%,$13.91,$219.91
+Wynnefield Properties,Forestdale Meadows,1098-101,05/27/25 11:02 AM,SYS - MIN - Reset Power - CU,,$206.00,6.75%,$13.91,$219.91
+Wynnefield Properties,Forestdale Meadows,1075-201,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,379.00",6.75%,$93.08,"$1,472.08"
+Wynnefield Properties,Forestdale Meadows,1046 108,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$195.00,6.75%,$13.16,$208.16
+Wynnefield Properties,Forestdale Meadows,1046-105,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$220.00,6.75%,$14.85,$234.85
+Wynnefield Properties,Forestdale Meadows,1046-204,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$110.00,6.75%,$7.43,$117.43
+Wynnefield Properties,Forestdale Meadows,1046-204,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Forestdale Meadows,1048-107,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$55.00,6.75%,$3.71,$58.71
+Wynnefield Properties,Forestdale Meadows,1075-104,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$110.00,6.75%,$7.43,$117.43
+Wynnefield Properties,Forestdale Meadows,1082-102,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$250.00,6.75%,$16.88,$266.88
+Wynnefield Properties,Forestdale Meadows,1082-103,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$55.00,6.75%,$3.71,$58.71
+Wynnefield Properties,Forestdale Meadows,1082-203,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$55.00,6.75%,$3.71,$58.71
+Wynnefield Properties,Forestdale Meadows,1098-304,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$574.00,6.75%,$38.75,$612.75
+Wynnefield Properties,Forestdale Meadows,Occupied,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$715.00,6.75%,$48.26,$763.26
+Wynnefield Properties,Forestdale Meadows,Vacants,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$55.00,6.75%,$3.71,$58.71
+Wynnefield Properties,Forestdale Meadows,1075-207,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$195.00,6.75%,$13.16,$208.16
+Wynnefield Properties,Forestdale Meadows,1098-106,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$195.00,6.75%,$13.16,$208.16
+Wynnefield Properties,Forestdale Meadows,1046-104,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$847.00,6.75%,$57.17,$904.17
+Wynnefield Properties,Forestdale Meadows,1075-204,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$565.00,6.75%,$38.14,$603.14
+Wynnefield Properties,Forestdale Meadows,46-206,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,"$1,107.50",6.75%,$74.76,"$1,182.26"
+Wynnefield Properties,Glenwood,5215,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,398.50",7.00%,$377.90,"$5,776.40"
+Wynnefield Properties,Gold Hill,440-304,08/19/25 8:27 AM,CU - Capacitor - Replace,,$232.52,7.00%,$16.28,$248.80
+Wynnefield Properties,Gold Hill,450-304,06/30/25 2:43 PM,CU - Capacitor - Replace,,$232.52,7.00%,$16.28,$248.80
+Wynnefield Properties,Gold Hill,440-106,08/12/25 7:09 AM,AHU - Cond Lines - Clear,,$118.00,7.00%,$8.26,$126.26
+Wynnefield Properties,Gold Hill,440-201,06/23/25 8:25 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Gold Hill,440-203,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Gold Hill,440-204,08/18/25 11:18 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Gold Hill,440-304,06/25/25 6:27 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Gold Hill,440-304,06/30/25 2:46 PM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Gold Hill,450-105,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$162.00,7.00%,$11.34,$173.34
+Wynnefield Properties,Gold Hill,450-303,08/18/25 11:19 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Gold Hill,460-100,08/22/25 11:38 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Gold Hill,460-304,08/18/25 11:18 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Gold Hill,430-100,05/27/25 11:02 AM,SYS - MIN - Reset Power - CU,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Gold Hill,440-307,05/27/25 11:02 AM,CU - Capacitor - Replace,,$220.45,7.00%,$15.43,$235.88
+Wynnefield Properties,Gold Hill,450-300,06/30/25 2:44 PM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Gold Hill,450-305,07/01/25 9:15 AM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Gold Hill,Clubhouse,05/27/25 11:02 AM,CU - Capacitor - Replace,,$395.95,7.00%,$27.72,$423.67
+Wynnefield Properties,Gold Hill,450-101,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,133.40",7.00%,$149.34,"$2,282.74"
+Wynnefield Properties,Gold Hill,450-202,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,052.98",7.00%,$143.71,"$2,196.69"
+Wynnefield Properties,Gold Hill,450-104,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$214.45,7.00%,$15.01,$229.46
+Wynnefield Properties,Gold Hill,460-207,07/08/25 5:52 AM,SYS - LV - Repair - Thermostat,,$215.35,7.00%,$15.07,$230.42
+Wynnefield Properties,Gold Hill,430-100,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$112.50,7.00%,$7.88,$120.38
+Wynnefield Properties,Gold Hill,430-100,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Gold Hill,440-100,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Gold Hill,440-103,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$984.19,7.00%,$68.89,"$1,053.08"
+Wynnefield Properties,Gold Hill,440-106,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Gold Hill,440-205,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$272.00,7.00%,$19.04,$291.04
+Wynnefield Properties,Gold Hill,440-207,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Gold Hill,450-101,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$354.00,7.00%,$24.78,$378.78
+Wynnefield Properties,Gold Hill,450-103,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Gold Hill,450-105,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Gold Hill,460-204,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Gold Hill,460-205,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$226.00,7.00%,$15.82,$241.82
+Wynnefield Properties,Gold Hill,460-105,05/27/25 11:02 AM,SYS - REF - Repair - Leak - NLF,,$235.00,7.00%,$16.45,$251.45
+Wynnefield Properties,Harris Pointe,2nd Floor,06/23/25 10:09 AM,AHU - Control Board - Replace,,$482.86,7.00%,$33.80,$516.66
+Wynnefield Properties,Harris Pointe,217,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,$385.00,7.00%,$26.95,$411.95
+Wynnefield Properties,Harris Pointe,3rd floor AC unit,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Harris Pointe,2nd floor middle hallway,07/09/25 11:50 AM,SYS - TOTAL - Change Out - Attic/Crawl AHU ,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Harris Pointe,3rd Floor Hallway,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Attic/Crawl AHU ,,"$4,857.30",7.00%,$340.01,"$5,197.31"
+Wynnefield Properties,Harris Pointe,318,05/30/25 7:10 AM,CU - Capacitor - Replace,,$176.45,7.00%,$12.35,$188.80
+Wynnefield Properties,Harris Pointe,109,08/12/25 6:06 AM,SYS - LV - Repair - Thermostat,,$215.35,7.00%,$15.07,$230.42
+Wynnefield Properties,Harris Pointe,302,07/09/25 9:18 AM,SYS - LV - Repair - Thermostat,,$215.35,7.00%,$15.07,$230.42
+Wynnefield Properties,Harris Pointe,309,08/12/25 8:47 AM,SYS - LV - Repair - Short,,$244.00,7.00%,$17.08,$261.08
+Wynnefield Properties,Harris Pointe,311,05/30/25 6:29 AM,SYS - LV - Repair - Short,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Harris Pointe,109,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$335.00,7.00%,$23.45,$358.45
+Wynnefield Properties,Harris Pointe,208,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$352.00,7.00%,$24.64,$376.64
+Wynnefield Properties,Harris Pointe,315,05/27/25 11:02 AM,SYS - REF - Repair - Leak - NLF,,$239.00,7.00%,$16.73,$255.73
+Wynnefield Properties,Hartley Ridge,2635-3G,06/10/25 6:07 AM,AHU - Cond Lines - Clear,,$184.00,6.75%,$12.42,$196.42
+Wynnefield Properties,Hartley Ridge,2645-2H,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$195.00,6.75%,$13.16,$208.16
+Wynnefield Properties,Hartley Ridge,2645-3A,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Hartley Ridge,2655-2B,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",6.75%,$77.63,"$1,227.63"
+Wynnefield Properties,Hartley Ridge,2625-2C,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,408.70",6.75%,$297.59,"$4,706.29"
+Wynnefield Properties,Hartley Ridge,office,07/09/25 5:15 AM,CU - Capacitor - Replace,,$248.00,6.75%,$16.74,$264.74
+Wynnefield Properties,Hartley Ridge,2635-2E,06/16/25 8:54 AM,CU - Compressor - Replace,,"$2,663.50",6.75%,$179.79,"$2,843.29"
+Wynnefield Properties,Hartley Ridge,2635-3H,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,957.00",6.75%,$132.10,"$2,089.10"
+Wynnefield Properties,Hartley Ridge,2625-3C,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$290.00,6.75%,$19.58,$309.58
+Wynnefield Properties,Hartley Ridge,2635-2H,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$348.50,6.75%,$23.52,$372.02
+Wynnefield Properties,Hartley Ridge,2625-1B,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$237.42,6.75%,$16.03,$253.45
+Wynnefield Properties,Hartley Ridge,2625-2C,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$454.60,6.75%,$30.69,$485.29
+Wynnefield Properties,Hartley Ridge,2645-1E,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$129.00,6.75%,$8.71,$137.71
+Wynnefield Properties,Hartley Ridge,2645-2B,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$354.00,6.75%,$23.90,$377.90
+Wynnefield Properties,Hartley Ridge,2645-3B,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$220.00,6.75%,$14.85,$234.85
+Wynnefield Properties,Hartley Ridge,2655-3E,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$481.00,6.75%,$32.47,$513.47
+Wynnefield Properties,Hartley Ridge,2645-3A,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$573.00,6.75%,$38.68,$611.68
+Wynnefield Properties,Henson Place,6104,06/26/25 1:45 PM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",7.00%,$333.96,"$5,104.76"
+Wynnefield Properties,Hillcrest Village,"317 W Ransom Street, Fuquay-Varina NC",05/13/25 10:42 AM,SYS - TOTAL - Change Out - Wall Mount,,"$7,191.74",7.25%,$521.40,"$7,713.14"
+Wynnefield Properties,Jasper Pointe,200-106,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",7.00%,$80.50,"$1,230.50"
+Wynnefield Properties,Jasper Pointe,400-301,05/27/25 11:02 AM,CU - Capacitor - Replace,,$365.00,7.00%,$25.55,$390.55
+Wynnefield Properties,Jasper Pointe,600-104,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$250.00,7.00%,$17.50,$267.50
+Wynnefield Properties,Jasper Pointe,300-104,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$377.00,7.00%,$26.39,$403.39
+Wynnefield Properties,Juniper Village,26-109,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$440.00,7.00%,$30.80,$470.80
+Wynnefield Properties,Kattz Corner,136,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$220.00,6.75%,$14.85,$234.85
+Wynnefield Properties,Kattz Corner,234,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Kattz Corner,311,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$55.00,6.75%,$3.71,$58.71
+Wynnefield Properties,Kattz Corner,313,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,105.00",6.75%,$74.59,"$1,179.59"
+Wynnefield Properties,Kattz Corner,331,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,787.50",6.75%,$120.66,"$1,908.16"
+Wynnefield Properties,Kattz Corner,105,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kattz Corner,115,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$192.72,6.75%,$13.01,$205.73
+Wynnefield Properties,Kattz Corner,132,05/27/25 11:02 AM,SYS - LV - Repair - Short,,"$2,414.00",6.75%,$162.95,"$2,576.95"
+Wynnefield Properties,Kattz Corner,212,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$275.00,6.75%,$18.56,$293.56
+Wynnefield Properties,Kattz Corner,321,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$110.00,6.75%,$7.43,$117.43
+Wynnefield Properties,Kattz Corner,511,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$446.00,6.75%,$30.11,$476.11
+Wynnefield Properties,Kattz Corner,518,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$110.00,6.75%,$7.43,$117.43
+Wynnefield Properties,Kattz Corner,523,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$55.00,6.75%,$3.71,$58.71
+Wynnefield Properties,Kattz Corner,525,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$110.00,6.75%,$7.43,$117.43
+Wynnefield Properties,Kattz Corner,222,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,"$1,118.75",6.75%,$75.52,"$1,194.27"
+Wynnefield Properties,Kendall Creek,532,05/27/25 11:02 AM,AHU - Control Board - Replace,,$516.30,7.00%,$36.14,$552.44
+Wynnefield Properties,Kendall Creek,424,07/08/25 8:05 AM,SYS - MIN - Reser Power - AHU,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Kendall Creek,484,05/27/25 11:02 AM,SYS - MIN - Reset Power - CU,,$80.00,7.00%,$5.60,$85.60
+Wynnefield Properties,Kendall Creek,498,05/27/25 11:02 AM,SYS - MIN - Reset Power - CU,,$80.00,7.00%,$5.60,$85.60
+Wynnefield Properties,Kendall Creek,500,05/27/25 11:02 AM,SYS - MIN - Reset Power - CU,,$80.00,7.00%,$5.60,$85.60
+Wynnefield Properties,Kendall Creek,408,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$470.00,7.00%,$32.90,$502.90
+Wynnefield Properties,Kendall Creek,416,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$382.00,7.00%,$26.74,$408.74
+Wynnefield Properties,Kendall Creek,470,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Kendall Creek,472,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$70.00,7.00%,$4.90,$74.90
+Wynnefield Properties,Kendall Creek,486,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$250.00,7.00%,$17.50,$267.50
+Wynnefield Properties,Kendall Creek,500,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$184.00,7.00%,$12.88,$196.88
+Wynnefield Properties,Kendall Creek,502,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$184.00,7.00%,$12.88,$196.88
+Wynnefield Properties,Kendall Creek,508,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$184.00,7.00%,$12.88,$196.88
+Wynnefield Properties,Kendall Creek,508,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$272.00,7.00%,$19.04,$291.04
+Wynnefield Properties,Kendall Creek,514,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$70.00,7.00%,$4.90,$74.90
+Wynnefield Properties,Kendall Creek,516,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$250.00,7.00%,$17.50,$267.50
+Wynnefield Properties,Kendall Creek,Hallway 3rd floor west wing,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Kendall Creek,422,06/11/25 9:42 AM,SYS - LV - Repair - Short,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Kendall Creek,478,06/11/25 9:51 AM,SYS - LV - Repair - Short,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Kirkwood Crossing,2218 2D,06/27/25 9:13 AM,SYS - MIN - Reser Power - AHU,,$85.00,6.75%,$5.74,$90.74
+Wynnefield Properties,Kirkwood Crossing,2208 1B,07/15/25 12:08 PM,AHU - Evap Coil - Replace,,"$1,595.20",6.75%,$107.68,"$1,702.88"
+Wynnefield Properties,Kirkwood Crossing,2208-1A,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,512.00",6.75%,$102.06,"$1,614.06"
+Wynnefield Properties,Kirkwood Crossing,2208-2B,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,671.96",6.75%,$112.86,"$1,784.82"
+Wynnefield Properties,Kirkwood Crossing,2208-2F,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,585.00",6.75%,$106.99,"$1,691.99"
+Wynnefield Properties,Kirkwood Crossing,2208-3B,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,936.20",6.75%,$130.69,"$2,066.89"
+Wynnefield Properties,Kirkwood Crossing,2218 2F,04/21/25 12:10 PM,AHU - Evap Coil - Replace,,"$1,680.50",6.75%,$113.43,"$1,793.93"
+Wynnefield Properties,Kirkwood Crossing,2218 3G,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,649.62",6.75%,$111.35,"$1,760.97"
+Wynnefield Properties,Kirkwood Crossing,2218-1E,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,543.62",6.75%,$104.19,"$1,647.81"
+Wynnefield Properties,Kirkwood Crossing,2238-1B,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,701.96",6.75%,$114.88,"$1,816.84"
+Wynnefield Properties,Kirkwood Crossing,2238-2B,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$2,328.50",6.75%,$157.17,"$2,485.67"
+Wynnefield Properties,Kirkwood Crossing,2208-3B,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$125.00,6.75%,$8.44,$133.44
+Wynnefield Properties,Kirkwood Crossing,2218 1E,06/27/25 10:38 AM,AHU - Cond Lines - Clear,,$206.00,6.75%,$13.91,$219.91
+Wynnefield Properties,Kirkwood Crossing,2218-1E,07/15/25 12:08 PM,AHU - Cond Lines - Clear,,$151.00,6.75%,$10.19,$161.19
+Wynnefield Properties,Kirkwood Crossing,2218-3B,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$165.00,6.75%,$11.14,$176.14
+Wynnefield Properties,Kirkwood Crossing,2218-3B,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$250.00,6.75%,$16.88,$266.88
+Wynnefield Properties,Kirkwood Crossing,2218-3G,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$167.50,6.75%,$11.31,$178.81
+Wynnefield Properties,Kirkwood Crossing,2208 3G,06/26/25 7:11 AM,,,$292.00,6.75%,$19.71,$311.71
+Wynnefield Properties,Kirkwood Crossing,2208-1B,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,102.00",6.75%,$74.39,"$1,176.39"
+Wynnefield Properties,Kirkwood Crossing,2218-3G,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$936.38,6.75%,$63.21,$999.59
+Wynnefield Properties,Kirkwood Crossing,2208-2G,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,737.70",6.75%,$319.79,"$5,057.49"
+Wynnefield Properties,Kirkwood Crossing,2218-3B,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,036.60",6.75%,$272.47,"$4,309.07"
+Wynnefield Properties,Kirkwood Crossing,2248-1H,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",6.75%,$322.03,"$5,092.83"
+Wynnefield Properties,Kirkwood Crossing,2248-2B,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,503.50",6.75%,$303.99,"$4,807.49"
+Wynnefield Properties,Kirkwood Crossing,2218-3G,05/27/25 11:02 AM,CU - Capacitor - Replace,,$323.45,6.75%,$21.83,$345.28
+Wynnefield Properties,Kirkwood Crossing,2248-2B,05/27/25 11:02 AM,CU - Capacitor - Replace,,$153.80,6.75%,$10.38,$164.18
+Wynnefield Properties,Kirkwood Crossing,2208-1E,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,271.00",6.75%,$153.29,"$2,424.29"
+Wynnefield Properties,Kirkwood Crossing,2218-2G,07/15/25 12:08 PM,CU - Compressor - Replace,,"$2,290.50",6.75%,$154.61,"$2,445.11"
+Wynnefield Properties,Kirkwood Crossing,2238-3C,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,133.40",6.75%,$144.00,"$2,277.40"
+Wynnefield Properties,Kirkwood Crossing,2248 3E,06/26/25 7:13 AM,CU - Compressor - Replace,,"$2,663.50",6.75%,$179.79,"$2,843.29"
+Wynnefield Properties,Kirkwood Crossing,2248-1H,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,133.40",6.75%,$144.00,"$2,277.40"
+Wynnefield Properties,Kirkwood Crossing,2208 - 1H,05/27/25 11:02 AM,CU - TXV - Replace,,"$1,158.50",6.75%,$78.20,"$1,236.70"
+Wynnefield Properties,Kirkwood Crossing,2218-1G,05/27/25 11:02 AM,CU - TXV - Replace,,"$1,158.50",6.75%,$78.20,"$1,236.70"
+Wynnefield Properties,Kirkwood Crossing,2248-2E,05/27/25 11:02 AM,CU - TXV - Replace,,"$1,158.50",6.75%,$78.20,"$1,236.70"
+Wynnefield Properties,Kirkwood Crossing,2218-3B,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$314.00,6.75%,$21.20,$335.20
+Wynnefield Properties,Kirkwood Crossing,2248-2C,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$303.87,6.75%,$20.51,$324.38
+Wynnefield Properties,Kirkwood Crossing,2208-1C,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$250.00,6.75%,$16.88,$266.88
+Wynnefield Properties,Kirkwood Crossing,2218-1A,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$234.90,6.75%,$15.86,$250.76
+Wynnefield Properties,Kirkwood Crossing,2218-2G,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$408.00,6.75%,$27.54,$435.54
+Wynnefield Properties,Kirkwood Crossing,2218-3F,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$574.00,6.75%,$38.75,$612.75
+Wynnefield Properties,Kirkwood Crossing,2218-3G,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$299.00,6.75%,$20.18,$319.18
+Wynnefield Properties,Kirkwood Crossing,2218-3H,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$299.00,6.75%,$20.18,$319.18
+Wynnefield Properties,Kirkwood Crossing,2238-1B,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Kirkwood Crossing,2238-2A,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$453.76,6.75%,$30.63,$484.39
+Wynnefield Properties,Kirkwood Crossing,2248-1G,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$289.60,6.75%,$19.55,$309.15
+Wynnefield Properties,Kirkwood Crossing,2248-3G,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$192.50,6.75%,$12.99,$205.49
+Wynnefield Properties,Kirkwood Crossing,2208 - 2A,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2208 - 3C,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2208 - 3E,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2208 - 3H,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2208-1A,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Kirkwood Crossing,2208-2B,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Kirkwood Crossing,2208-2F,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$641.86,6.75%,$43.33,$685.19
+Wynnefield Properties,Kirkwood Crossing,2208-3E,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$299.50,6.75%,$20.22,$319.72
+Wynnefield Properties,Kirkwood Crossing,2208-3F,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Kirkwood Crossing,2218 - 1B,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2218 - 1C,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2218 - 1E,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2218 - 1F,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2218 - 1H,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2218 - 2B,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2218 - 2E,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2218 - 2F,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2218 - 3A,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2218 - 3C,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2218 - 3D,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2218-2A,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Kirkwood Crossing,2218-2F,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Kirkwood Crossing,2218-2F,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$255.00,6.75%,$17.21,$272.21
+Wynnefield Properties,Kirkwood Crossing,2238 - 1A,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2238 - 3B,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2238 - 3C,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2238-1A,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Kirkwood Crossing,2248 - 1A,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2248 - 1F,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$584.00,6.75%,$39.42,$623.42
+Wynnefield Properties,Kirkwood Crossing,2248 - 1G,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2248 - 2E,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2248 - 2H,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2248 - 3E,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2248-1D,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$440.00,6.75%,$29.70,$469.70
+Wynnefield Properties,Kirkwood Crossing,2248-1G,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Kirkwood Crossing,2248-1H,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Kirkwood Crossing,2248-2D,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Kirkwood Crossing,2248-2F,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,"$3,645.00",6.75%,$246.04,"$3,891.04"
+Wynnefield Properties,Kirkwood Crossing,2248-3G,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$385.00,6.75%,$25.99,$410.99
+Wynnefield Properties,Kirkwood Crossing,2248-2B,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$722.50,6.75%,$48.77,$771.27
+Wynnefield Properties,Kirkwood Crossing,2208-3C,05/27/25 11:02 AM,SYS - REF - Repair - Leak - NLF,,$174.00,6.75%,$11.75,$185.75
+Wynnefield Properties,Kirkwood Crossing,2248-2C,06/26/25 3:35 AM,SYS - REF - Repair - Leak - NLF,,$245.00,6.75%,$16.54,$261.54
+Wynnefield Properties,Kirkwood Crossing,2248-3E,07/14/25 11:44 AM,SYS - REF - Repair - Leak - NLF,,$245.00,6.75%,$16.54,$261.54
+Wynnefield Properties,Magnolias,119,06/09/25 5:48 PM,SYS - TOTAL - Change Out - Wall Mount,,"$4,644.70",7.25%,$336.74,"$4,981.44"
+Wynnefield Properties,Magnolias,121,08/29/25 8:23 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,978.80",7.25%,$360.96,"$5,339.76"
+Wynnefield Properties,Magnolias,133,07/28/25 4:43 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",7.25%,$345.88,"$5,116.68"
+Wynnefield Properties,Magnolias,138 - Vacant,06/27/25 8:08 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,082.00",7.25%,$368.45,"$5,450.45"
+Wynnefield Properties,Magnolias,Common Areas,06/20/25 3:02 AM,SYS - TOTAL - Change Out - Attic/Crawl AHU ,,$0.00,7.25%,$0.00,$0.00
+Wynnefield Properties,Magnolias,132,06/10/25 6:28 AM,CU - Capacitor - Replace,,$220.45,7.25%,$15.98,$236.43
+Wynnefield Properties,Magnolias,136,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$332.00,7.25%,$24.07,$356.07
+Wynnefield Properties,Meadow Brook,,06/09/25 5:48 PM,SYS - TOTAL - Change Out - Wall Mount,,"$5,277.50",6.75%,$356.23,"$5,633.73"
+Wynnefield Properties,Meridian Pointe,313,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,303.00",7.00%,$91.21,"$1,394.21"
+Wynnefield Properties,Meridian Pointe,1650-106,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,747.00",7.00%,$122.29,"$1,869.29"
+Wynnefield Properties,Meridian Pointe,6150-103,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,720.00",7.00%,$120.40,"$1,840.40"
+Wynnefield Properties,Meridian Pointe,210,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$275.41,7.00%,$19.28,$294.69
+Wynnefield Properties,Meridian Pointe,212,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$275.41,7.00%,$19.28,$294.69
+Wynnefield Properties,Meridian Pointe,114,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$275.00,7.00%,$19.25,$294.25
+Wynnefield Properties,Millers Creek,302-105,09/02/25 11:08 AM,,AHU - Blower Wheel,$173.00,7.00%,$12.11,$185.11
+Wynnefield Properties,Millers Creek,302-102,06/11/25 1:15 PM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Millers Creek,302-206,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$110.00,7.00%,$7.70,$117.70
+Wynnefield Properties,Millers Creek,302-206,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Millers Creek,302-302,06/17/25 9:53 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Millers Creek,302-305,06/06/25 7:20 AM,AHU - Cond Lines - Clear,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Millers Creek,Clubhouse,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$512.84,7.00%,$35.90,$548.74
+Wynnefield Properties,Millers Creek,302-201,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,520.00",7.00%,$316.40,"$4,836.40"
+Wynnefield Properties,Millers Creek,300-109,05/27/25 11:02 AM,CU - Capacitor - Replace,,$355.45,7.00%,$24.88,$380.33
+Wynnefield Properties,Millers Creek,300-209,05/27/25 11:02 AM,CU - Capacitor - Replace,,$244.45,7.00%,$17.11,$261.56
+Wynnefield Properties,Millers Creek,302-205,05/27/25 11:02 AM,CU - Capacitor - Replace,,$268.45,7.00%,$18.79,$287.24
+Wynnefield Properties,Millers Creek,300-109,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,315.00",7.00%,$92.05,"$1,407.05"
+Wynnefield Properties,Millers Creek,300-212,07/10/25 1:30 PM,CU - Compressor - Replace,,"$2,290.50",7.00%,$160.34,"$2,450.84"
+Wynnefield Properties,Millers Creek,302-205,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,371.50",7.00%,$96.01,"$1,467.51"
+Wynnefield Properties,Millers Creek,302-302,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,394.00",7.00%,$97.58,"$1,491.58"
+Wynnefield Properties,Millers Creek,302-204,06/06/25 7:19 AM,CU - Rev Valve - Replace,,"$1,252.28",7.00%,$87.66,"$1,339.94"
+Wynnefield Properties,Millers Creek,302-301,05/27/25 11:02 AM,CU - Rev Valve - Replace,,"$1,327.66",7.00%,$92.94,"$1,420.60"
+Wynnefield Properties,Millers Creek,300-109,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$356.50,7.00%,$24.96,$381.46
+Wynnefield Properties,Millers Creek,302-203,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,"$1,005.50",7.00%,$70.39,"$1,075.89"
+Wynnefield Properties,Millers Creek,302-304,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$305.00,7.00%,$21.35,$326.35
+Wynnefield Properties,Millers Creek,302-304,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$217.00,7.00%,$15.19,$232.19
+Wynnefield Properties,Millers Creek,302-307,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$314.00,7.00%,$21.98,$335.98
+Wynnefield Properties,Millers Creek,302-307,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$272.00,7.00%,$19.04,$291.04
+Wynnefield Properties,Millers Creek,300-101,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$391.00,7.00%,$27.37,$418.37
+Wynnefield Properties,Millers Creek,300-206,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$299.00,7.00%,$20.93,$319.93
+Wynnefield Properties,Millers Creek,300-301,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$55.00,7.00%,$3.85,$58.85
+Wynnefield Properties,Millers Creek,302-107,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$110.00,7.00%,$7.70,$117.70
+Wynnefield Properties,Millers Creek,302-302,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$55.00,7.00%,$3.85,$58.85
+Wynnefield Properties,Millers Creek,302-104,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$654.00,7.00%,$45.78,$699.78
+Wynnefield Properties,Millers Creek,302-201,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$550.00,7.00%,$38.50,$588.50
+Wynnefield Properties,Millers Creek,302-202,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$366.00,7.00%,$25.62,$391.62
+Wynnefield Properties,Millers Creek,302-205,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$602.00,7.00%,$42.14,$644.14
+Wynnefield Properties,Millers Creek,300-301,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$345.00,7.00%,$24.15,$369.15
+Wynnefield Properties,Millers Creek,302-103,08/04/25 11:14 AM,SYS - REF - Repair - Leak - Recover,,$895.50,7.00%,$62.69,$958.19
+Wynnefield Properties,Millers Creek,302-304,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,"$1,133.00",7.00%,$79.31,"$1,212.31"
+Wynnefield Properties,Mountain View,A201,05/27/25 11:02 AM,SYS - MIN - Reser Power - AHU,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Mountain View,B-301,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,716.00",7.00%,$120.12,"$1,836.12"
+Wynnefield Properties,Mountain View,A - 202,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$250.00,7.00%,$17.50,$267.50
+Wynnefield Properties,Mountain View,A-107,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Mountain View,A-111,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Mountain View,A-112,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Mountain View,A-201,06/13/25 3:50 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Mountain View,A-202,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Mountain View,A-204,06/10/25 7:43 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Mountain View,A-205,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$294.00,7.00%,$20.58,$314.58
+Wynnefield Properties,Mountain View,A-205,06/13/25 3:50 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Mountain View,A107,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$130.00,7.00%,$9.10,$139.10
+Wynnefield Properties,Mountain View,A212,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Mountain View,A301,05/19/25 8:08 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Mountain View,B-102,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$294.00,7.00%,$20.58,$314.58
+Wynnefield Properties,Mountain View,B-203,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Mountain View,B-204,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Mountain View,B-302,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$167.50,7.00%,$11.73,$179.23
+Wynnefield Properties,Mountain View,B103,07/09/25 9:35 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Mountain View,B204,07/03/25 10:31 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Mountain View,B301,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$130.00,7.00%,$9.10,$139.10
+Wynnefield Properties,Mountain View,B302,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Mountain View,A-201,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",7.00%,$80.50,"$1,230.50"
+Wynnefield Properties,Mountain View,A-202,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,175.52",7.00%,$82.29,"$1,257.81"
+Wynnefield Properties,Mountain View,A-207,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,046.38",7.00%,$73.25,"$1,119.63"
+Wynnefield Properties,Mountain View,A-102,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$269.45,7.00%,$18.86,$288.31
+Wynnefield Properties,Mountain View,A105,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$288.62,7.00%,$20.20,$308.82
+Wynnefield Properties,Mountain View,A110,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$361.80,7.00%,$25.33,$387.13
+Wynnefield Properties,Mountain View,A201,05/19/25 12:05 PM,SYS - LV - Repair - Thermostat,,$326.04,7.00%,$22.82,$348.86
+Wynnefield Properties,Mountain View,A-212,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$281.00,7.00%,$19.67,$300.67
+Wynnefield Properties,Mountain View,A-301,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$244.00,7.00%,$17.08,$261.08
+Wynnefield Properties,Mountain View,A-307,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$243.80,7.00%,$17.07,$260.87
+Wynnefield Properties,Mountain View,A307,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$230.00,7.00%,$16.10,$246.10
+Wynnefield Properties,Mountain View,B301,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$419.00,7.00%,$29.33,$448.33
+Wynnefield Properties,New Garden,1916-C,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$192.50,7.00%,$13.48,$205.98
+Wynnefield Properties,Other,Joanna,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Parkview,407 D,04/25/25 6:20 AM,AHU - Evap Coil - Replace,,"$1,680.50",6.75%,$113.43,"$1,793.93"
+Wynnefield Properties,Parkview,2306-A,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$180.00,6.75%,$12.15,$192.15
+Wynnefield Properties,Parkview,401-A,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$118.00,6.75%,$7.97,$125.97
+Wynnefield Properties,Parkview,407 C,07/21/25 2:04 PM,AHU - Cond Lines - Clear,,$173.00,6.75%,$11.68,$184.68
+Wynnefield Properties,Parkview,411-A,06/16/25 7:19 AM,AHU - Motor - Replace - Forward,,$590.00,6.75%,$39.83,$629.83
+Wynnefield Properties,Parkview,401-E,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$296.00,6.75%,$19.98,$315.98
+Wynnefield Properties,Parkview,407-C,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$242.00,6.75%,$16.34,$258.34
+Wynnefield Properties,Parkview,415-C,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$242.00,6.75%,$16.34,$258.34
+Wynnefield Properties,Parkview,415-C,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",6.75%,$77.63,"$1,227.63"
+Wynnefield Properties,Parkview,2300-A,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,548.30",6.75%,$307.01,"$4,855.31"
+Wynnefield Properties,Parkview,2300-D,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,472.00",6.75%,$369.36,"$5,841.36"
+Wynnefield Properties,Parkview,2300-F,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,648.00",6.75%,$313.74,"$4,961.74"
+Wynnefield Properties,Parkview,2302-F,07/21/25 8:42 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",6.75%,$322.03,"$5,092.83"
+Wynnefield Properties,Parkview,2306-A,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,284.70",6.75%,$289.22,"$4,573.92"
+Wynnefield Properties,Parkview,2306-E,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,292.63",6.75%,$357.25,"$5,649.88"
+Wynnefield Properties,Parkview,403-B,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,717.30",6.75%,$318.42,"$5,035.72"
+Wynnefield Properties,Parkview,403-C,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,726.75",6.75%,$386.56,"$6,113.31"
+Wynnefield Properties,Parkview,409-A,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,502.00",6.75%,$303.89,"$4,805.89"
+Wynnefield Properties,Parkview,409-F,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,611.20",6.75%,$378.76,"$5,989.96"
+Wynnefield Properties,Parkview,411-C,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,171.20",6.75%,$349.06,"$5,520.26"
+Wynnefield Properties,Parkview,415-C,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,644.70",6.75%,$313.52,"$4,958.22"
+Wynnefield Properties,Parkview,415-E,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,637.00",6.75%,$313.00,"$4,950.00"
+Wynnefield Properties,Parkview,415-F,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,644.70",6.75%,$313.52,"$4,958.22"
+Wynnefield Properties,Parkview,Clubhouse,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$6,612.60",6.75%,$446.35,"$7,058.95"
+Wynnefield Properties,Parkview,2302-A,05/27/25 11:02 AM,CU - Capacitor - Replace,,$257.20,6.75%,$17.36,$274.56
+Wynnefield Properties,Parkview,401-D,05/27/25 11:02 AM,CU - Capacitor - Replace,,$150.02,6.75%,$10.13,$160.15
+Wynnefield Properties,Parkview,403A,07/15/25 12:17 PM,CU - Capacitor - Replace,,$248.00,6.75%,$16.74,$264.74
+Wynnefield Properties,Parkview,409-B,05/27/25 11:02 AM,CU - Motor - Replace,,$195.00,6.75%,$13.16,$208.16
+Wynnefield Properties,Parkview,2302-D,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$305.00,6.75%,$20.59,$325.59
+Wynnefield Properties,Parkview,2306-A,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$250.00,6.75%,$16.88,$266.88
+Wynnefield Properties,Parkview,2306-F,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$215.35,6.75%,$14.54,$229.89
+Wynnefield Properties,Parkview,415-F,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$278.87,6.75%,$18.82,$297.69
+Wynnefield Properties,Parkview,2302-B,09/12/25 11:08 AM,SYS - LV - Repair - Short,,$0.00,6.75%,$0.00,$0.00
+Wynnefield Properties,Parkview,2304-F,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$234.00,6.75%,$15.80,$249.80
+Wynnefield Properties,Parkview,2306-G,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$55.00,6.75%,$3.71,$58.71
+Wynnefield Properties,Parkview,401-C,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$195.00,6.75%,$13.16,$208.16
+Wynnefield Properties,Parkview,407-D,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$149.00,6.75%,$10.06,$159.06
+Wynnefield Properties,Parkview,415-C,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$481.00,6.75%,$32.47,$513.47
+Wynnefield Properties,Parkview,415-C,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$305.00,6.75%,$20.59,$325.59
+Wynnefield Properties,Parkview,417-H,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$294.00,6.75%,$19.85,$313.85
+Wynnefield Properties,Parkview,407-D,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$224.00,6.75%,$15.12,$239.12
+Wynnefield Properties,Parkview,409-C,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$176.00,6.75%,$11.88,$187.88
+Wynnefield Properties,Parkview,411-E,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$152.50,6.75%,$10.29,$162.79
+Wynnefield Properties,Parkview,2302-B,05/14/25 6:51 AM,SYS - REF - Repair - Leak - NLF,,$217.50,6.75%,$14.68,$232.18
+Wynnefield Properties,Parkview,2302B,07/15/25 12:18 PM,SYS - REF - Repair - Leak - NLF,,$151.00,6.75%,$10.19,$161.19
+Wynnefield Properties,Ryan Ridge,4408-3E,06/10/25 6:25 AM,AHU - Cond Lines - Clear,,$184.00,6.75%,$12.42,$196.42
+Wynnefield Properties,Ryan Ridge,4408-3D,08/13/25 6:37 AM,CU - Power - Cross Wired,,$577.00,6.75%,$38.95,$615.95
+Wynnefield Properties,Ryan Ridge,4408-2D,07/14/25 11:44 AM,SYS - MIN - Reset Power - CU,,$167.50,6.75%,$11.31,$178.81
+Wynnefield Properties,Ryan Ridge,4412-3L,07/14/25 7:29 AM,CU - Capacitor - Replace,,$248.00,6.75%,$16.74,$264.74
+Wynnefield Properties,Ryan Ridge,4408-2H,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Ryan Ridge,4408-3D,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$940.54,6.75%,$63.49,"$1,004.03"
+Wynnefield Properties,Ryan Ridge,4408-2A,05/12/25 10:21 AM,SYS - REF - Repair - Leak - NLF,,$222.50,6.75%,$15.02,$237.52
+Wynnefield Properties,Sandhill Court,319,05/27/25 11:02 AM,SYS - MIN - Reser Power - AHU,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Sandhill Court,301,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Sandhill Court,100-135,06/30/25 12:40 PM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Sandhill Court,300-359,08/11/25 8:20 AM,AHU - Cond Lines - Clear,,$118.00,7.00%,$8.26,$126.26
+Wynnefield Properties,Sandhill Court,300-353,06/18/25 5:55 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,082.00",7.00%,$355.74,"$5,437.74"
+Wynnefield Properties,Sandhill Court,143,05/27/25 11:02 AM,CU - Control Board - Reset,,$250.00,7.00%,$17.50,$267.50
+Wynnefield Properties,Sandhill Court,300-333,05/27/25 11:02 AM,CU - Control Board - Reset,,$228.00,7.00%,$15.96,$243.96
+Wynnefield Properties,Sandhill Court,321,05/27/25 11:02 AM,CU - Capacitor - Replace,,$217.45,7.00%,$15.22,$232.67
+Wynnefield Properties,Sandhill Court,329,08/20/25 10:18 AM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Sandhill Court,331,05/27/25 11:02 AM,CU - Capacitor - Replace,,$275.95,7.00%,$19.32,$295.27
+Wynnefield Properties,Sandhill Court,300-325,06/30/25 12:40 PM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Sandhill Court,241,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,315.00",7.00%,$92.05,"$1,407.05"
+Wynnefield Properties,Sandhill Court,325,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,315.00",7.00%,$92.05,"$1,407.05"
+Wynnefield Properties,Sandhill Court,100-147,06/19/25 7:53 AM,CU - Compressor - Replace,,"$1,293.50",7.00%,$90.55,"$1,384.05"
+Wynnefield Properties,Sandhill Court,300-347,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,229.40",7.00%,$156.06,"$2,385.46"
+Wynnefield Properties,Sandhill Court,300-355,08/07/25 5:55 AM,CU - Compressor - Replace,,"$1,366.00",7.00%,$95.62,"$1,461.62"
+Wynnefield Properties,Sandhill Court,300-357,08/11/25 8:19 AM,CU - Compressor - Replace,,"$1,366.00",7.00%,$95.62,"$1,461.62"
+Wynnefield Properties,Sandhill Court,103,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$360.00,7.00%,$25.20,$385.20
+Wynnefield Properties,Sandhill Court,117,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$250.00,7.00%,$17.50,$267.50
+Wynnefield Properties,Sandhill Court,117,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$217.00,7.00%,$15.19,$232.19
+Wynnefield Properties,Sandhill Court,119,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$443.87,7.00%,$31.07,$474.94
+Wynnefield Properties,Sandhill Court,129,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$250.40,7.00%,$17.53,$267.93
+Wynnefield Properties,Sandhill Court,129,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Sandhill Court,129,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Sandhill Court,129,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Sandhill Court,301,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$244.00,7.00%,$17.08,$261.08
+Wynnefield Properties,Sandhill Court,301,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Sandhill Court,301,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Sandhill Court,301,08/20/25 12:54 PM,SYS - Ducts - Reset - Fire Damper,,$329.00,7.00%,$23.03,$352.03
+Wynnefield Properties,Sandhill Court,305,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Sandhill Court,307,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$255.00,7.00%,$17.85,$272.85
+Wynnefield Properties,Sandhill Court,100-105,06/24/25 2:17 PM,SYS - Ducts - Reset - Fire Damper,,$316.00,7.00%,$22.12,$338.12
+Wynnefield Properties,Sandhill Court,100-129,06/11/25 7:50 AM,SYS - Ducts - Reset - Fire Damper,,$173.00,7.00%,$12.11,$185.11
+Wynnefield Properties,Sandhill Court,100-147,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$410.35,7.00%,$28.72,$439.07
+Wynnefield Properties,Sandhill Court,300-303,09/04/25 11:15 AM,SYS - Ducts - Reset - Fire Damper,,$329.00,7.00%,$23.03,$352.03
+Wynnefield Properties,Sandhill Court,300-305,06/09/25 8:34 AM,SYS - Ducts - Reset - Fire Damper,,$173.00,7.00%,$12.11,$185.11
+Wynnefield Properties,Sandhill Court,300-319,07/08/25 7:38 AM,SYS - Ducts - Reset - Fire Damper,,$316.00,7.00%,$22.12,$338.12
+Wynnefield Properties,Sandhill Court,333,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$379.45,7.00%,$26.56,$406.01
+Wynnefield Properties,Sandhill Court,100-129,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$420.00,7.00%,$29.40,$449.40
+Wynnefield Properties,Sandhill Court,300-337,06/30/25 12:38 PM,SYS - LV - Repair - Short,,$250.00,7.00%,$17.50,$267.50
+Wynnefield Properties,Sandhill Court,129,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$322.00,7.00%,$22.54,$344.54
+Wynnefield Properties,Sandhill Court,139,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$289.00,7.00%,$20.23,$309.23
+Wynnefield Properties,Sandhill Court,141,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Sandhill Court,205,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$401.25,7.00%,$28.09,$429.34
+Wynnefield Properties,Sandhill Court,200-233,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$320.00,7.00%,$22.40,$342.40
+Wynnefield Properties,Sandhill Court,200-233,06/30/25 12:37 PM,SYS - REF - Repair - Leak - Easy,,$327.00,7.00%,$22.89,$349.89
+Wynnefield Properties,Sandhill Court,139,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,"$1,144.00",7.00%,$80.08,"$1,224.08"
+Wynnefield Properties,Sandhill Court,100-135,05/20/25 10:59 AM,SYS - REF - Repair - Leak - NLF,,$262.00,7.00%,$18.34,$280.34
+Wynnefield Properties,Sandhill Court,100-141 - Vacant,06/24/25 2:18 PM,SYS - REF - Repair - Leak - NLF,,$245.00,7.00%,$17.15,$262.15
+Wynnefield Properties,Sandhill Court,200-201,06/24/25 2:18 PM,SYS - REF - Repair - Leak - NLF,,$267.50,7.00%,$18.73,$286.23
+Wynnefield Properties,Sherwood Place,35,06/06/25 6:34 AM,CU - Capacitor - Replace,,$231.50,7.00%,$16.21,$247.71
+Wynnefield Properties,Sherwood Place,27,09/04/25 11:32 AM,AHU - Coil - Clean,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Sherwood Place,office and main foyer,06/26/25 6:20 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Sherwood Place,5,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,016.38",7.00%,$71.15,"$1,087.53"
+Wynnefield Properties,Sherwood Place,10,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,639.00",7.00%,$324.73,"$4,963.73"
+Wynnefield Properties,Sherwood Place,11,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,612.00",7.00%,$322.84,"$4,934.84"
+Wynnefield Properties,Sherwood Place,14,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,502.00",7.00%,$315.14,"$4,817.14"
+Wynnefield Properties,Sherwood Place,19,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,502.00",7.00%,$315.14,"$4,817.14"
+Wynnefield Properties,Sherwood Place,23,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,382.00",7.00%,$376.74,"$5,758.74"
+Wynnefield Properties,Sherwood Place,25,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,612.00",7.00%,$322.84,"$4,934.84"
+Wynnefield Properties,Sherwood Place,29,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,644.70",7.00%,$325.13,"$4,969.83"
+Wynnefield Properties,Sherwood Place,31,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,551.50",7.00%,$318.61,"$4,870.11"
+Wynnefield Properties,Sherwood Place,Hallway,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,686.90",7.00%,$328.08,"$5,014.98"
+Wynnefield Properties,Sherwood Place,Hallway,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,966.40",7.00%,$417.65,"$6,384.05"
+Wynnefield Properties,Sherwood Place,main hallway & dinning area,08/01/25 2:27 PM,SYS - TOTAL - Change Out - Wall Mount,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Sherwood Place,Right Hallway,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$6,256.00",7.00%,$437.92,"$6,693.92"
+Wynnefield Properties,Sherwood Place,Gathering Room,05/27/25 11:02 AM,CU - Capacitor - Replace,,$262.00,7.00%,$18.34,$280.34
+Wynnefield Properties,Sherwood Place,40,05/27/25 11:02 AM,CU - Motor - Replace,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Sherwood Place,11,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Sherwood Place,31,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$226.00,7.00%,$15.82,$241.82
+Wynnefield Properties,Sherwood Place,31,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Sherwood Place,2,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$290.00,7.00%,$20.30,$310.30
+Wynnefield Properties,Sherwood Place,Main long hall,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$688.00,7.00%,$48.16,$736.16
+Wynnefield Properties,Sherwood Place,33,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,"$1,014.00",7.00%,$70.98,"$1,084.98"
+Wynnefield Properties,Sherwood Place,38,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,"$1,022.50",7.00%,$71.58,"$1,094.08"
+Wynnefield Properties,Sherwood Place,32,06/06/25 1:18 PM,SYS - REF - Repair - Leak - NLF,,$353.00,7.00%,$24.71,$377.71
+Wynnefield Properties,Sienna Heights,169-202,07/31/25 10:35 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,978.80",6.75%,$336.07,"$5,314.87"
+Wynnefield Properties,Sienna Heights,242-203,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,229.40",6.75%,$150.48,"$2,379.88"
+Wynnefield Properties,Sienna Heights,215-105,06/06/25 7:26 AM,CU - Rev Valve - Replace,,"$1,010.67",6.75%,$68.22,"$1,078.89"
+Wynnefield Properties,Sienna Heights,169-105,07/22/25 4:21 AM,SYS - LV - Repair - Short,,$244.00,6.75%,$16.47,$260.47
+Wynnefield Properties,Sienna Heights,242-205,08/19/25 2:06 PM,SYS - LV - Repair - Short,,$244.00,6.75%,$16.47,$260.47
+Wynnefield Properties,Sienna Heights,169-204,08/12/25 9:15 AM,SYS - REF - Repair - Leak - Easy,,$390.00,6.75%,$26.33,$416.33
+Wynnefield Properties,Sienna Heights,169-202,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$420.00,6.75%,$28.35,$448.35
+Wynnefield Properties,Sienna Heights,169-204,07/31/25 10:35 AM,SYS - REF - Repair - Leak - Recover,,$882.00,6.75%,$59.54,$941.54
+Wynnefield Properties,Sparta Springs,13-102,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Sparta Springs,13-202,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Sparta Springs,13-207,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Sparta Springs,13-306,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Sparta Springs,15-202,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Sparta Springs,15-204,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$205.00,7.00%,$14.35,$219.35
+Wynnefield Properties,Sparta Springs,15-204,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$165.00,7.00%,$11.55,$176.55
+Wynnefield Properties,Sparta Springs,15-206,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Sparta Springs,15-208,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Sparta Springs,15-208,07/15/25 9:08 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Sparta Springs,15-301,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$253.00,7.00%,$17.71,$270.71
+Wynnefield Properties,Sparta Springs,15-301,08/19/25 6:40 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Sparta Springs,15-305,05/21/25 5:43 AM,AHU - Cond Lines - Clear,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Sparta Springs,15-307,07/08/25 9:38 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Sparta Springs,15-308,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Sparta Springs,15-308,08/01/25 11:50 AM,AHU - Cond Lines - Clear,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Sparta Springs,15-306,06/03/25 8:16 AM,CU - Capacitor - Replace,,$176.45,7.00%,$12.35,$188.80
+Wynnefield Properties,Sparta Springs,15-301,08/27/25 7:24 AM,CU - Contactor - Replace,,$338.00,7.00%,$23.66,$361.66
+Wynnefield Properties,Sparta Springs,15-302,05/27/25 11:02 AM,CU - TXV - Replace,,$494.00,7.00%,$34.58,$528.58
+Wynnefield Properties,Sparta Springs,13-208,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Sparta Springs,15-108,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Sparta Springs,15-204,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$228.00,7.00%,$15.96,$243.96
+Wynnefield Properties,Sparta Springs,15-207,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$189.50,7.00%,$13.27,$202.77
+Wynnefield Properties,Sparta Springs,15-104,07/18/25 5:40 AM,SYS - LV - Repair - Short,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Sparta Springs,13-201,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$895.00,7.00%,$62.65,$957.65
+Wynnefield Properties,Sparta Springs,13-308,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$768.42,7.00%,$53.79,$822.21
+Wynnefield Properties,Sparta Springs,15-205,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$360.00,7.00%,$25.20,$385.20
+Wynnefield Properties,Sparta Springs,15-306,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$607.35,7.00%,$42.51,$649.86
+Wynnefield Properties,Sparta Springs,15-308,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,"$1,007.39",7.00%,$70.52,"$1,077.91"
+Wynnefield Properties,Sparta Springs,15-308,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$955.00,7.00%,$66.85,"$1,021.85"
+Wynnefield Properties,Sparta Springs,15-302,05/27/25 11:02 AM,SYS - REF - Repair - Leak - NLF,,$722.00,7.00%,$50.54,$772.54
+Wynnefield Properties,Sunset Place,2305,09/04/25 11:31 AM,AHU - Control Board - Replace,,$583.00,7.00%,$40.81,$623.81
+Wynnefield Properties,Sunset Place,722-202,07/28/25 2:21 PM,CU - Capacitor - Replace,,$232.52,7.00%,$16.28,$248.80
+Wynnefield Properties,Sunset Place,720-301,06/18/25 7:33 AM,AHU - Evap Coil - Replace,,"$1,743.12",7.00%,$122.02,"$1,865.14"
+Wynnefield Properties,Sunset Place,722-302,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$70.00,7.00%,$4.90,$74.90
+Wynnefield Properties,Sunset Place,722-206,05/27/25 11:02 AM,SYS - MIN - Reset Power - CU,,$80.00,7.00%,$5.60,$85.60
+Wynnefield Properties,Sunset Place,1102,08/01/25 2:25 PM,CU - Capacitor - Replace,,$248.00,7.00%,$17.36,$265.36
+Wynnefield Properties,Sunset Place,720-306,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,257.04",7.00%,$157.99,"$2,415.03"
+Wynnefield Properties,Sunset Place,722-305,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,133.40",7.00%,$149.34,"$2,282.74"
+Wynnefield Properties,Sunset Place,1307,08/14/25 12:42 PM,CU - Power - Cross Wired,,$272.00,7.00%,$19.04,$291.04
+Wynnefield Properties,Sunset Place,722-102,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Sunset Place,722-304,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$316.00,7.00%,$22.12,$338.12
+Wynnefield Properties,Sunset Place,720-308,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$859.00,7.00%,$60.13,$919.13
+Wynnefield Properties,Talbot Court,Kitchen Area,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$2,374.70",6.75%,$160.29,"$2,534.99"
+Wynnefield Properties,Talbot Court,1B,06/18/25 12:51 PM,AHU - Cond Lines - Clear,,$206.00,6.75%,$13.91,$219.91
+Wynnefield Properties,Talbot Court,1L,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,376.00",6.75%,$92.88,"$1,468.88"
+Wynnefield Properties,Talbot Court,1L,07/03/25 6:00 AM,CU - Compressor - Replace,,"$2,371.00",6.75%,$160.04,"$2,531.04"
+Wynnefield Properties,Talbot Court,4D,04/07/25 6:50 AM,CU - Compressor - Replace,,"$1,293.50",6.75%,$87.31,"$1,380.81"
+Wynnefield Properties,Talbot Court,3H,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$297.00,6.75%,$20.05,$317.05
+Wynnefield Properties,Talbot Court,1J,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Talbot Court,1J,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$162.00,6.75%,$10.94,$172.94
+Wynnefield Properties,Talbot Court,2D,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$171.00,6.75%,$11.54,$182.54
+Wynnefield Properties,Talbot Court,2E,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$307.15,6.75%,$20.73,$327.88
+Wynnefield Properties,Talbot Court,4P,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,6.75%,$9.45,$149.45
+Wynnefield Properties,Talbot Court,4L,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$342.50,6.75%,$23.12,$365.62
+Wynnefield Properties,Talbot Court,4L,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$195.00,6.75%,$13.16,$208.16
+Wynnefield Properties,The Village at Locust,214,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$2,372.00",7.00%,$166.04,"$2,538.04"
+Wynnefield Properties,The Village at Locust,Club,06/20/25 5:49 AM,AHU - Evap Coil - Replace,,"$1,622.20",7.00%,$113.55,"$1,735.75"
+Wynnefield Properties,The Village at Locust,214,06/20/25 5:49 AM,SYS - TOTAL - Change Out - Wall Mount,,"$5,082.00",7.00%,$355.74,"$5,437.74"
+Wynnefield Properties,The Village at Locust,324,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,211.52",7.00%,$294.81,"$4,506.33"
+Wynnefield Properties,The Village at Locust,215,08/18/25 9:04 AM,SYS - REF - Repair - Leak - Easy,,$357.00,7.00%,$24.99,$381.99
+Wynnefield Properties,The Village at Locust,Club house,05/21/25 7:19 AM,SYS - REF - Repair - Leak - NLF,,$261.00,7.00%,$18.27,$279.27
+Wynnefield Properties,Town Centre,A-209,08/15/25 7:36 AM,AHU - Evap Coil - Replace,,"$1,622.20",7.00%,$113.55,"$1,735.75"
+Wynnefield Properties,Town Centre,A 209,08/18/25 11:38 AM,CU - Compressor - Replace,,"$2,238.50",7.00%,$156.70,"$2,395.20"
+Wynnefield Properties,Town Centre,A-304,09/02/25 12:37 PM,,SYS - Ducts - Repair - Insulation,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Town Centre,A-209,09/02/25 11:07 AM,SYS - REF - Repair - Leak - Easy,,$357.00,7.00%,$24.99,$381.99
+Wynnefield Properties,Uwharrie Trail,107,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,485.50",7.00%,$103.99,"$1,589.49"
+Wynnefield Properties,Uwharrie Trail,208,05/20/25 12:39 PM,CU - Compressor - Replace,,"$1,293.50",7.00%,$90.55,"$1,384.05"
+Wynnefield Properties,Uwharrie Trail,216,05/22/25 6:03 AM,CU - Compressor - Replace,,"$1,293.50",7.00%,$90.55,"$1,384.05"
+Wynnefield Properties,Uwharrie Trail,302,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,485.50",7.00%,$103.99,"$1,589.49"
+Wynnefield Properties,Uwharrie Trail,2nd floor east wing,05/22/25 10:38 AM,CU - Compressor - Replace,,"$1,293.50",7.00%,$90.55,"$1,384.05"
+Wynnefield Properties,Villas at Forest Park,207,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$180.00,7.00%,$12.60,$192.60
+Wynnefield Properties,Villas at Forest Park,207,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Villas at Forest Park,220,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Villas at Forest Park,222,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Villas at Forest Park,222,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Villas at Forest Park,310,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$180.00,7.00%,$12.60,$192.60
+Wynnefield Properties,Villas at Forest Park,213,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,722.00",7.00%,$330.54,"$5,052.54"
+Wynnefield Properties,Villas at Forest Park,311,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,722.00",7.00%,$330.54,"$5,052.54"
+Wynnefield Properties,Villas at Forest Park,313,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,648.00",7.00%,$325.36,"$4,973.36"
+Wynnefield Properties,Villas at Forest Park,114,05/27/25 11:02 AM,CU - Capacitor - Replace,,$185.30,7.00%,$12.97,$198.27
+Wynnefield Properties,Villas at Forest Park,204,05/27/25 11:02 AM,CU - Capacitor - Replace,,$272.45,7.00%,$19.07,$291.52
+Wynnefield Properties,Villas at Forest Park,118,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$388.87,7.00%,$27.22,$416.09
+Wynnefield Properties,Villas at Forest Park,213,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$236.30,7.00%,$16.54,$252.84
+Wynnefield Properties,Villas at Forest Park,213,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$269.45,7.00%,$18.86,$288.31
+Wynnefield Properties,Villas at Forest Park,118,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$339.16,7.00%,$23.74,$362.90
+Wynnefield Properties,Villas at Forest Park,118,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Villas at Forest Park,203,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$110.00,7.00%,$7.70,$117.70
+Wynnefield Properties,Villas at Forest Park,207,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Villas at Forest Park,311,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$336.00,7.00%,$23.52,$359.52
+Wynnefield Properties,Villas at Forest Park,311,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Villas at Forest Park,313,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$268.00,7.00%,$18.76,$286.76
+Wynnefield Properties,Villas at Forest Park,315,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$296.25,7.00%,$20.74,$316.99
+Wynnefield Properties,Villas at Hope Crest,212,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Villas at Hope Crest,214,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Villas at Hope Crest,305,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Villas at Hope Crest,216,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,016.38",7.00%,$71.15,"$1,087.53"
+Wynnefield Properties,Villas at Hope Crest,319,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,"$1,150.00",7.00%,$80.50,"$1,230.50"
+Wynnefield Properties,Villas at Hope Crest,208,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,133.40",7.00%,$149.34,"$2,282.74"
+Wynnefield Properties,Villas at Hope Crest,315,05/27/25 11:02 AM,CU - Rev Valve - Replace,,$195.00,7.00%,$13.65,$208.65
+Wynnefield Properties,Villas at Hope Crest,210,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$70.00,7.00%,$4.90,$74.90
+Wynnefield Properties,Villas at Hope Crest,211,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$305.00,7.00%,$21.35,$326.35
+Wynnefield Properties,Villas at Hope Crest,303,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$189.00,7.00%,$13.23,$202.23
+Wynnefield Properties,Villas at Hope Crest,303,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Villas at Hope Crest,Whole building,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$580.00,7.00%,$40.60,$620.60
+Wynnefield Properties,Villas at Hope Crest,115,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$303.50,7.00%,$21.25,$324.75
+Wynnefield Properties,Welsummer Yards,225-300,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,325.00",6.75%,$89.44,"$1,414.44"
+Wynnefield Properties,Welsummer Yards,82-201,05/27/25 11:02 AM,CU - Compressor - Replace,,"$1,787.50",6.75%,$120.66,"$1,908.16"
+Wynnefield Properties,Welsummer Yards,82-102,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,"$1,406.00",6.75%,$94.91,"$1,500.91"
+Wynnefield Properties,West Cumberland,2341-101,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$280.00,6.75%,$18.90,$298.90
+Wynnefield Properties,West Cumberland,2341-107,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$280.00,6.75%,$18.90,$298.90
+Wynnefield Properties,Westridge Place,270-102,08/08/25 1:31 PM,AHU - Control Board - Replace,,$346.00,7.00%,$24.22,$370.22
+Wynnefield Properties,Westridge Place,270-101,07/16/25 1:57 PM,SYS - MIN - Reser Power - AHU,,$107.00,7.00%,$7.49,$114.49
+Wynnefield Properties,Westridge Place,120-101,08/14/25 2:35 PM,AHU - Cond Lines - Clear,,$349.00,7.00%,$24.43,$373.43
+Wynnefield Properties,Westridge Place,163-103,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Westridge Place,163-103,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Westridge Place,163-103,06/12/25 11:59 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Westridge Place,163-103,07/16/25 3:32 PM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Westridge Place,163-202,07/16/25 3:18 PM,AHU - Cond Lines - Clear,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Westridge Place,163-204,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Westridge Place,163-204,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,7.00%,$9.03,$138.03
+Wynnefield Properties,Westridge Place,250-101,06/02/25 6:22 PM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Westridge Place,163-102,09/04/25 5:05 PM,AHU - Cond Lines - Clear,,$197.00,7.00%,$13.79,$210.79
+Wynnefield Properties,Westridge Place,290-104,09/04/25 5:07 PM,AHU - Cond Lines - Clear,,$175.00,7.00%,$12.25,$187.25
+Wynnefield Properties,Westridge Place,163-104,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,630.00",7.00%,$324.10,"$4,954.10"
+Wynnefield Properties,Westridge Place,210-101,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,639.00",7.00%,$324.73,"$4,963.73"
+Wynnefield Properties,Westridge Place,233-104,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,716.00",7.00%,$330.12,"$5,046.12"
+Wynnefield Properties,Westridge Place,290-103,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,606.00",7.00%,$322.42,"$4,928.42"
+Wynnefield Properties,Westridge Place,233-105,05/27/25 11:02 AM,CU - Capacitor - Replace,,$191.95,7.00%,$13.44,$205.39
+Wynnefield Properties,Westridge Place,250-203,05/27/25 11:02 AM,CU - Capacitor - Replace,,$220.02,7.00%,$15.40,$235.42
+Wynnefield Properties,Westridge Place,250-204,05/27/25 11:02 AM,CU - Capacitor - Replace,,$220.02,7.00%,$15.40,$235.42
+Wynnefield Properties,Westridge Place,290-201,05/27/25 11:02 AM,CU - Capacitor - Replace,,$411.72,7.00%,$28.82,$440.54
+Wynnefield Properties,Westridge Place,210-204,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$308.00,7.00%,$21.56,$329.56
+Wynnefield Properties,Westridge Place,270-203,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$286.00,7.00%,$20.02,$306.02
+Wynnefield Properties,Westridge Place,270-203,07/25/25 9:23 AM,SYS - Ducts - Reset - Fire Damper,,$329.00,7.00%,$23.03,$352.03
+Wynnefield Properties,Westridge Place,713,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$336.50,7.00%,$23.56,$360.06
+Wynnefield Properties,Westridge Place,163-204,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$309.00,7.00%,$21.63,$330.63
+Wynnefield Properties,Westridge Place,270-101,07/18/25 1:51 PM,SYS - LV - Repair - Thermostat,,$215.35,7.00%,$15.07,$230.42
+Wynnefield Properties,Westridge Place,120-102,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$171.00,7.00%,$11.97,$182.97
+Wynnefield Properties,Westridge Place,120-203,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$154.00,7.00%,$10.78,$164.78
+Wynnefield Properties,Westridge Place,120-203,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$110.00,7.00%,$7.70,$117.70
+Wynnefield Properties,Westridge Place,210-203,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$70.00,7.00%,$4.90,$74.90
+Wynnefield Properties,Westridge Place,250-201,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Westridge Place,270-101,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Westridge Place,290-202,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$282.00,7.00%,$19.74,$301.74
+Wynnefield Properties,Westridge Place,270-102,07/16/25 2:25 PM,SYS - REF - Repair - Leak - NLF,,$245.00,7.00%,$17.15,$262.15
+Wynnefield Properties,Westridge Place,290-202,06/25/25 12:37 PM,SYS - REF - Repair - Leak - NLF,,$245.00,7.00%,$17.15,$262.15
+Wynnefield Properties,Westridge Village,233-102,05/27/25 11:02 AM,AHU - Control Board - Replace,,$583.00,7.00%,$40.81,$623.81
+Wynnefield Properties,Westridge Village,623,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,730.00",7.00%,$121.10,"$1,851.10"
+Wynnefield Properties,Westridge Village,813,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,667.20",7.00%,$116.70,"$1,783.90"
+Wynnefield Properties,Westridge Village,621,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Westridge Village,811,05/27/25 11:02 AM,AHU - Motor - Replace - Transverse,,$659.00,7.00%,$46.13,$705.13
+Wynnefield Properties,Westridge Village,311,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,399.70",7.00%,$307.98,"$4,707.68"
+Wynnefield Properties,Westridge Village,324,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,869.70",7.00%,$340.88,"$5,210.58"
+Wynnefield Properties,Westridge Village,622,08/11/25 6:30 AM,CU - Motor - Replace,,$430.00,7.00%,$30.10,$460.10
+Wynnefield Properties,Westridge Village,711,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$330.00,7.00%,$23.10,$353.10
+Wynnefield Properties,Westridge Village,422,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$70.00,7.00%,$4.90,$74.90
+Wynnefield Properties,Westridge Village,614,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$371.00,7.00%,$25.97,$396.97
+Wynnefield Properties,Westridge Village,412,05/10/25 9:43 AM,SYS - LV - Repair - Short,,$85.00,7.00%,$5.95,$90.95
+Wynnefield Properties,Windridge,115,07/09/25 10:58 AM,AHU - Evap Coil - Replace,,"$1,631.20",6.75%,$110.11,"$1,741.31"
+Wynnefield Properties,Windridge,116,08/13/25 7:59 AM,AHU - Evap Coil - Replace,,"$1,622.20",6.75%,$109.50,"$1,731.70"
+Wynnefield Properties,Windridge,218,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,730.00",6.75%,$116.78,"$1,846.78"
+Wynnefield Properties,Windridge,312,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,701.96",6.75%,$114.88,"$1,816.84"
+Wynnefield Properties,Windridge,331,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,649.62",6.75%,$111.35,"$1,760.97"
+Wynnefield Properties,Windridge,114,07/07/25 11:00 AM,AHU - Cond Lines - Clear,,$206.00,6.75%,$13.91,$219.91
+Wynnefield Properties,Windridge,126,08/13/25 8:00 AM,AHU - Cond Lines - Clear,,$151.00,6.75%,$10.19,$161.19
+Wynnefield Properties,Windridge,234,05/27/25 11:02 AM,AHU - Cond Lines - Clear,,$129.00,6.75%,$8.71,$137.71
+Wynnefield Properties,Windridge,331,05/19/25 1:52 PM,AHU - Cond Lines - Clear,,$151.00,6.75%,$10.19,$161.19
+Wynnefield Properties,Windridge,237,05/27/25 11:02 AM,SYS - TOTAL - Change Out - Wall Mount,,"$4,770.80",6.75%,$322.03,"$5,092.83"
+Wynnefield Properties,Windridge,Clubhouse,05/09/25 10:43 AM,SYS - TOTAL - Change Out - Wall Mount,,"$7,301.74",6.75%,$492.87,"$7,794.61"
+Wynnefield Properties,Windridge,116,05/27/25 11:02 AM,SYS - MIN - Reset Power - CU,,$80.00,6.75%,$5.40,$85.40
+Wynnefield Properties,Windridge,113,05/27/25 11:02 AM,CU - Capacitor - Replace,,$220.45,6.75%,$14.88,$235.33
+Wynnefield Properties,Windridge,302,05/27/25 11:02 AM,SYS - Ducts - Reset - Fire Damper,,$79.00,6.75%,$5.33,$84.33
+Wynnefield Properties,Windridge,214,05/27/25 11:02 AM,SYS - LV - Repair - Thermostat,,$267.00,6.75%,$18.02,$285.02
+Wynnefield Properties,Windridge,218,09/04/25 11:25 AM,SYS - LV - Repair - Thermostat,,$215.35,6.75%,$14.54,$229.89
+Wynnefield Properties,Windridge,Clubhouse,05/27/25 11:02 AM,SYS - LV - Repair - Short,,$226.00,6.75%,$15.26,$241.26
+Wynnefield Properties,Windridge,117,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$338.50,6.75%,$22.85,$361.35
+Wynnefield Properties,Windridge,115,07/28/25 4:43 AM,SYS - REF - Repair - Leak - Recover,,$977.00,6.75%,$65.95,"$1,042.95"
+Wynnefield Properties,Windridge,117,09/04/25 11:26 AM,SYS - REF - Repair - Leak - Recover,,$882.00,6.75%,$59.54,$941.54
+Wynnefield Properties,Windridge,125,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,"$1,339.50",6.75%,$90.42,"$1,429.92"
+Wynnefield Properties,Windridge,323,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$869.50,6.75%,$58.69,$928.19
+Wynnefield Properties,Windridge,114,07/15/25 10:13 AM,SYS - REF - Repair - Leak - NLF,,$245.00,6.75%,$16.54,$261.54
+Wynnefield Properties,Woodland Bluff,119-303,05/27/25 11:02 AM,AHU - Evap Coil - Replace,,"$1,712.20",7.00%,$119.85,"$1,832.05"
+Wynnefield Properties,Woodland Bluff,119-200,07/22/25 6:25 AM,AHU - Cond Lines - Clear,,$140.00,7.00%,$9.80,$149.80
+Wynnefield Properties,Woodland Bluff,119-300,07/15/25 11:53 AM,AHU - Cond Lines - Clear,,$173.00,7.00%,$12.11,$185.11
+Wynnefield Properties,Woodland Bluff,119-304,07/22/25 6:25 AM,AHU - Cond Lines - Clear,,$151.00,7.00%,$10.57,$161.57
+Wynnefield Properties,Woodland Bluff,131-200,06/24/25 7:09 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Woodland Bluff,131-307,06/19/25 6:25 AM,AHU - Cond Lines - Clear,,$206.00,7.00%,$14.42,$220.42
+Wynnefield Properties,Woodland Bluff,119-206,05/27/25 11:02 AM,CU - Compressor - Replace,,"$2,229.40",7.00%,$156.06,"$2,385.46"
+Wynnefield Properties,Woodland Bluff,131-207,05/27/25 11:02 AM,CU - Compressor - Replace,,$339.57,7.00%,$23.77,$363.34
+Wynnefield Properties,Woodland Bluff,119-100,05/20/25 5:29 AM,CU - Contactor - Replace,,$316.00,7.00%,$22.12,$338.12
+Wynnefield Properties,Woodland Bluff,100,05/27/25 11:02 AM,CU - TXV - Replace,,"$1,081.00",7.00%,$75.67,"$1,156.67"
+Wynnefield Properties,Woodland Bluff,200,05/27/25 11:02 AM,CU - TXV - Replace,,"$1,081.00",7.00%,$75.67,"$1,156.67"
+Wynnefield Properties,Woodland Bluff,131-307,08/28/25 10:24 AM,SYS - LV - Repair - Short,,$211.00,7.00%,$14.77,$225.77
+Wynnefield Properties,Woodland Bluff,119-303,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$0.00,7.00%,$0.00,$0.00
+Wynnefield Properties,Woodland Bluff,119-307,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Easy,,$252.00,7.00%,$17.64,$269.64
+Wynnefield Properties,Woodland Bluff,300,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$400.00,7.00%,$28.00,$428.00
+Wynnefield Properties,Woodland Bluff,119-307,05/27/25 11:02 AM,SYS - REF - Repair - Leak - Recover,,$663.50,7.00%,$46.45,$709.95

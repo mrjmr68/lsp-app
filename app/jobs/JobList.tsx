@@ -49,6 +49,7 @@ interface Location {
 interface Props {
   myJobs: ListJob[]
   doneJobs: ListJob[]
+  recentClosedJobs: ListJob[]
   unassignedJobs: UnassignedJob[]
   techs: Tech[]
   customers: Customer[]
@@ -125,6 +126,7 @@ function JobCard({ job, done, onClick }: { job: ListJob; done?: boolean; onClick
     en_route: { bg: '#e6f1fb', fg: '#185fa5', label: 'en route' },
     completed: { bg: '#f1efe8', fg: '#5f5e5a', label: 'done' },
     closed_no_diagnosis: { bg: '#eeedfe', fg: '#3c3489', label: 'no dx' },
+    invoiced: { bg: '#e8f5ec', fg: '#25613a', label: 'invoiced' },
     new: { bg: '#f1efe8', fg: '#5f5e5a', label: 'new' },
   }
   const sc = statusColors[job.status] ?? statusColors.new
@@ -378,6 +380,7 @@ const buttonStyle: React.CSSProperties = {
 export default function JobList({
   myJobs,
   doneJobs,
+  recentClosedJobs,
   unassignedJobs,
   techs,
   customers,
@@ -447,6 +450,19 @@ export default function JobList({
         </div>
       )}
 
+      {recentClosedJobs.length > 0 && (
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>
+            Recent closed ({recentClosedJobs.length})
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            {recentClosedJobs.map(j => (
+              <JobCard key={j.id} job={j} done onClick={() => router.push(`/jobs/${j.id}`)} />
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Active job */}
       {activeJob && (
         <div style={{ marginBottom: '16px' }}>
@@ -471,7 +487,7 @@ export default function JobList({
         </div>
       )}
 
-      {myJobs.length === 0 && doneJobs.length === 0 && (
+      {myJobs.length === 0 && doneJobs.length === 0 && recentClosedJobs.length === 0 && (
         <div style={{ fontSize: '13px', color: '#888780', padding: '20px 0' }}>
           No jobs assigned for today.
         </div>

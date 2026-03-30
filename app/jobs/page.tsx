@@ -12,6 +12,14 @@ export default async function JobsPage() {
 
   const today = new Date().toISOString().split('T')[0]
 
+  const { data: profile } = await supabase
+    .from('users')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  const canViewAllClosedJobs = ['owner', 'admin', 'dispatcher'].includes(profile?.role ?? '')
+
   const { data: insertedProfiles } = await supabase
     .rpc('backfill_missing_user_profiles')
 
@@ -62,6 +70,27 @@ export default async function JobsPage() {
   const { data: techs } = await supabase
     .rpc('list_assignable_users')
 
+  let recentClosedJobsQuery = supabase
+    .from('jobs')
+    .select(`
+      id, status, priority, manual_unit, problem_description,
+      job_date, completed_at,
+      customers!jobs_customer_id_fkey(name),
+      locations!jobs_location_id_fkey(name),
+      diagnoses!jobs_diagnosis_id_fkey(repair_code)
+    `)
+    .in('status', ['completed', 'closed_no_diagnosis', 'invoiced'])
+    .neq('job_date', today)
+    .order('completed_at', { ascending: false, nullsFirst: false })
+    .order('job_date', { ascending: false })
+    .limit(30)
+
+  if (!canViewAllClosedJobs) {
+    recentClosedJobsQuery = recentClosedJobsQuery.eq('assigned_tech', user.id)
+  }
+
+  const { data: recentClosedJobs } = await recentClosedJobsQuery
+
   const { data: customers } = await supabase
     .from('customers')
     .select('id, name, type')
@@ -77,6 +106,7 @@ export default async function JobsPage() {
       <JobList
         myJobs={(myJobs ?? []) as any}
         doneJobs={(doneJobs ?? []) as any}
+        recentClosedJobs={(recentClosedJobs ?? []) as any}
         unassignedJobs={(unassignedJobs ?? []) as any}
         techs={(techs ?? []) as any}
         customers={(customers ?? []) as any}

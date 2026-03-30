@@ -3,6 +3,7 @@ import { redirect, notFound } from 'next/navigation'
 import AppShell from '@/app/components/AppShell'
 import JobFlow from './JobFlow'
 import { CatalogItem, DiagnosisItem, HistoryJob, Job, JobAddOn, JobCrewMember, JobMessage, JobWorkflow, RepairBundle } from './types'
+import { firstRelation } from '@/utils/supabase/relations'
 
 export default async function JobPage({
   params,
@@ -28,7 +29,7 @@ export default async function JobPage({
       priority, workflow_type, manual_unit, problem_description,
       access_confirmation_needed, access_confirmed,
       assigned_tech, actual_tech, job_date, arrived_at, completed_at,
-      tstat_mode, tstat_fan,
+      tstat_mode, tstat_fan, system_response,
       temp_outdoor, temp_outdoor_auto, temp_return, temp_supply,
       arrival_notes, diagnosis_id, needs_admin_review, new_diagnosis_requested,
       customer_id, location_id, unit_id, system_id,
@@ -52,7 +53,7 @@ export default async function JobPage({
   }
   if (!job) return notFound()
 
-  const primarySystem = Array.isArray(job.systems) ? job.systems[0] ?? null : job.systems
+  const primarySystem = firstRelation(job.systems)
 
   const systemComponentsPromise =
     job.unit_id && primarySystem?.group_name
@@ -256,11 +257,35 @@ export default async function JobPage({
   const viewerRole = (profile?.role ?? null) as 'tech' | 'dispatcher' | 'admin' | 'owner' | null
   const jobData = {
     ...job,
+    customers: firstRelation(job.customers),
+    locations: firstRelation(job.locations),
+    units: firstRelation(job.units),
     systems: primarySystem,
+    diagnoses: firstRelation(job.diagnoses),
     system_components: systemComponents ?? [],
     observation_circuits: observationCircuits ?? [],
     adhoc_bundle: adhocBundle ?? null,
   } as Job
+  const historyJobs = (serviceHistory ?? []).map(historyJob => ({
+    ...historyJob,
+    diagnoses: firstRelation(historyJob.diagnoses),
+  })) as HistoryJob[]
+  const normalizedRepairBundles = (repairBundles ?? []).map(bundle => ({
+    ...bundle,
+    repair_bundle_lines: (bundle.repair_bundle_lines ?? []).map(line => ({
+      ...line,
+      items: firstRelation(line.items),
+    })),
+  })) as RepairBundle[]
+  const normalizedAddOns = (existingAddOns ?? []).map(addOn => ({
+    ...addOn,
+    repair_bundles: firstRelation(addOn.repair_bundles),
+    items: firstRelation(addOn.items),
+  })) as JobAddOn[]
+  const normalizedMessages = (jobMessages ?? []).map(message => ({
+    ...message,
+    users: firstRelation(message.users) ?? { first_name: '', last_name: '' },
+  })) as JobMessage[]
 
   return (
     <AppShell>
@@ -268,13 +293,13 @@ export default async function JobPage({
         viewerRole={viewerRole}
         currentUserId={user.id}
         job={jobData}
-        serviceHistory={(serviceHistory ?? []) as HistoryJob[]}
+        serviceHistory={historyJobs}
         diagnoses={(diagnoses ?? []) as DiagnosisItem[]}
-        repairBundles={(repairBundles ?? []) as RepairBundle[]}
+        repairBundles={normalizedRepairBundles}
         catalogItems={(catalogItems ?? []) as CatalogItem[]}
-        existingAddOns={(existingAddOns ?? []) as JobAddOn[]}
+        existingAddOns={normalizedAddOns}
         workflow={(workflow ?? null) as JobWorkflow | null}
-        jobMessages={(jobMessages ?? []) as JobMessage[]}
+        jobMessages={normalizedMessages}
         crewMembers={crewMembers as JobCrewMember[]}
       />
     </AppShell>

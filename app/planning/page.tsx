@@ -4,6 +4,7 @@ import AppShell from '@/app/components/AppShell'
 import PlanningBoard, { Customer, Job, Location, PlanningCrewMember, Tech } from './PlanningBoard'
 import { addJob } from './actions'
 import { DAILY_OPERATIONS_HIDDEN_COMMERCIAL_STATES_FILTER } from '@/utils/job-lifecycle'
+import { firstRelation } from '@/utils/supabase/relations'
 
 type JobCrewRow = {
   job_id: string
@@ -87,7 +88,8 @@ export default async function PlanningPage() {
     console.error('Planning crew query error:', jobCrewError.message, jobCrewError.details, jobCrewError.hint)
   }
 
-  const techById = new Map((techs ?? []).map(tech => [tech.id, tech]))
+  const assignableTechs = (techs ?? []) as Tech[]
+  const techById = new Map(assignableTechs.map(tech => [tech.id, tech]))
   const crewByJobId = new Map<string, PlanningCrewMember[]>()
 
   for (const row of ((jobCrewRows ?? []) as JobCrewRow[])) {
@@ -107,8 +109,11 @@ export default async function PlanningPage() {
 
   const planningJobs = (jobs ?? []).map(job => ({
     ...job,
+    locations: firstRelation(job.locations),
+    customers: firstRelation(job.customers),
+    diagnoses: firstRelation(job.diagnoses),
     crew_members: crewByJobId.get(job.id) ?? [],
-  }))
+  })) as Job[]
 
   // Customers — exclude parent-only accounts from job creation
   // (bill_to_parent children are fine; pure parents with no location work are excluded)
@@ -122,15 +127,17 @@ export default async function PlanningPage() {
     .from('locations')
     .select('id, name, customer_id')
     .order('name')
+  const availableCustomers = (customers ?? []) as Customer[]
+  const availableLocations = (locations ?? []) as Location[]
 
   return (
     <AppShell>
       <PlanningBoard
-        jobs={planningJobs as Job[]}
-        techs={(techs ?? []) as Tech[]}
+        jobs={planningJobs}
+        techs={assignableTechs}
         techsDiagnostic={techsDiagnostic}
-        customers={(customers ?? []) as Customer[]}
-        locations={(locations ?? []) as Location[]}
+        customers={availableCustomers}
+        locations={availableLocations}
         today={today}
         addJobAction={addJob}
       />

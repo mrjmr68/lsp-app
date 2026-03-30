@@ -4,6 +4,7 @@ import AppShell from '@/app/components/AppShell'
 import JobList, { Customer, ListJob, Location, Tech, UnassignedJob } from './JobList'
 import { addJob } from '@/app/planning/actions'
 import { DAILY_OPERATIONS_HIDDEN_COMMERCIAL_STATES_FILTER } from '@/utils/job-lifecycle'
+import { firstRelation } from '@/utils/supabase/relations'
 
 export default async function JobsPage() {
   const supabase = await createClient()
@@ -51,7 +52,8 @@ export default async function JobsPage() {
     .from('jobs')
     .select(`
       id, status, job_status, resolution_type, commercial_state,
-      priority, manual_unit,
+      priority, manual_unit, problem_description,
+      queue_position, arrived_at, access_confirmation_needed,
       customers!jobs_customer_id_fkey(name),
       locations!jobs_location_id_fkey(name),
       diagnoses!jobs_diagnosis_id_fkey(repair_code)
@@ -83,6 +85,7 @@ export default async function JobsPage() {
     .select(`
       id, status, job_status, resolution_type, commercial_state,
       priority, manual_unit, problem_description,
+      queue_position, arrived_at, access_confirmation_needed,
       job_date, completed_at,
       customers!jobs_customer_id_fkey(name),
       locations!jobs_location_id_fkey(name),
@@ -109,17 +112,43 @@ export default async function JobsPage() {
     .from('locations')
     .select('id, name, customer_id')
     .order('name')
+  const normalizedMyJobs = (myJobs ?? []).map(job => ({
+    ...job,
+    customers: firstRelation(job.customers),
+    locations: firstRelation(job.locations),
+    diagnoses: firstRelation(job.diagnoses),
+  })) as ListJob[]
+  const normalizedDoneJobs = (doneJobs ?? []).map(job => ({
+    ...job,
+    customers: firstRelation(job.customers),
+    locations: firstRelation(job.locations),
+    diagnoses: firstRelation(job.diagnoses),
+  })) as ListJob[]
+  const normalizedRecentClosedJobs = (recentClosedJobs ?? []).map(job => ({
+    ...job,
+    customers: firstRelation(job.customers),
+    locations: firstRelation(job.locations),
+    diagnoses: firstRelation(job.diagnoses),
+  })) as ListJob[]
+  const normalizedUnassignedJobs = (unassignedJobs ?? []).map(job => ({
+    ...job,
+    customers: firstRelation(job.customers),
+    locations: firstRelation(job.locations),
+  })) as UnassignedJob[]
+  const assignableTechs = (techs ?? []) as Tech[]
+  const availableCustomers = (customers ?? []) as Customer[]
+  const availableLocations = (locations ?? []) as Location[]
 
   return (
     <AppShell>
       <JobList
-        myJobs={(myJobs ?? []) as ListJob[]}
-        doneJobs={(doneJobs ?? []) as ListJob[]}
-        recentClosedJobs={(recentClosedJobs ?? []) as ListJob[]}
-        unassignedJobs={(unassignedJobs ?? []) as UnassignedJob[]}
-        techs={(techs ?? []) as Tech[]}
-        customers={(customers ?? []) as Customer[]}
-        locations={(locations ?? []) as Location[]}
+        myJobs={normalizedMyJobs}
+        doneJobs={normalizedDoneJobs}
+        recentClosedJobs={normalizedRecentClosedJobs}
+        unassignedJobs={normalizedUnassignedJobs}
+        techs={assignableTechs}
+        customers={availableCustomers}
+        locations={availableLocations}
         userId={user.id}
         addJobAction={addJob}
       />

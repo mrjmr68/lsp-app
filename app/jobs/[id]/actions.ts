@@ -4,6 +4,9 @@ import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { inferManufactureDate } from '@/utils/hvac/systems'
 import { buildWorkflowSeedItems, JobWorkflowPhase, JobWorkflowType, QuickActionKey } from '@/utils/job-workflows'
+import { JobCommercialState, JobResolutionType, JobStatus, getLegacyStatusFromLifecycle, getResolutionTypeForWorkflow } from '@/utils/job-lifecycle'
+import { getNextRelayCycle, getNextRelayStepKeys, RELAY_STEP_BY_KEY } from './types'
+import type { JobMessage, JobRelayActor, JobRelayKind, JobRelayStepKey } from './types'
 
 function cleanNullableText(value: string | null | undefined) {
   const trimmed = value?.trim()
@@ -92,6 +95,7 @@ type JobAdhocLineInput = {
 }
 
 type SharedWorkflowStatus = 'prep' | 'on_site' | 'closeout' | 'complete'
+type CloseoutPath = 'invoice' | 'estimate'
 
 async function getJobWorkspaceContext(jobId: string) {
   const supabase = await createClient()
@@ -200,18 +204,30 @@ async function insertWorkflowMessage(
   supabase: Awaited<ReturnType<typeof createClient>>,
   jobId: string,
   userId: string,
-  messageType: 'text' | 'quick_action' | 'system',
-  body: string,
-  quickActionKey?: string | null,
+  message: {
+    messageType: JobMessage['message_type']
+    body: string
+    quickActionKey?: string | null
+    relayStepKey?: JobRelayStepKey | null
+    relaySequence?: number | null
+    relayActor?: JobRelayActor | null
+    relayKind?: JobRelayKind | null
+    relayCycle?: number | null
+  },
 ) {
   const { error } = await supabase
     .from('job_messages')
     .insert({
       job_id: jobId,
       user_id: userId,
-      message_type: messageType,
-      body,
-      quick_action_key: quickActionKey ?? null,
+      message_type: message.messageType,
+      body: message.body,
+      quick_action_key: message.quickActionKey ?? null,
+      relay_step_key: message.relayStepKey ?? null,
+      relay_sequence: message.relaySequence ?? null,
+      relay_actor: message.relayActor ?? null,
+      relay_kind: message.relayKind ?? null,
+      relay_cycle: message.relayCycle ?? null,
     })
 
   return error?.message ?? null
@@ -235,14 +251,19 @@ export async function markArrived(
   // Idempotent — only record arrival once
   const { data: existing } = await supabase
     .from('jobs')
-    .select('arrived_at')
+    .select('arrived_at, job_status, commercial_state, resolution_type')
     .eq('id', jobId)
     .single()
 
   if (!existing?.arrived_at) {
+    const jobStatus: JobStatus = existing?.job_status === 'follow_up_scheduled' ? 'follow_up_active' : 'on_site'
     const { error } = await supabase
       .from('jobs')
-      .update({ status: 'in_progress', arrived_at: new Date().toISOString() })
+      .update({
+        job_status: jobStatus,
+        status: getLegacyStatusFromLifecycle(jobStatus, existing?.commercial_state ?? 'none', existing?.resolution_type ?? null),
+        arrived_at: new Date().toISOString(),
+      })
       .eq('id', jobId)
     if (error) return { error: error.message }
 
@@ -925,7 +946,10 @@ export async function startJobWorkflow(jobId: string, workflowType: JobWorkflowT
 
   const { error: jobUpdateError } = await context.supabase
     .from('jobs')
-    .update({ workflow_type: workflowType })
+    .update({
+      workflow_type: workflowType,
+      resolution_type: getResolutionTypeForWorkflow(workflowType),
+    })
     .eq('id', jobId)
 
   if (jobUpdateError) return { error: jobUpdateError.message }
@@ -937,8 +961,10 @@ export async function startJobWorkflow(jobId: string, workflowType: JobWorkflowT
     context.supabase,
     jobId,
     context.user.id,
-    'system',
-    workflowType === 'install' ? 'Shared install workflow started.' : 'Shared major repair workflow started.',
+    {
+      messageType: 'system',
+      body: workflowType === 'install' ? 'Shared install workflow started.' : 'Shared major repair workflow started.',
+    },
   )
 
   if (messageError) return { error: messageError }
@@ -986,8 +1012,10 @@ export async function updateJobWorkflowStatus(jobId: string, status: SharedWorkf
     context.supabase,
     jobId,
     context.user.id,
-    'system',
-    statusLabel[status],
+    {
+      messageType: 'system',
+      body: statusLabel[status],
+    },
   )
 
   if (messageError) return { error: messageError }
@@ -1126,8 +1154,10 @@ export async function addJobMessage(jobId: string, body: string) {
     context.supabase,
     jobId,
     context.user.id,
-    'text',
-    trimmedBody,
+    {
+      messageType: 'text',
+      body: trimmedBody,
+    },
   )
 
   if (messageError) return { error: messageError }
@@ -1147,9 +1177,11 @@ export async function addJobQuickAction(jobId: string, quickActionKey: string, l
     context.supabase,
     jobId,
     context.user.id,
-    'quick_action',
-    trimmedLabel,
-    quickActionKey,
+    {
+      messageType: 'quick_action',
+      body: trimmedLabel,
+      quickActionKey,
+    },
   )
 
   if (messageError) return { error: messageError }
@@ -1179,10 +1211,60 @@ export async function addJobQuickAction(jobId: string, quickActionKey: string, l
   return { success: true }
 }
 
+export async function addJobRelayEvent(jobId: string, relayStepKey: JobRelayStepKey) {
+  const context = await getJobWorkspaceContext(jobId)
+  if (context.error || !context.user) return { error: context.error ?? 'Not authenticated' }
+
+  const relayStep = RELAY_STEP_BY_KEY[relayStepKey]
+  if (!relayStep) return { error: 'Relay action is not recognized.' }
+
+  const { data: latestRelay, error: latestRelayError } = await context.supabase
+    .from('job_messages')
+    .select('relay_step_key, relay_cycle, created_at')
+    .eq('job_id', jobId)
+    .eq('message_type', 'relay')
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (latestRelayError) return { error: latestRelayError.message }
+
+  const expectedStepKeys = getNextRelayStepKeys((latestRelay?.relay_step_key as JobRelayStepKey | null | undefined) ?? null)
+  if (!expectedStepKeys.includes(relayStepKey)) {
+    return { error: 'That relay tap is out of order for the current execution state.' }
+  }
+
+  const relayCycle = getNextRelayCycle(
+    (latestRelay?.relay_step_key as JobRelayStepKey | null | undefined) ?? null,
+    latestRelay?.relay_cycle ?? null,
+  )
+
+  const messageError = await insertWorkflowMessage(
+    context.supabase,
+    jobId,
+    context.user.id,
+    {
+      messageType: 'relay',
+      body: relayStep.label,
+      relayStepKey: relayStep.key,
+      relaySequence: relayStep.sequence,
+      relayActor: relayStep.actor,
+      relayKind: relayStep.kind,
+      relayCycle,
+    },
+  )
+
+  if (messageError) return { error: messageError }
+
+  revalidateJobWorkspace(jobId)
+  return { success: true }
+}
+
 export async function closeJob(
   jobId: string,
   lat: number | null,
   lng: number | null,
+  completionPath: CloseoutPath = 'invoice',
 ) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -1190,7 +1272,7 @@ export async function closeJob(
 
   const { data: job, error: jobError } = await supabase
     .from('jobs')
-    .select('id, diagnosis_id')
+    .select('id, diagnosis_id, workflow_type')
     .eq('id', jobId)
     .single()
 
@@ -1227,18 +1309,52 @@ export async function closeJob(
 
   const hasDiagnosis = !!job.diagnosis_id
   const hasAdhocBundle = (adhocBundleCount ?? 0) > 0
+  let resolutionType: JobResolutionType | null = getResolutionTypeForWorkflow(job.workflow_type)
 
   if (!workflow?.id && !hasDiagnosis && !hasAdhocBundle) {
     return { error: 'Complete the job with a diagnosis or save an ad-hoc repair before closing it out.' }
   }
 
+  if (completionPath === 'estimate' && workflow?.id) {
+    return { error: 'Shared workflow jobs still close to invoice review for now.' }
+  }
+
+  if (completionPath === 'estimate' && !hasDiagnosis) {
+    return { error: 'Choose a diagnosis before routing this job to estimate review.' }
+  }
+
+  if (!resolutionType) {
+    if (hasAdhocBundle) {
+      resolutionType = 'adhoc_repair'
+    } else if (hasDiagnosis) {
+      resolutionType = 'standard_repair'
+    } else {
+      resolutionType = 'closed_no_action'
+    }
+  }
+
+  let jobStatus: JobStatus = 'completed'
+  let commercialState: JobCommercialState =
+    resolutionType === 'closed_no_action' ? 'none' : 'ready_for_invoice'
+  let newDiagnosisRequested = workflow?.id ? true : (!hasDiagnosis && hasAdhocBundle)
+
+  if (completionPath === 'estimate') {
+    resolutionType = 'repair_estimate'
+    jobStatus = 'follow_up_planning'
+    commercialState = 'estimate_needed'
+    newDiagnosisRequested = false
+  }
+
   const { error } = await supabase
     .from('jobs')
     .update({
-      status:             'completed',
+      job_status:         jobStatus,
+      resolution_type:    resolutionType,
+      commercial_state:   commercialState,
+      status:             getLegacyStatusFromLifecycle(jobStatus, commercialState, resolutionType),
       completed_at:       new Date().toISOString(),
       needs_admin_review: true,
-      new_diagnosis_requested: workflow?.id ? true : (!hasDiagnosis && hasAdhocBundle),
+      new_diagnosis_requested: newDiagnosisRequested,
       actual_tech:        user.id,
     })
     .eq('id', jobId)
@@ -1267,5 +1383,7 @@ export async function closeJob(
   revalidatePath('/jobs')
   revalidatePath(`/jobs/${jobId}`)
   revalidatePath('/planning')
+  revalidatePath('/estimates')
+  revalidatePath(`/estimates/${jobId}`)
   return { success: true }
 }

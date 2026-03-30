@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState, useTransition } from 'react'
+import { useMemo, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { DiagnosisItem, Job, JobAddOn, JobAdhocLine, JobCrewMember, JobMessage, JobWorkflow, ObservationCircuitState } from './types'
 import { closeJob, saveJobChecklistItemNote, setJobChecklistItemStatus, updateJobWorkflowStatus } from './actions'
@@ -25,6 +25,8 @@ interface Props {
   postRepairFiles: File[]
   canCloseJob: boolean
 }
+
+type CompletionPath = 'invoice' | 'estimate'
 
 function getGps(): Promise<{ lat: number; lng: number } | null> {
   return new Promise(resolve => {
@@ -122,20 +124,19 @@ export default function Step5Close({
   const [isChecklistPending, startChecklistTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [noteDrafts, setNoteDrafts] = useState<Record<string, string>>({})
+  const [completionPath, setCompletionPath] = useState<CompletionPath>('invoice')
   const router = useRouter()
   const workflowRequiredItems = workflow?.job_workflow_items.filter(item => item.required) ?? []
   const completedWorkflowItems = workflowRequiredItems.filter(item => item.completed).length
   const sharedWorkflowJob = workflow != null
+  const diagnosisEstimateEligible = !sharedWorkflowJob && workflowMode === 'diagnosis' && !!selectedDiagnosis
+  const effectiveCompletionPath: CompletionPath = diagnosisEstimateEligible ? completionPath : 'invoice'
   const closeoutItems = useMemo(
     () => (workflow?.job_workflow_items ?? [])
       .filter(item => item.phase === 'closeout')
       .sort((a, b) => a.sort_order - b.sort_order),
     [workflow],
   )
-
-  useEffect(() => {
-    setNoteDrafts(Object.fromEntries(closeoutItems.map(item => [item.id, item.note ?? ''])))
-  }, [closeoutItems])
 
   function handleChecklistAction(task: () => Promise<{ error?: string | null }>) {
     setError(null)
@@ -157,7 +158,7 @@ export default function Step5Close({
         await uploadPhotos(job.id, 'post_repair', postRepairFiles)
 
         const position = await getGps()
-        const result = await closeJob(job.id, position?.lat ?? null, position?.lng ?? null)
+        const result = await closeJob(job.id, position?.lat ?? null, position?.lng ?? null, effectiveCompletionPath)
         if (result.error) {
           setError(result.error)
         } else {
@@ -271,7 +272,7 @@ export default function Step5Close({
                     <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
                       <input
                         type="text"
-                        value={noteDrafts[item.id] ?? ''}
+                        value={noteDrafts[item.id] ?? item.note ?? ''}
                         onChange={event => setNoteDrafts(current => ({ ...current, [item.id]: event.target.value }))}
                         placeholder="Add completion note"
                         style={{
@@ -286,7 +287,7 @@ export default function Step5Close({
                       />
                       <button
                         type="button"
-                        onClick={() => handleChecklistAction(() => saveJobChecklistItemNote(item.id, noteDrafts[item.id] ?? ''))}
+                        onClick={() => handleChecklistAction(() => saveJobChecklistItemNote(item.id, noteDrafts[item.id] ?? item.note ?? ''))}
                         disabled={isChecklistPending}
                         style={{
                           padding: '8px 12px',
@@ -385,6 +386,53 @@ export default function Step5Close({
         <Row label="Post-repair" value={postRepairFiles.length > 0 ? `${postRepairFiles.length} photo${postRepairFiles.length > 1 ? 's' : ''}` : 'None'} />
       </div>
 
+      {diagnosisEstimateEligible && (
+        <div style={{ background: '#fff', border: '1px solid #e2e1da', borderRadius: '8px', padding: '12px 14px', marginBottom: '16px' }}>
+          <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
+            Completion Path
+          </div>
+          <div style={{ display: 'grid', gap: '8px' }}>
+            <button
+              type="button"
+              onClick={() => setCompletionPath('invoice')}
+              style={{
+                textAlign: 'left',
+                borderRadius: '10px',
+                border: completionPath === 'invoice' ? '1px solid #3b6d11' : '1px solid #e2e1da',
+                background: completionPath === 'invoice' ? '#eef5ea' : '#fff',
+                padding: '12px 14px',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+              }}
+            >
+              <div style={{ fontSize: '13px', fontWeight: 700, color: '#1a1a18' }}>Direct invoice review</div>
+              <div style={{ fontSize: '12px', color: '#5f5e5a', marginTop: '4px', lineHeight: 1.5 }}>
+                Use this when the repair is complete now and the job should move straight into owner invoice review.
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setCompletionPath('estimate')}
+              style={{
+                textAlign: 'left',
+                borderRadius: '10px',
+                border: completionPath === 'estimate' ? '1px solid #4152a3' : '1px solid #e2e1da',
+                background: completionPath === 'estimate' ? '#eef1fd' : '#fff',
+                padding: '12px 14px',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+              }}
+            >
+              <div style={{ fontSize: '13px', fontWeight: 700, color: '#1a1a18' }}>Estimate and follow-up</div>
+              <div style={{ fontSize: '12px', color: '#5f5e5a', marginTop: '4px', lineHeight: 1.5 }}>
+                Use this when the diagnosis is complete but the work needs an estimate, approval, and a return visit from the same job record.
+              </div>
+            </button>
+          </div>
+        </div>
+      )}
+
       <div style={{
         background: '#faeeda',
         border: '1px solid #f5c97a',
@@ -394,7 +442,9 @@ export default function Step5Close({
         fontSize: '13px',
         color: '#633806',
       }}>
-        This job moves to owner review. The invoice will be finalized after the repair path is reviewed and approved.
+        {effectiveCompletionPath === 'estimate'
+          ? 'This visit moves into estimate review. Owner/admin will generate the estimate PDF, send it from the same job, and track approval before follow-up work is scheduled.'
+          : 'This job moves to owner review. The invoice will be finalized after the repair path is reviewed and approved.'}
       </div>
 
       {!canCloseJob && (
@@ -442,8 +492,14 @@ export default function Step5Close({
           cursor: (isPending || !canCloseJob) ? 'not-allowed' : 'pointer',
           fontFamily: 'inherit',
         }}
-      >
-        {isPending ? 'Completing job...' : 'Complete job'}
+        >
+        {isPending
+          ? effectiveCompletionPath === 'estimate'
+            ? 'Routing to estimate review...'
+            : 'Completing job...'
+          : effectiveCompletionPath === 'estimate'
+            ? 'Complete visit to estimate review'
+            : 'Complete job to invoice review'}
       </button>
     </div>
   )

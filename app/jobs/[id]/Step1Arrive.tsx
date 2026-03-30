@@ -46,22 +46,6 @@ const infoCardStyle: React.CSSProperties = {
   marginBottom: '14px',
 }
 
-const infoLabelStyle: React.CSSProperties = {
-  fontSize: '10px',
-  color: '#888780',
-  textTransform: 'uppercase',
-  letterSpacing: '0.05em',
-  marginBottom: '6px',
-  fontWeight: 700,
-}
-
-const infoValueStyle: React.CSSProperties = {
-  fontSize: '18px',
-  fontWeight: 600,
-  color: '#1a1a18',
-  lineHeight: 1.25,
-}
-
 const inlineLabelStyle: React.CSSProperties = {
   fontSize: '17px',
   fontWeight: 700,
@@ -83,11 +67,10 @@ export default function Step1Arrive({ viewerRole, job, serviceHistory, workflow,
   const [detailsExpanded, setDetailsExpanded] = useState(false)
   const router = useRouter()
 
-  const alreadyArrived = job.status === 'in_progress' && !!job.arrived_at
+  const alreadyArrived = (job.job_status === 'on_site' || job.job_status === 'follow_up_active') && !!job.arrived_at
   const unitLabel = job.units?.name ?? job.manual_unit ?? ''
   const destinationLabel = [job.locations?.name, unitLabel].filter(Boolean).join(' - ')
   const equipmentLabel = [job.systems?.make, toTitleLabel(job.systems?.system_type) || job.systems?.system_subtype].filter(Boolean).join(' ')
-  const contextCount = (job.problem_description ? 1 : 0) + serviceHistory.length
   const canStartWorkflow = !workflow && ['owner', 'admin', 'dispatcher'].includes(viewerRole ?? '')
 
   function handleStartWorkflow(workflowType: JobWorkflowType) {

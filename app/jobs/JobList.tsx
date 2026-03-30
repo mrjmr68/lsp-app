@@ -3,9 +3,13 @@
 import { useState, useEffect, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { assignJob } from '@/app/planning/actions'
+import { JobCommercialState, JobResolutionType, JobStatus, getCommercialStateMeta, getPrimaryJobStateMeta, getResolutionTypeMeta } from '@/utils/job-lifecycle'
 
-interface ListJob {
+export interface ListJob {
   id: string
+  job_status: JobStatus
+  resolution_type: JobResolutionType | null
+  commercial_state: JobCommercialState
   status: string
   priority: string
   manual_unit: string | null
@@ -18,8 +22,11 @@ interface ListJob {
   diagnoses: { repair_code: string } | null
 }
 
-interface UnassignedJob {
+export interface UnassignedJob {
   id: string
+  job_status: JobStatus
+  resolution_type: JobResolutionType | null
+  commercial_state: JobCommercialState
   status: string
   priority: string
   manual_unit: string | null
@@ -28,19 +35,19 @@ interface UnassignedJob {
   locations: { name: string } | null
 }
 
-interface Tech {
+export interface Tech {
   id: string
   first_name: string
   last_name: string
 }
 
-interface Customer {
+export interface Customer {
   id: string
   name: string
   type: string | null
 }
 
-interface Location {
+export interface Location {
   id: string
   name: string
   customer_id: string
@@ -121,15 +128,9 @@ function ActiveJobCard({ job, onClick }: { job: ListJob; onClick: () => void }) 
 // ── Plain job card ────────────────────────────────────────────────────────────
 
 function JobCard({ job, done, onClick }: { job: ListJob; done?: boolean; onClick: () => void }) {
-  const statusColors: Record<string, { bg: string; fg: string; label: string }> = {
-    assigned: { bg: '#eaf3de', fg: '#3b6d11', label: 'assigned' },
-    en_route: { bg: '#e6f1fb', fg: '#185fa5', label: 'en route' },
-    completed: { bg: '#f1efe8', fg: '#5f5e5a', label: 'done' },
-    closed_no_diagnosis: { bg: '#eeedfe', fg: '#3c3489', label: 'no dx' },
-    invoiced: { bg: '#e8f5ec', fg: '#25613a', label: 'invoiced' },
-    new: { bg: '#f1efe8', fg: '#5f5e5a', label: 'new' },
-  }
-  const sc = statusColors[job.status] ?? statusColors.new
+  const primaryState = getPrimaryJobStateMeta(job.job_status, job.commercial_state, job.resolution_type)
+  const resolutionMeta = job.resolution_type ? getResolutionTypeMeta(job.resolution_type) : null
+  const commercialMeta = job.commercial_state !== 'none' ? getCommercialStateMeta(job.commercial_state) : null
 
   return (
     <div
@@ -151,10 +152,20 @@ function JobCard({ job, done, onClick }: { job: ListJob; done?: boolean; onClick
       <div style={{ fontSize: '11px', color: '#888780' }}>
         {job.diagnoses?.repair_code ?? job.problem_description ?? '—'}
       </div>
-      <div style={{ marginTop: '6px' }}>
-        <span style={{ fontSize: '10px', fontWeight: 600, borderRadius: '4px', padding: '2px 6px', background: sc.bg, color: sc.fg }}>
-          {sc.label}
+      <div style={{ marginTop: '6px', display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+        <span style={{ fontSize: '10px', fontWeight: 600, borderRadius: '4px', padding: '2px 6px', background: primaryState.bg, color: primaryState.fg }}>
+          {primaryState.label}
         </span>
+        {resolutionMeta && job.job_status !== 'completed' && (
+          <span style={{ fontSize: '10px', fontWeight: 600, borderRadius: '4px', padding: '2px 6px', background: resolutionMeta.bg, color: resolutionMeta.fg }}>
+            {resolutionMeta.label}
+          </span>
+        )}
+        {commercialMeta && job.commercial_state !== 'none' && job.commercial_state !== 'invoiced' && (
+          <span style={{ fontSize: '10px', fontWeight: 600, borderRadius: '4px', padding: '2px 6px', background: commercialMeta.bg, color: commercialMeta.fg }}>
+            {commercialMeta.label}
+          </span>
+        )}
       </div>
     </div>
   )
@@ -393,8 +404,8 @@ export default function JobList({
   const [pullingId, setPullingId] = useState<string | null>(null)
   const [showAddJob, setShowAddJob] = useState(false)
 
-  const activeJob  = myJobs.find(j => j.status === 'in_progress') ?? null
-  const queuedJobs = myJobs.filter(j => j.status !== 'in_progress')
+  const activeJob = myJobs.find(j => j.job_status === 'on_site' || j.job_status === 'follow_up_active') ?? null
+  const queuedJobs = myJobs.filter(j => j.job_status !== 'on_site' && j.job_status !== 'follow_up_active')
 
   function handlePull(jobId: string) {
     setPullingId(jobId)

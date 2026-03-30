@@ -1,7 +1,12 @@
 import { redirect, notFound } from 'next/navigation'
 import AppShell from '@/app/components/AppShell'
 import InvoiceDetail from './InvoiceDetail'
+import { InvoiceAddOn, InvoiceAdhocBundle, InvoiceJob, InvoiceRepairBundle, ParentCustomer, PhotoCounts, PlaceholderCost, VarianceData } from '../types'
 import { requireRole } from '@/utils/auth/roles'
+
+function firstRelation<T>(value: T | T[] | null | undefined) {
+  return Array.isArray(value) ? value[0] ?? null : (value ?? null)
+}
 
 export default async function InvoiceDetailPage({
   params,
@@ -17,7 +22,8 @@ export default async function InvoiceDetailPage({
   const { data: job, error: jobErr } = await supabase
     .from('jobs')
     .select(`
-      id, status, priority, manual_unit, problem_description,
+      id, status, job_status, resolution_type, commercial_state,
+      priority, manual_unit, problem_description,
       job_date, arrived_at, completed_at, how_it_came_in,
       tstat_mode, tstat_fan, system_response,
       temp_outdoor, temp_return, temp_supply,
@@ -33,7 +39,47 @@ export default async function InvoiceDetailPage({
         make, model, refrigerant_type, metering_device
       ),
       diagnoses!jobs_diagnosis_id_fkey(id, repair_code, invoice_description, repair_notes, variable_pricing),
-      users!jobs_actual_tech_fkey(id, first_name, last_name)
+      users!jobs_actual_tech_fkey(id, first_name, last_name),
+      job_estimates(
+        id,
+        estimate_number,
+        status,
+        customer_summary,
+        scope_of_work,
+        line_items,
+        subtotal,
+        tax_rate,
+        tax,
+        total,
+        send_to_email,
+        cc_email,
+        generated_at,
+        sent_at,
+        approved_at
+      ),
+      job_parts_requests(
+        id,
+        vendor_name,
+        vendor_email,
+        eta_date,
+        vendor_notes,
+        email_subject,
+        email_body,
+        vendor_email_sent_at,
+        ordered_at,
+        ready_to_schedule_at,
+        job_parts_request_lines(
+          id,
+          item_id,
+          part_name,
+          part_number,
+          quantity,
+          unit_cost,
+          notes,
+          ordered,
+          sort_order
+        )
+      )
     `)
     .eq('id', id)
     .single()
@@ -84,7 +130,7 @@ export default async function InvoiceDetailPage({
 
   // 5. Parent customer (if bill_to_parent)
   let parentCustomer = null
-  const cust = job.customers as any
+  const cust = firstRelation(job.customers)
   if (cust?.bill_to_parent && cust?.parent_id) {
     const { data } = await supabase
       .from('customers')
@@ -97,15 +143,15 @@ export default async function InvoiceDetailPage({
   // 6. Variance — historical invoice amounts for the same diagnosis
   let variance = null
   if (job.diagnosis_id) {
-    const { data: historicalJobs } = await supabase
-      .from('jobs')
-      .select('invoice_amount')
-      .eq('diagnosis_id', job.diagnosis_id)
-      .eq('status', 'invoiced')
-      .not('invoice_amount', 'is', null)
+      const { data: historicalJobs } = await supabase
+        .from('jobs')
+        .select('invoice_amount')
+        .eq('diagnosis_id', job.diagnosis_id)
+        .eq('commercial_state', 'invoiced')
+        .not('invoice_amount', 'is', null)
 
-    const amounts = (historicalJobs ?? [])
-      .map((j: any) => j.invoice_amount as number)
+    const amounts = ((historicalJobs ?? []) as Array<{ invoice_amount: number | null }>)
+      .map(jobRow => jobRow.invoice_amount ?? 0)
       .filter(a => a > 0)
 
     if (amounts.length > 0) {
@@ -120,7 +166,7 @@ export default async function InvoiceDetailPage({
   }
 
   // 7. Photo counts from storage
-  const photoCounts = { arrival: 0, fault: 0, post_repair: 0 }
+  const photoCounts: PhotoCounts = { arrival: 0, fault: 0, post_repair: 0 }
   for (const type of ['observation', 'fault', 'post_repair'] as const) {
     const { data: files } = await supabase.storage
       .from('job-photos')
@@ -133,23 +179,6 @@ export default async function InvoiceDetailPage({
     }
   }
 
-  // 8. App config
-  const { data: configRows } = await supabase
-    .from('app_config')
-    .select('key, value')
-
-  const appConfig = {
-    labor_cost_per_hour: 0,
-    travel_time_hours: 0,
-    refrigerant_cost_per_lb: 0,
-    profit_per_hour_target: 0,
-  }
-  for (const row of configRows ?? []) {
-    if (row.key in appConfig) {
-      (appConfig as any)[row.key] = Number(row.value) || 0
-    }
-  }
-
   let invoicePdfUrl: string | null = null
   if (job.invoice_pdf_path) {
     const { data: signedUrlData } = await supabase.storage
@@ -158,18 +187,33 @@ export default async function InvoiceDetailPage({
     invoicePdfUrl = signedUrlData?.signedUrl ?? null
   }
 
+  const normalizedAddOns = (addOns ?? []).map(addOn => ({
+    ...addOn,
+    repair_bundles: firstRelation(addOn.repair_bundles),
+    items: firstRelation(addOn.items),
+  }))
+
+  const normalizedJob = {
+    ...job,
+    customers: firstRelation(job.customers),
+    locations: firstRelation(job.locations),
+    units: firstRelation(job.units),
+    systems: firstRelation(job.systems),
+    diagnoses: firstRelation(job.diagnoses),
+    users: firstRelation(job.users),
+  }
+
   return (
     <AppShell>
       <InvoiceDetail
-        job={job as any}
-        bundle={bundle as any}
-        adhocBundle={adhocBundle as any}
-        addOns={(addOns ?? []) as any}
-        placeholderCosts={(placeholderCosts ?? []) as any}
-        parentCustomer={parentCustomer as any}
-        variance={variance}
+        job={normalizedJob as InvoiceJob}
+        bundle={bundle as InvoiceRepairBundle | null}
+        adhocBundle={adhocBundle as InvoiceAdhocBundle | null}
+        addOns={normalizedAddOns as InvoiceAddOn[]}
+        placeholderCosts={(placeholderCosts ?? []) as PlaceholderCost[]}
+        parentCustomer={parentCustomer as ParentCustomer | null}
+        variance={variance as VarianceData | null}
         photoCounts={photoCounts}
-        appConfig={appConfig}
         invoicePdfUrl={invoicePdfUrl}
       />
     </AppShell>

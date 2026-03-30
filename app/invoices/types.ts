@@ -1,7 +1,12 @@
 // ── Invoice queue list ────────────────────────────────────────────────────────
 
+import { JobCommercialState, JobResolutionType, JobStatus } from '@/utils/job-lifecycle'
+
 export interface InvoiceQueueJob {
   id: string
+  job_status: JobStatus
+  resolution_type: JobResolutionType | null
+  commercial_state: JobCommercialState
   status: string
   priority: string
   manual_unit: string | null
@@ -15,12 +20,16 @@ export interface InvoiceQueueJob {
   units: { id: string; name: string } | null
   diagnoses: { id: string; repair_code: string } | null
   users: { id: string; first_name: string; last_name: string } | null
+  job_estimates?: InvoiceEstimateRecord[] | InvoiceEstimateRecord | null
 }
 
 // ── Invoice detail ───────────────────────────────────────────────────────────
 
 export interface InvoiceJob {
   id: string
+  job_status: JobStatus
+  resolution_type: JobResolutionType | null
+  commercial_state: JobCommercialState
   status: string
   priority: string
   manual_unit: string | null
@@ -56,7 +65,53 @@ export interface InvoiceJob {
   systems: InvoiceSystem | null
   diagnoses: InvoiceDiagnosis | null
   users: { id: string; first_name: string; last_name: string } | null
+  job_estimates?: InvoiceEstimateRecord[] | InvoiceEstimateRecord | null
+  job_parts_requests?: InvoicePartsRequest[] | InvoicePartsRequest | null
   new_diagnosis_requested?: boolean
+}
+
+export interface InvoiceEstimateRecord {
+  id: string
+  estimate_number: string | null
+  status: 'draft' | 'sent' | 'approved' | 'declined'
+  customer_summary: string | null
+  scope_of_work: string | null
+  line_items: Array<{ label: string; amount: number }>
+  subtotal: number
+  tax_rate: number
+  tax: number
+  total: number
+  send_to_email: string | null
+  cc_email: string | null
+  generated_at: string | null
+  sent_at: string | null
+  approved_at: string | null
+}
+
+export interface InvoicePartsRequestLine {
+  id: string
+  item_id: string | null
+  part_name: string
+  part_number: string | null
+  quantity: number
+  unit_cost: number | null
+  notes: string | null
+  ordered: boolean
+  sort_order: number
+}
+
+export interface InvoicePartsRequest {
+  id: string
+  vendor_name: string | null
+  vendor_email: string | null
+  eta_date: string | null
+  vendor_notes: string | null
+  email_subject: string | null
+  email_body: string | null
+  vendor_email_sent_at: string | null
+  ordered_at: string | null
+  ready_to_schedule_at: string | null
+  job_parts_request_lines: InvoicePartsRequestLine[]
 }
 
 export interface InvoiceCustomer {

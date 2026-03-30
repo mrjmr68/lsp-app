@@ -25,6 +25,7 @@ import Step4Work from './Step4Work'
 import Step5Close from './Step5Close'
 import InstallWorkspace from './InstallWorkspace'
 import { clearJobAdhocBundle, saveJobAdhocBundle, saveObservations, saveObservedSystemSnapshot, setDiagnosis } from './actions'
+import { getPrimaryJobStateMeta } from '@/utils/job-lifecycle'
 
 function useElapsed(arrivedAt: string | null) {
   const [secs, setSecs] = useState(0)
@@ -116,6 +117,20 @@ function initialComponentsForJob(job: Job, systemType: string) {
     const match = existing.find(component => component.system_subtype === template.subtype)
       ?? (job.systems?.system_subtype === template.subtype ? job.systems : null)
     return match ? mapSystemToComponent(match, template.key) : emptyComponent(template)
+  })
+}
+
+function remapComponentsForSystemType(
+  current: ObservedComponentState[],
+  systemType: string,
+) {
+  const templates = componentTemplate(systemType)
+  return templates.map(template => {
+    const existing = current.find(component => component.subtype === template.subtype || component.key === template.key)
+    if (existing) {
+      return { ...existing, key: template.key, label: template.label, subtype: template.subtype }
+    }
+    return emptyComponent(template)
   })
 }
 
@@ -228,7 +243,7 @@ export default function JobFlow({
   const apartmentJob = isApartmentJob(job)
   const sharedWorkflowJob = workflow != null
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1)
-  const [jobStatus, setJobStatus] = useState(job.status)
+  const [jobStatus, setJobStatus] = useState(job.job_status)
   const [arrivedAt, setArrivedAt] = useState<string | null>(job.arrived_at)
   const [arrivedLat, setArrivedLat] = useState<number | null>(null)
   const [arrivedLng, setArrivedLng] = useState<number | null>(null)
@@ -271,17 +286,6 @@ export default function JobFlow({
   const [rtuControlsNote, setRtuControlsNote] = useState(parsedControls.note)
   const [components, setComponents] = useState<ObservedComponentState[]>(initialComponentsForJob(job, initialSystemType))
 
-  useEffect(() => {
-    const templates = componentTemplate(systemType)
-    setComponents(current => templates.map(template => {
-      const existing = current.find(component => component.subtype === template.subtype || component.key === template.key)
-      if (existing) {
-        return { ...existing, key: template.key, label: template.label, subtype: template.subtype }
-      }
-      return emptyComponent(template)
-    }))
-  }, [systemType])
-
   const initialDiagnosis = job.diagnosis_id
     ? diagnoses.find(diagnosis => diagnosis.id === job.diagnosis_id) ?? null
     : null
@@ -305,11 +309,16 @@ export default function JobFlow({
   const hasAdhocPath = workflowMode === 'adhoc' && !!adhocDescription.trim()
   const canCloseJob = sharedWorkflowJob ? workflowReadyToClose : (hasDiagnosisPath || !!savedAdhocBundle || hasAdhocPath)
 
+  function handleSystemTypeChange(nextSystemType: string) {
+    setSystemType(nextSystemType)
+    setComponents(current => remapComponentsForSystemType(current, nextSystemType))
+  }
+
   function handleArrived(at: string, lat: number | null, lng: number | null) {
     setArrivedAt(at)
     setArrivedLat(lat)
     setArrivedLng(lng)
-    setJobStatus('in_progress')
+    setJobStatus('on_site')
     setStep(2)
   }
 
@@ -476,14 +485,7 @@ export default function JobFlow({
   const unitLabel = job.units?.name ?? job.manual_unit ?? ''
   const systemLabel = [job.systems?.make, job.systems?.system_type ? job.systems.system_type.replace('_', ' ') : job.systems?.system_subtype].filter(Boolean).join(' ')
 
-  const statusColors: Record<string, { bg: string; fg: string }> = {
-    new: { bg: '#f1efe8', fg: '#5f5e5a' },
-    assigned: { bg: '#eaf3de', fg: '#3b6d11' },
-    en_route: { bg: '#e6f1fb', fg: '#185fa5' },
-    in_progress: { bg: '#faeeda', fg: '#854f0b' },
-    completed: { bg: '#f1efe8', fg: '#5f5e5a' },
-  }
-  const statusColor = statusColors[jobStatus] ?? statusColors.new
+  const statusMeta = getPrimaryJobStateMeta(jobStatus, job.commercial_state, job.resolution_type)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 64px)', overflow: 'hidden' }}>
@@ -497,8 +499,8 @@ export default function JobFlow({
             {systemLabel && <div style={{ fontSize: '11px', color: '#888780', marginTop: '1px' }}>{systemLabel}</div>}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-            <span style={{ fontSize: '10px', fontWeight: 600, borderRadius: '4px', padding: '2px 6px', background: statusColor.bg, color: statusColor.fg }}>
-              {jobStatus.replace('_', ' ')}
+            <span style={{ fontSize: '10px', fontWeight: 600, borderRadius: '4px', padding: '2px 6px', background: statusMeta.bg, color: statusMeta.fg }}>
+              {statusMeta.label}
             </span>
             <span style={{ fontFamily: 'monospace', fontSize: '13px', color: arrivedAt ? '#854f0b' : '#b4b2a9', fontWeight: 600 }}>
               {arrivedAt ? fmt(elapsed) : '--:--:--'}
@@ -588,7 +590,7 @@ export default function JobFlow({
             systemName={systemName}
             setSystemName={setSystemName}
             systemType={systemType}
-            setSystemType={setSystemType}
+            setSystemType={handleSystemTypeChange}
             servedAreas={servedAreas}
             setServedAreas={setServedAreas}
             thermostatLocation={thermostatLocation}
@@ -654,7 +656,7 @@ export default function JobFlow({
             systemName={systemName}
             setSystemName={setSystemName}
             systemType={systemType}
-            setSystemType={setSystemType}
+            setSystemType={handleSystemTypeChange}
             servedAreas={servedAreas}
             setServedAreas={setServedAreas}
             thermostatLocation={thermostatLocation}
@@ -747,7 +749,7 @@ export default function JobFlow({
             onClick={handleNext}
             disabled={
               transitioning
-              || (step === 1 && jobStatus !== 'in_progress')
+              || (step === 1 && jobStatus !== 'on_site' && jobStatus !== 'follow_up_active')
               || (step === 2 && !step2Valid)
               || (step === 3 && !step3Valid)
             }
@@ -756,11 +758,11 @@ export default function JobFlow({
               padding: '11px',
               borderRadius: '8px',
               border: 'none',
-              background: (transitioning || (step === 1 && jobStatus !== 'in_progress') || (step === 2 && !step2Valid) || (step === 3 && !step3Valid)) ? '#b4b2a9' : '#185fa5',
+              background: (transitioning || (step === 1 && jobStatus !== 'on_site' && jobStatus !== 'follow_up_active') || (step === 2 && !step2Valid) || (step === 3 && !step3Valid)) ? '#b4b2a9' : '#185fa5',
               color: '#fff',
               fontSize: '13px',
               fontWeight: 600,
-              cursor: (transitioning || (step === 1 && jobStatus !== 'in_progress') || (step === 2 && !step2Valid)) ? 'not-allowed' : 'pointer',
+              cursor: (transitioning || (step === 1 && jobStatus !== 'on_site' && jobStatus !== 'follow_up_active') || (step === 2 && !step2Valid)) ? 'not-allowed' : 'pointer',
               fontFamily: 'inherit',
             }}
           >

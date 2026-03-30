@@ -1,8 +1,15 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import AppShell from '@/app/components/AppShell'
-import PlanningBoard from './PlanningBoard'
+import PlanningBoard, { Customer, Job, Location, PlanningCrewMember, Tech } from './PlanningBoard'
 import { addJob } from './actions'
+import { DAILY_OPERATIONS_HIDDEN_COMMERCIAL_STATES_FILTER } from '@/utils/job-lifecycle'
+
+type JobCrewRow = {
+  job_id: string
+  user_id: string
+  role: 'primary' | 'assist'
+}
 
 export default async function PlanningPage() {
   const supabase = await createClient()
@@ -18,6 +25,9 @@ export default async function PlanningPage() {
     .select(`
       id,
       status,
+      job_status,
+      resolution_type,
+      commercial_state,
       priority,
       manual_unit,
       problem_description,
@@ -34,7 +44,8 @@ export default async function PlanningPage() {
       diagnoses!jobs_diagnosis_id_fkey ( repair_code )
     `)
     .eq('job_date', today)
-    .not('status', 'in', '("invoiced","cancelled")')
+    .neq('job_status', 'cancelled')
+    .not('commercial_state', 'in', DAILY_OPERATIONS_HIDDEN_COMMERCIAL_STATES_FILTER)
     .order('queue_position', { ascending: true, nullsFirst: false })
 
   if (jobsError) {
@@ -64,6 +75,41 @@ export default async function PlanningPage() {
     techsDiagnostic = 'No active assignable users were found. Confirm public.users has active rows with roles tech, dispatcher, admin, or owner.'
   }
 
+  const jobIds = (jobs ?? []).map(job => job.id)
+  const { data: jobCrewRows, error: jobCrewError } = jobIds.length > 0
+    ? await supabase
+        .from('job_tech')
+        .select('job_id, user_id, role')
+        .in('job_id', jobIds)
+    : { data: [], error: null }
+
+  if (jobCrewError) {
+    console.error('Planning crew query error:', jobCrewError.message, jobCrewError.details, jobCrewError.hint)
+  }
+
+  const techById = new Map((techs ?? []).map(tech => [tech.id, tech]))
+  const crewByJobId = new Map<string, PlanningCrewMember[]>()
+
+  for (const row of ((jobCrewRows ?? []) as JobCrewRow[])) {
+    const tech = techById.get(row.user_id)
+    if (!tech) continue
+
+    const currentCrew = crewByJobId.get(row.job_id) ?? []
+    currentCrew.push({
+      id: tech.id,
+      first_name: tech.first_name,
+      last_name: tech.last_name,
+      role: tech.role,
+      assignment_role: row.role,
+    })
+    crewByJobId.set(row.job_id, currentCrew)
+  }
+
+  const planningJobs = (jobs ?? []).map(job => ({
+    ...job,
+    crew_members: crewByJobId.get(job.id) ?? [],
+  }))
+
   // Customers — exclude parent-only accounts from job creation
   // (bill_to_parent children are fine; pure parents with no location work are excluded)
   const { data: customers } = await supabase
@@ -80,11 +126,11 @@ export default async function PlanningPage() {
   return (
     <AppShell>
       <PlanningBoard
-        jobs={(jobs ?? []) as any}
-        techs={techs ?? []}
+        jobs={planningJobs as Job[]}
+        techs={(techs ?? []) as Tech[]}
         techsDiagnostic={techsDiagnostic}
-        customers={customers ?? []}
-        locations={locations ?? []}
+        customers={(customers ?? []) as Customer[]}
+        locations={(locations ?? []) as Location[]}
         today={today}
         addJobAction={addJob}
       />

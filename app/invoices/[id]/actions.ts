@@ -22,6 +22,21 @@ function firstRelation<T>(value: T | T[] | null | undefined) {
   return Array.isArray(value) ? value[0] ?? null : (value ?? null)
 }
 
+function buildInvoiceLineItemsFromEstimate(
+  estimate: {
+    line_items: Array<{ label: string; amount: number }>
+  } | null,
+  overrideAmount: number | null,
+) {
+  const estimateLineItems = estimate?.line_items ?? []
+  if (estimateLineItems.length === 0) return null
+
+  return estimateLineItems.map((item, index) => ({
+    label: item.label,
+    amount: index === 0 && overrideAmount != null ? overrideAmount : item.amount,
+  }))
+}
+
 async function nextInvoiceNumber(supabase: Awaited<ReturnType<typeof requireInvoiceOwner>>['supabase']) {
   const year = new Date().getFullYear()
   const { data: latest, error } = await supabase
@@ -148,7 +163,22 @@ export async function approveInvoice(
       locations!jobs_location_id_fkey(id, name, tax_rate),
       units!jobs_unit_id_fkey(id, name),
       diagnoses!jobs_diagnosis_id_fkey(repair_code, invoice_description, repair_notes),
-      users!jobs_actual_tech_fkey(first_name, last_name)
+      users!jobs_actual_tech_fkey(first_name, last_name),
+      job_estimates(
+        id,
+        estimate_number,
+        status,
+        customer_summary,
+        scope_of_work,
+        line_items,
+        subtotal,
+        tax_rate,
+        tax,
+        total,
+        send_to_email,
+        cc_email,
+        approved_at
+      )
     `)
     .eq('id', jobId)
     .single()
@@ -177,6 +207,7 @@ export async function approveInvoice(
   const unit = Array.isArray(job.units) ? job.units[0] ?? null : job.units
   const diagnosis = Array.isArray(job.diagnoses) ? job.diagnoses[0] ?? null : job.diagnoses
   const tech = Array.isArray(job.users) ? job.users[0] ?? null : job.users
+  const estimate = firstRelation(job.job_estimates)
 
   let parentCustomer: { id: string; name: string; billing_email: string | null } | null = null
   if (customer?.bill_to_parent && customer.parent_id) {
@@ -231,19 +262,7 @@ export async function approveInvoice(
     return { error: 'Enter a flat-rate override before approving an ad-hoc repair.' }
   }
 
-  const addOnCharges = (addOns ?? []).reduce((sum: number, addOn) => {
-    const addOnBundle = firstRelation(addOn.repair_bundles)
-    const addOnItem = firstRelation(addOn.items)
-    if (addOn.type === 'bundle') return sum + (addOnBundle?.flat_rate ?? 0)
-    return sum + (addOnItem?.unit_cost ?? 0) * addOn.quantity
-  }, 0)
-
-  const subtotal = primaryCharge + addOnCharges
-  const taxRate = location?.tax_rate ?? 0
-  const tax = Math.round(subtotal * taxRate * 100) / 100
-  const total = Math.round((subtotal + tax) * 100) / 100
-
-  const lineItems = [
+  const fallbackLineItems = [
     { label: primaryLabel, amount: primaryCharge },
     ...(addOns ?? []).map(addOn => ({
       label: addOn.type === 'bundle'
@@ -254,6 +273,22 @@ export async function approveInvoice(
         : (firstRelation(addOn.items)?.unit_cost ?? 0) * addOn.quantity,
     })),
   ]
+
+  const lineItems = buildInvoiceLineItemsFromEstimate(estimate, job.flat_rate_override) ?? fallbackLineItems
+  const subtotal = Math.round(lineItems.reduce((sum, item) => sum + item.amount, 0) * 100) / 100
+  const taxRate = location?.tax_rate ?? 0
+  const tax = Math.round(subtotal * taxRate * 100) / 100
+  const total = Math.round((subtotal + tax) * 100) / 100
+  const estimateReference = estimate?.estimate_number ? `Estimate Ref: ${estimate.estimate_number}` : null
+
+  if (estimate) {
+    descriptionTitle = estimate.customer_summary?.trim()
+      || diagnosis?.invoice_description
+      || diagnosis?.repair_code
+      || descriptionTitle
+    descriptionBody = estimate.scope_of_work?.trim()
+      || descriptionBody
+  }
 
   const approvedAt = new Date().toISOString()
   const billTo = parentCustomer ?? customer
@@ -268,6 +303,7 @@ export async function approveInvoice(
     unitLabel: job.manual_unit ?? unit?.name ?? '—',
     techName: tech ? `${tech.first_name} ${tech.last_name}` : '—',
     serviceDate: formatDate(job.job_date),
+    referenceLine: estimateReference,
     descriptionTitle,
     descriptionBody,
     lineItems,
@@ -312,6 +348,8 @@ export async function approveInvoice(
     const { error: updateError } = await supabase
       .from('jobs')
       .update({
+        job_status: 'completed',
+        commercial_state: 'invoiced',
         status: 'invoiced',
         invoice_number: invoiceNumber,
         invoice_subtotal: subtotal,

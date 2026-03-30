@@ -1,11 +1,11 @@
-export interface InvoiceDocumentLine {
+export interface EstimateDocumentLine {
   label: string
   amount: number
 }
 
-export interface InvoiceDocumentData {
-  invoiceNumber: string
-  invoiceDate: string
+export interface EstimateDocumentData {
+  estimateNumber: string
+  estimateDate: string
   fromName: string
   fromCityState: string
   billToName: string
@@ -15,10 +15,9 @@ export interface InvoiceDocumentData {
   unitLabel: string
   techName: string
   serviceDate: string
-  referenceLine?: string | null
-  descriptionTitle: string
-  descriptionBody: string
-  lineItems: InvoiceDocumentLine[]
+  summaryTitle: string
+  summaryBody: string
+  lineItems: EstimateDocumentLine[]
   subtotal: number
   taxRate: number
   tax: number
@@ -61,37 +60,36 @@ function line(text: string, size = 11) {
   return { text, size }
 }
 
-export function buildInvoicePdf(data: InvoiceDocumentData) {
+export function buildEstimatePdf(data: EstimateDocumentData) {
   const rows: Array<{ text: string; size: number }> = [
     line(data.fromName, 18),
     line(data.fromCityState, 11),
     line(''),
-    line(`Invoice #: ${data.invoiceNumber}`, 12),
-    line(`Invoice Date: ${data.invoiceDate}`, 12),
-    line(`Service Date: ${data.serviceDate}`, 12),
-    ...(data.referenceLine ? [line(data.referenceLine, 12)] : []),
+    line(`Estimate #: ${data.estimateNumber}`, 12),
+    line(`Estimate Date: ${data.estimateDate}`, 12),
+    line(`Service Visit: ${data.serviceDate}`, 12),
     line(''),
-    line('Bill To', 13),
+    line('Prepared For', 13),
     line(data.billToName, 11),
     line(data.billToEmail ?? '-', 11),
     line(''),
-    line('Service Summary', 13),
+    line('Job Summary', 13),
     line(`Customer: ${data.customerName}`),
     line(`Location: ${data.locationName}`),
     line(`Unit: ${data.unitLabel}`),
     line(`Tech: ${data.techName}`),
     line(''),
-    line(data.descriptionTitle, 13),
-    ...wrapText(data.descriptionBody || '-', 84).map(entry => line(entry)),
+    line(data.summaryTitle, 13),
+    ...wrapText(data.summaryBody || '-', 84).map(entry => line(entry)),
     line(''),
-    line('Charges', 13),
+    line('Proposed Charges', 13),
     ...data.lineItems.flatMap(item => wrapText(`${item.label} .... ${fmtMoney(item.amount)}`, 84).map(entry => line(entry))),
     line(''),
     line(`Subtotal: ${fmtMoney(data.subtotal)}`, 12),
     line(`Tax (${(data.taxRate * 100).toFixed(2)}%): ${fmtMoney(data.tax)}`, 12),
-    line(`Total Due: ${fmtMoney(data.total)}`, 14),
+    line(`Estimated Total: ${fmtMoney(data.total)}`, 14),
     line(''),
-    line('Payment due net 30.', 11),
+    line('This estimate is valid for 30 days.', 11),
     line('Thank you for trusting Legend Service Pros.', 11),
   ]
 
@@ -167,45 +165,4 @@ export function buildInvoicePdf(data: InvoiceDocumentData) {
   pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`
 
   return new Uint8Array(Buffer.from(pdf, 'utf-8'))
-}
-
-export function buildInvoiceEmailHtml(data: InvoiceDocumentData) {
-  const chargeRows = data.lineItems
-    .map(item => `<tr><td style="padding:6px 0;color:#1a1a18;">${item.label}</td><td style="padding:6px 0;color:#1a1a18;text-align:right;">${fmtMoney(item.amount)}</td></tr>`)
-    .join('')
-
-  return `
-    <div style="font-family:Arial,sans-serif;background:#f5f1e7;padding:24px;color:#1a1a18;">
-      <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:12px;padding:28px;border:1px solid #e2e1da;">
-        <div style="font-size:22px;font-weight:700;margin-bottom:4px;">${data.fromName}</div>
-        <div style="font-size:13px;color:#5f5e5a;margin-bottom:18px;">${data.fromCityState}</div>
-        <div style="font-size:16px;font-weight:700;margin-bottom:10px;">Invoice ${data.invoiceNumber}</div>
-        <div style="font-size:14px;line-height:1.7;color:#3d3b36;margin-bottom:18px;">
-          Attached is your service invoice for ${data.locationName}${data.unitLabel !== '—' ? `, ${data.unitLabel}` : ''}.
-        </div>
-        <table style="width:100%;border-collapse:collapse;margin-bottom:18px;">
-          <tbody>
-            <tr><td style="padding:4px 0;color:#5f5e5a;">Service date</td><td style="padding:4px 0;text-align:right;">${data.serviceDate}</td></tr>
-            ${data.referenceLine ? `<tr><td style="padding:4px 0;color:#5f5e5a;">Reference</td><td style="padding:4px 0;text-align:right;">${data.referenceLine}</td></tr>` : ''}
-            <tr><td style="padding:4px 0;color:#5f5e5a;">Customer</td><td style="padding:4px 0;text-align:right;">${data.customerName}</td></tr>
-            <tr><td style="padding:4px 0;color:#5f5e5a;">Tech</td><td style="padding:4px 0;text-align:right;">${data.techName}</td></tr>
-          </tbody>
-        </table>
-        <div style="font-size:14px;font-weight:700;margin-bottom:8px;">Service performed</div>
-        <div style="font-size:14px;line-height:1.7;color:#3d3b36;margin-bottom:18px;">
-          <div style="font-weight:700;margin-bottom:4px;">${data.descriptionTitle}</div>
-          <div>${data.descriptionBody || '-'}</div>
-        </div>
-        <table style="width:100%;border-collapse:collapse;margin-bottom:12px;">
-          <tbody>
-            ${chargeRows}
-            <tr><td style="padding:10px 0 6px;color:#5f5e5a;border-top:1px solid #e2e1da;">Subtotal</td><td style="padding:10px 0 6px;text-align:right;border-top:1px solid #e2e1da;">${fmtMoney(data.subtotal)}</td></tr>
-            <tr><td style="padding:6px 0;color:#5f5e5a;">Tax (${(data.taxRate * 100).toFixed(2)}%)</td><td style="padding:6px 0;text-align:right;">${fmtMoney(data.tax)}</td></tr>
-            <tr><td style="padding:8px 0 0;font-size:16px;font-weight:700;">Total Due</td><td style="padding:8px 0 0;text-align:right;font-size:16px;font-weight:700;">${fmtMoney(data.total)}</td></tr>
-          </tbody>
-        </table>
-        <div style="font-size:12px;color:#7a7367;margin-top:18px;">Payment due net 30.</div>
-      </div>
-    </div>
-  `.trim()
 }

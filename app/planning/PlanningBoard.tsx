@@ -1,13 +1,19 @@
 'use client'
 
+/* eslint-disable react/no-unescaped-entities */
+
 import { useState, useTransition, useMemo, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { assignJob, toggleAccessConfirmed } from './actions'
+import { assignJob, toggleAccessConfirmed, updateAssistTechs } from './actions'
+import { JobCommercialState, JobResolutionType, JobStatus, getCommercialStateMeta, getPrimaryJobStateMeta, getResolutionTypeMeta } from '@/utils/job-lifecycle'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-interface Job {
+export interface Job {
   id: string
+  job_status: JobStatus
+  resolution_type: JobResolutionType | null
+  commercial_state: JobCommercialState
   status: string
   priority: string
   manual_unit: string | null
@@ -20,22 +26,31 @@ interface Job {
   locations: { name: string } | null
   customers: { name: string } | null
   diagnoses: { repair_code: string } | null
+  crew_members: PlanningCrewMember[]
 }
 
-interface Tech {
+export interface PlanningCrewMember {
+  id: string
+  first_name: string
+  last_name: string
+  role: string
+  assignment_role: 'primary' | 'assist'
+}
+
+export interface Tech {
   id: string
   first_name: string
   last_name: string
   role: string
 }
 
-interface Customer {
+export interface Customer {
   id: string
   name: string
   type: string
 }
 
-interface Location {
+export interface Location {
   id: string
   name: string
   customer_id: string
@@ -57,6 +72,53 @@ function initials(t: Tech) {
   return (t.first_name[0] + t.last_name[0]).toUpperCase()
 }
 
+function techName(tech: Pick<Tech, 'first_name' | 'last_name'> | Pick<PlanningCrewMember, 'first_name' | 'last_name'> | null) {
+  if (!tech) return 'Unassigned'
+  return `${tech.first_name} ${tech.last_name}`.trim()
+}
+
+function getLeadTech(job: Job, techs: Tech[]) {
+  if (!job.assigned_tech) return null
+  return techs.find(tech => tech.id === job.assigned_tech) ?? null
+}
+
+function getAssistCrew(job: Job) {
+  return job.crew_members.filter(member => member.assignment_role === 'assist' && member.id !== job.assigned_tech)
+}
+
+function getCrewCount(job: Job) {
+  const crewIds = new Set<string>()
+  if (job.assigned_tech) crewIds.add(job.assigned_tech)
+  for (const member of job.crew_members) {
+    crewIds.add(member.id)
+  }
+  return crewIds.size
+}
+
+function getCrewSummary(job: Job, techs: Tech[]) {
+  const leadTech = getLeadTech(job, techs)
+  const assistCrew = getAssistCrew(job)
+
+  if (!leadTech && assistCrew.length === 0) return 'Unassigned'
+  if (!leadTech) return assistCrew.map(member => techName(member)).join(', ')
+  if (assistCrew.length === 0) return `${techName(leadTech)} (lead)`
+
+  return `${techName(leadTech)} (lead), ${assistCrew.map(member => techName(member)).join(', ')}`
+}
+
+function buildAssistCrewMembers(techs: Tech[], assistTechIds: string[]): PlanningCrewMember[] {
+  return assistTechIds
+    .map(techId => techs.find(tech => tech.id === techId) ?? null)
+    .filter((tech): tech is Tech => !!tech)
+    .map(tech => ({
+      id: tech.id,
+      first_name: tech.first_name,
+      last_name: tech.last_name,
+      role: tech.role,
+      assignment_role: 'assist' as const,
+    }))
+}
+
 const avatarColors = [
   { bg: '#b5d4f4', fg: '#0c447c' },
   { bg: '#9fe1cb', fg: '#085041' },
@@ -66,18 +128,6 @@ const avatarColors = [
   { bg: '#b8e6b8', fg: '#1a5c1a' },
 ]
 function avatarColor(i: number) { return avatarColors[i % avatarColors.length] }
-
-function statusPill(status: string) {
-  const map: Record<string, { bg: string; fg: string; label: string }> = {
-    new:                 { bg: '#f1efe8', fg: '#5f5e5a', label: 'new'          },
-    assigned:            { bg: '#eaf3de', fg: '#3b6d11', label: 'assigned'     },
-    en_route:            { bg: '#e6f1fb', fg: '#185fa5', label: 'en route'     },
-    in_progress:         { bg: '#faeeda', fg: '#854f0b', label: 'on site'      },
-    completed:           { bg: '#f1efe8', fg: '#5f5e5a', label: 'completed'    },
-    closed_no_diagnosis: { bg: '#eeedfe', fg: '#3c3489', label: 'no diagnosis' },
-  }
-  return map[status] ?? { bg: '#f1efe8', fg: '#5f5e5a', label: status }
-}
 
 function priorityPill(priority: string) {
   const map: Record<string, { bg: string; fg: string; label: string }> = {
@@ -121,9 +171,12 @@ function Pill({ bg, fg, label }: { bg: string; fg: string; label: string }) {
 // ── Job Card ──────────────────────────────────────────────────────────────────
 
 function JobCard({ job, selected, onClick }: { job: Job; selected: boolean; onClick: () => void }) {
-  const isDone   = job.status === 'completed' || job.status === 'closed_no_diagnosis'
-  const isActive = job.status === 'in_progress'
-  const sp = statusPill(job.status)
+  const isDone = job.job_status === 'completed'
+  const isActive = job.job_status === 'on_site' || job.job_status === 'follow_up_active'
+  const primaryState = getPrimaryJobStateMeta(job.job_status, job.commercial_state, job.resolution_type)
+  const resolutionMeta = job.resolution_type ? getResolutionTypeMeta(job.resolution_type) : null
+  const commercialMeta = job.commercial_state !== 'none' ? getCommercialStateMeta(job.commercial_state) : null
+  const crewCount = getCrewCount(job)
   const pp = priorityPill(job.priority)
 
   return (
@@ -152,7 +205,14 @@ function JobCard({ job, selected, onClick }: { job: Job; selected: boolean; onCl
         {job.diagnoses?.repair_code ?? job.problem_description ?? 'No description'}
       </div>
       <div style={{ display: 'flex', gap: '4px', marginTop: '6px', flexWrap: 'wrap' }}>
-        <Pill bg={sp.bg} fg={sp.fg} label={sp.label} />
+        <Pill bg={primaryState.bg} fg={primaryState.fg} label={primaryState.label} />
+        {resolutionMeta && job.job_status !== 'completed' && (
+          <Pill bg={resolutionMeta.bg} fg={resolutionMeta.fg} label={resolutionMeta.label} />
+        )}
+        {commercialMeta && job.commercial_state !== 'none' && job.commercial_state !== 'invoiced' && (
+          <Pill bg={commercialMeta.bg} fg={commercialMeta.fg} label={commercialMeta.label} />
+        )}
+        {crewCount > 1 && <Pill bg="#eef6ff" fg="#185fa5" label={`${crewCount} tech crew`} />}
         {job.priority !== 'routine' && <Pill bg={pp.bg} fg={pp.fg} label={pp.label} />}
         {job.access_confirmation_needed && <Pill bg="#eeedfe" fg="#3c3489" label="confirm access" />}
       </div>
@@ -172,6 +232,8 @@ function AddJobModal({
   addJobAction: (formData: FormData) => Promise<{ error?: string; success?: boolean }>
 }) {
   const [selectedCustomerId, setSelectedCustomerId] = useState('')
+  const [assignedTechId, setAssignedTechId] = useState('')
+  const [assistTechIds, setAssistTechIds] = useState<string[]>([])
   const [accessNeeded, setAccessNeeded] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
@@ -181,12 +243,29 @@ function AddJobModal({
     [locations, selectedCustomerId]
   )
 
+  function toggleAssistTech(techId: string) {
+    setAssistTechIds(currentIds => (
+      currentIds.includes(techId)
+        ? currentIds.filter(id => id !== techId)
+        : [...currentIds, techId]
+    ))
+  }
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
+
+    if (!assignedTechId && assistTechIds.length > 0) {
+      setError('Select a lead tech before adding assist techs.')
+      return
+    }
+
     const form = e.currentTarget
     const formData = new FormData(form)
+    formData.set('assigned_tech', assignedTechId)
     formData.set('access_confirmation_needed', accessNeeded ? 'true' : 'false')
+    formData.delete('assist_tech_ids')
+    assistTechIds.forEach(techId => formData.append('assist_tech_ids', techId))
 
     startTransition(async () => {
       const result = await addJobAction(formData)
@@ -280,13 +359,77 @@ function AddJobModal({
 
           <div style={{ marginBottom: '14px' }}>
             <div>
-              <label style={labelStyle}>Assign to</label>
-              <select name="assigned_tech" style={inputStyle}>
+              <label style={labelStyle}>Lead tech</label>
+              <select
+                name="assigned_tech"
+                style={inputStyle}
+                value={assignedTechId}
+                onChange={e => {
+                  const nextLeadTechId = e.target.value
+                  setAssignedTechId(nextLeadTechId)
+                  setAssistTechIds(currentIds => currentIds.filter(id => id !== nextLeadTechId))
+                }}
+              >
                 <option value="">— unassigned —</option>
                 {techs.map(t => (
                   <option key={t.id} value={t.id}>{t.first_name} {t.last_name}</option>
                 ))}
               </select>
+            </div>
+          </div>
+
+          <div style={{ marginBottom: '14px' }}>
+            <label style={labelStyle}>Additional crew</label>
+            <div style={{
+              border: '1px solid #e2e1da',
+              borderRadius: '10px',
+              background: '#faf9f5',
+              padding: '10px',
+              display: 'grid',
+              gap: '8px',
+            }}>
+              {techs.length === 0 ? (
+                <div style={{ fontSize: '12px', color: '#888780' }}>No assignable techs available.</div>
+              ) : (
+                techs.map(tech => {
+                  const disabled = !assignedTechId || tech.id === assignedTechId
+                  const checked = assistTechIds.includes(tech.id)
+
+                  return (
+                    <label
+                      key={tech.id}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '10px',
+                        padding: '8px 10px',
+                        borderRadius: '8px',
+                        background: checked ? '#eef6ff' : '#fff',
+                        border: checked ? '1px solid #b8d7f4' : '1px solid #e2e1da',
+                        color: disabled && !checked ? '#888780' : '#1a1a18',
+                        cursor: disabled ? 'not-allowed' : 'pointer',
+                      }}
+                    >
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleAssistTech(tech.id)}
+                          disabled={disabled}
+                        />
+                        <span style={{ fontSize: '13px', fontWeight: 600 }}>{techName(tech)}</span>
+                      </span>
+                      <span style={{ fontSize: '11px', color: checked ? '#185fa5' : '#888780' }}>
+                        {tech.id === assignedTechId ? 'lead tech' : checked ? 'shared crew' : 'optional'}
+                      </span>
+                    </label>
+                  )
+                })
+              )}
+            </div>
+            <div style={{ fontSize: '11px', color: '#888780', marginTop: '6px' }}>
+              Assist techs join the same job from planning and share the workspace.
             </div>
           </div>
 
@@ -368,16 +511,23 @@ export default function PlanningBoard({ jobs, techs, techsDiagnostic, customers,
   const [assigningTechId, setAssigningTechId] = useState('')
   const [showReassign, setShowReassign]   = useState(false)
   const [reassignTechId, setReassignTechId] = useState('')
+  const [showCrewEditor, setShowCrewEditor] = useState(false)
+  const [selectedAssistTechIds, setSelectedAssistTechIds] = useState<string[]>([])
   const [draggingJobId, setDraggingJobId] = useState<string | null>(null)
   const [dragTargetTechId, setDragTargetTechId] = useState<string | null>(null)
   const [dragUnassignedActive, setDragUnassignedActive] = useState(false)
   const [isPending, startTransition]      = useTransition()
 
+  const selectedJob = boardJobs.find(job => job.id === selectedJobId) ?? null
+
   // Reset reassign form when a different job is selected
   useEffect(() => {
+    const nextSelectedJob = boardJobs.find(job => job.id === selectedJobId) ?? null
     setShowReassign(false)
     setReassignTechId('')
-  }, [selectedJobId])
+    setShowCrewEditor(false)
+    setSelectedAssistTechIds(nextSelectedJob ? getAssistCrew(nextSelectedJob).map(member => member.id) : [])
+  }, [selectedJobId, boardJobs])
 
   useEffect(() => {
     setBoardJobs(jobs)
@@ -395,7 +545,6 @@ export default function PlanningBoard({ jobs, techs, techsDiagnostic, customers,
 
   const activeTechs    = techs.filter(t => jobsByTech[t.id]?.length > 0).length
   const emergencyCount = boardJobs.filter(j => j.priority === 'emergency').length
-  const selectedJob    = boardJobs.find(j => j.id === selectedJobId) ?? null
 
   const dateLabel = new Date(today + 'T12:00:00').toLocaleDateString('en-US', {
     weekday: 'long', month: 'long', day: 'numeric',
@@ -416,6 +565,8 @@ export default function PlanningBoard({ jobs, techs, techsDiagnostic, customers,
               ...job,
               assigned_tech: techId,
               queue_position: nextQueuePosition,
+              crew_members: getAssistCrew(job).filter(member => member.id !== techId),
+              job_status: job.job_status === 'intake' ? 'scheduled' : job.job_status,
               status: job.status === 'new' ? 'assigned' : job.status,
             }
           : job
@@ -426,6 +577,43 @@ export default function PlanningBoard({ jobs, techs, techsDiagnostic, customers,
         setAssigningTechId('')
         setShowReassign(false)
         setReassignTechId('')
+        setShowCrewEditor(false)
+        router.refresh()
+      } else {
+        setBoardJobs(previousJobs)
+        setBoardError(result.error)
+      }
+    })
+  }
+
+  function toggleSelectedAssistTech(techId: string) {
+    setSelectedAssistTechIds(currentIds => (
+      currentIds.includes(techId)
+        ? currentIds.filter(id => id !== techId)
+        : [...currentIds, techId]
+    ))
+  }
+
+  function handleSaveCrew(job: Job) {
+    if (!job.assigned_tech) {
+      setBoardError('Assign a lead tech before adding assist techs.')
+      return
+    }
+
+    const normalizedAssistIds = Array.from(new Set(selectedAssistTechIds.filter(techId => techId !== job.assigned_tech)))
+    setBoardError(null)
+
+    startTransition(async () => {
+      const previousJobs = boardJobs
+      setBoardJobs(currentJobs => currentJobs.map(currentJob => (
+        currentJob.id === job.id
+          ? { ...currentJob, crew_members: buildAssistCrewMembers(techs, normalizedAssistIds) }
+          : currentJob
+      )))
+
+      const result = await updateAssistTechs(job.id, normalizedAssistIds)
+      if (!result.error) {
+        setShowCrewEditor(false)
         router.refresh()
       } else {
         setBoardJobs(previousJobs)
@@ -546,7 +734,7 @@ export default function PlanningBoard({ jobs, techs, techsDiagnostic, customers,
           {techs.map((tech, i) => {
             const color    = avatarColor(i)
             const techJobs = jobsByTech[tech.id] ?? []
-            const doneCount = techJobs.filter(j => j.status === 'completed').length
+            const doneCount = techJobs.filter(j => j.job_status === 'completed').length
 
             return (
               <div key={tech.id} style={{ flex: '0 0 230px', minWidth: '230px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -748,7 +936,10 @@ export default function PlanningBoard({ jobs, techs, techsDiagnostic, customers,
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '10px' }}>
               {[
-                { label: 'Status',    value: statusPill(selectedJob.status).label },
+                { label: 'Status', value: getPrimaryJobStateMeta(selectedJob.job_status, selectedJob.commercial_state, selectedJob.resolution_type).label },
+                { label: 'Crew', value: getCrewSummary(selectedJob, techs) },
+                { label: 'Resolution', value: selectedJob.resolution_type ? (getResolutionTypeMeta(selectedJob.resolution_type)?.label ?? selectedJob.resolution_type) : 'Unresolved' },
+                { label: 'Commercial', value: getCommercialStateMeta(selectedJob.commercial_state)?.label ?? selectedJob.commercial_state },
                 { label: 'Priority',  value: selectedJob.priority },
                 { label: 'Diagnosis', value: selectedJob.diagnoses?.repair_code ?? '—' },
                 { label: 'Problem',   value: selectedJob.problem_description ?? '—' },
@@ -793,6 +984,81 @@ export default function PlanningBoard({ jobs, techs, techsDiagnostic, customers,
               </div>
             )}
 
+            {showCrewEditor && (
+              <div style={{ borderTop: '1px solid #e2e1da', paddingTop: '12px', marginTop: '12px' }}>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: '#5f5e5a', marginBottom: '8px' }}>Assist crew</div>
+                {!selectedJob.assigned_tech ? (
+                  <div style={{ fontSize: '12px', color: '#888780' }}>Assign a lead tech before adding crew.</div>
+                ) : (
+                  <>
+                    <div style={{ display: 'grid', gap: '8px' }}>
+                      {techs
+                        .filter(tech => tech.id !== selectedJob.assigned_tech)
+                        .map(tech => {
+                          const checked = selectedAssistTechIds.includes(tech.id)
+
+                          return (
+                            <label
+                              key={tech.id}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                gap: '10px',
+                                padding: '8px 10px',
+                                borderRadius: '8px',
+                                background: checked ? '#eef6ff' : '#faf9f5',
+                                border: checked ? '1px solid #b8d7f4' : '1px solid #e2e1da',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <input
+                                  type="checkbox"
+                                  checked={checked}
+                                  onChange={() => toggleSelectedAssistTech(tech.id)}
+                                />
+                                <span style={{ fontSize: '13px', fontWeight: 600 }}>{techName(tech)}</span>
+                              </span>
+                              <span style={{ fontSize: '11px', color: checked ? '#185fa5' : '#888780' }}>
+                                {checked ? 'shared crew' : 'available'}
+                              </span>
+                            </label>
+                          )
+                        })}
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '10px' }}>
+                      <div style={{ fontSize: '12px', color: '#888780', flex: 1 }}>
+                        Assist techs join the same job and shared workspace from planning.
+                      </div>
+                      <button
+                        onClick={() => handleSaveCrew(selectedJob)}
+                        disabled={isPending}
+                        style={{
+                          ...btnStyle,
+                          background: isPending ? '#b4b2a9' : '#185fa5',
+                          color: '#fff',
+                          border: 'none',
+                          cursor: isPending ? 'not-allowed' : 'pointer',
+                        }}
+                      >
+                        {isPending ? '…' : 'Save crew'}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setShowCrewEditor(false)
+                          setSelectedAssistTechIds(getAssistCrew(selectedJob).map(member => member.id))
+                        }}
+                        style={btnStyle}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '14px', paddingTop: '12px', borderTop: '1px solid #e2e1da' }}>
               <a
                 href={`/jobs/${selectedJob.id}`}
@@ -809,7 +1075,11 @@ export default function PlanningBoard({ jobs, techs, techsDiagnostic, customers,
                 Open Job
               </a>
               <button
-                onClick={() => { setShowReassign(!showReassign); setReassignTechId('') }}
+                onClick={() => {
+                  setShowCrewEditor(false)
+                  setShowReassign(!showReassign)
+                  setReassignTechId('')
+                }}
                 style={{
                   ...btnStyle,
                   background: showReassign ? '#f5f4f0' : '#fff',
@@ -818,7 +1088,23 @@ export default function PlanningBoard({ jobs, techs, techsDiagnostic, customers,
               >
                 Reassign
               </button>
-              <button style={btnStyle}>Add second tech</button>
+              <button
+                onClick={() => {
+                  setShowReassign(false)
+                  setShowCrewEditor(!showCrewEditor)
+                  setSelectedAssistTechIds(getAssistCrew(selectedJob).map(member => member.id))
+                }}
+                disabled={!selectedJob.assigned_tech}
+                style={{
+                  ...btnStyle,
+                  background: showCrewEditor ? '#f5f4f0' : '#fff',
+                  color: !selectedJob.assigned_tech ? '#b4b2a9' : '#1a1a18',
+                  cursor: !selectedJob.assigned_tech ? 'not-allowed' : 'pointer',
+                  fontWeight: showCrewEditor ? 600 : 400,
+                }}
+              >
+                Manage crew
+              </button>
               {selectedJob.access_confirmation_needed && (
                 <button
                   onClick={() => handleToggleAccess(selectedJob.id, !selectedJob.access_confirmed)}

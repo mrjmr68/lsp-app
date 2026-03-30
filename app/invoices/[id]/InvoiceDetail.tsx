@@ -11,7 +11,6 @@ import {
   ParentCustomer,
   VarianceData,
   PhotoCounts,
-  AppConfig,
 } from '../types'
 import {
   savePlaceholderCost,
@@ -32,7 +31,6 @@ interface Props {
   parentCustomer: ParentCustomer | null
   variance: VarianceData | null
   photoCounts: PhotoCounts
-  appConfig: AppConfig
   invoicePdfUrl: string | null
 }
 
@@ -101,11 +99,12 @@ export default function InvoiceDetail({
   parentCustomer,
   variance,
   photoCounts,
-  appConfig,
   invoicePdfUrl,
 }: Props) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
+  const estimateRecord = Array.isArray(job.job_estimates) ? (job.job_estimates[0] ?? null) : (job.job_estimates ?? null)
+  const partsRequest = Array.isArray(job.job_parts_requests) ? (job.job_parts_requests[0] ?? null) : (job.job_parts_requests ?? null)
 
   // ── State ────────────────────────────────────────────────────────────────
 
@@ -126,8 +125,8 @@ export default function InvoiceDetail({
 
   // Pre-fill billing email
   const billToCustomer = parentCustomer ?? job.customers
-  const [sendToEmail, setSendToEmail] = useState(billToCustomer?.billing_email ?? '')
-  const [ccEmail, setCcEmail] = useState('')
+  const [sendToEmail, setSendToEmail] = useState(estimateRecord?.send_to_email ?? billToCustomer?.billing_email ?? '')
+  const [ccEmail, setCcEmail] = useState(estimateRecord?.cc_email ?? '')
 
   // ── Placeholder items detection ──────────────────────────────────────────
 
@@ -149,20 +148,39 @@ export default function InvoiceDetail({
 
   const invoiceCalc = useMemo(() => {
     const parsedOverride = parseFloat(flatRateStr)
-    const primaryCharge = !isNaN(parsedOverride) ? parsedOverride : (bundle?.flat_rate ?? 0)
+    const fallbackPrimaryCharge = !isNaN(parsedOverride) ? parsedOverride : (bundle?.flat_rate ?? 0)
+    const fallbackLineItems = [
+      {
+        label: job.diagnoses?.repair_code ?? (adhocBundle ? 'Ad-hoc repair' : 'Service'),
+        amount: fallbackPrimaryCharge,
+      },
+      ...addOns.map(a => ({
+        label: a.type === 'bundle' ? (a.repair_bundles?.name ?? 'Additional bundle') : (a.items?.name ?? 'Additional item'),
+        amount: a.type === 'bundle' ? (a.repair_bundles?.flat_rate ?? 0) : (a.items?.unit_cost ?? 0) * a.quantity,
+      })),
+    ]
+    const lineItems = estimateRecord?.line_items?.length
+      ? estimateRecord.line_items.map((item, index) => ({
+          label: item.label,
+          amount: index === 0 && !isNaN(parsedOverride) ? parsedOverride : item.amount,
+        }))
+      : fallbackLineItems
 
-    const addOnCharges = addOns.reduce((sum, a) => {
-      if (a.type === 'bundle') return sum + (a.repair_bundles?.flat_rate ?? 0)
-      return sum + (a.items?.unit_cost ?? 0) * a.quantity
-    }, 0)
-
-    const subtotal = primaryCharge + addOnCharges
+    const subtotal = lineItems.reduce((sum, item) => sum + item.amount, 0)
     const taxRate = job.locations?.tax_rate ?? 0
     const tax = Math.round(subtotal * taxRate * 100) / 100
     const total = Math.round((subtotal + tax) * 100) / 100
 
-    return { primaryCharge, addOnCharges, subtotal, taxRate, tax, total }
-  }, [flatRateStr, bundle, addOns, job.locations])
+    return {
+      primaryCharge: lineItems[0]?.amount ?? fallbackPrimaryCharge,
+      addOnCharges: lineItems.slice(1).reduce((sum, item) => sum + item.amount, 0),
+      lineItems,
+      subtotal,
+      taxRate,
+      tax,
+      total,
+    }
+  }, [flatRateStr, bundle, addOns, job.locations, job.diagnoses, adhocBundle, estimateRecord])
 
   // ── Internal cost breakdown ──────────────────────────────────────────────
 
@@ -242,7 +260,7 @@ export default function InvoiceDetail({
 
   // ── Already invoiced guard ───────────────────────────────────────────────
 
-  const isInvoiced = job.status === 'invoiced'
+  const isInvoiced = job.commercial_state === 'invoiced'
   const activePrimaryRepair = bundle ? 'diagnosis' : adhocBundle ? 'adhoc' : 'none'
   const parsedManualPrice = parseFloat(flatRateStr)
   const requiresManualPrice = activePrimaryRepair === 'adhoc' && (Number.isNaN(parsedManualPrice) || parsedManualPrice <= 0)
@@ -256,6 +274,14 @@ export default function InvoiceDetail({
   const techName = job.users
     ? `${job.users.first_name} ${job.users.last_name}`
     : '—'
+  const customerInvoiceTitle = estimateRecord?.customer_summary
+    ?? job.diagnoses?.invoice_description
+    ?? job.diagnoses?.repair_code
+    ?? (adhocBundle ? 'Ad-hoc repair service' : 'Service performed')
+  const customerInvoiceBody = estimateRecord?.scope_of_work
+    ?? job.diagnoses?.repair_notes
+    ?? adhocBundle?.tech_description
+    ?? ''
 
   // ── System summary ───────────────────────────────────────────────────────
 
@@ -436,6 +462,52 @@ export default function InvoiceDetail({
         </Card>
 
         {/* ── 3. Job summary ────────────────────────────────────────────── */}
+        {(estimateRecord || partsRequest) && (
+          <Card
+            title="Commercial path"
+            rightText={estimateRecord?.estimate_number ?? 'Same-job follow-up'}
+          >
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '10px' }}>
+              <div>
+                <div style={{ fontSize: '10px', color: '#888780', textTransform: 'uppercase', letterSpacing: '.04em', marginBottom: '2px' }}>Estimate</div>
+                <div style={{ fontSize: '13px', fontWeight: 600 }}>
+                  {estimateRecord?.status ?? 'No estimate record'}
+                </div>
+                <div style={{ fontSize: '11px', color: '#5f5e5a', marginTop: '3px' }}>
+                  {estimateRecord?.approved_at ? `Approved ${fmtDate(estimateRecord.approved_at)}` : (estimateRecord?.sent_at ? `Sent ${fmtDate(estimateRecord.sent_at)}` : '')}
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: '10px', color: '#888780', textTransform: 'uppercase', letterSpacing: '.04em', marginBottom: '2px' }}>Quoted total</div>
+                <div style={{ fontSize: '13px', fontWeight: 600 }}>
+                  {estimateRecord ? fmtMoney(estimateRecord.total) : '—'}
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: '10px', color: '#888780', textTransform: 'uppercase', letterSpacing: '.04em', marginBottom: '2px' }}>Parts vendor</div>
+                <div style={{ fontSize: '13px', fontWeight: 600 }}>
+                  {partsRequest?.vendor_name ?? 'No vendor logged'}
+                </div>
+                <div style={{ fontSize: '11px', color: '#5f5e5a', marginTop: '3px' }}>
+                  {partsRequest?.ordered_at ? `Ordered ${fmtDate(partsRequest.ordered_at)}` : (partsRequest?.vendor_email_sent_at ? `Requested ${fmtDate(partsRequest.vendor_email_sent_at)}` : '')}
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: '10px', color: '#888780', textTransform: 'uppercase', letterSpacing: '.04em', marginBottom: '2px' }}>Parts lines</div>
+                <div style={{ fontSize: '13px', fontWeight: 600 }}>
+                  {partsRequest?.job_parts_request_lines?.length ?? 0}
+                </div>
+                <div style={{ fontSize: '11px', color: '#5f5e5a', marginTop: '3px' }}>
+                  {partsRequest?.ready_to_schedule_at ? `Ready ${fmtDate(partsRequest.ready_to_schedule_at)}` : ''}
+                </div>
+              </div>
+            </div>
+            <div style={{ fontSize: '12px', color: '#5f5e5a', lineHeight: 1.6, marginTop: '12px' }}>
+              Final invoice review is using the same job record that carried the estimate, parts sourcing, and return visit. The customer-facing summary below will prefer the saved estimate scope when one exists.
+            </div>
+          </Card>
+        )}
+
         <Card
           title="Job summary"
           rightText={`Completed ${relativeTime(job.completed_at)}`}
@@ -824,6 +896,12 @@ export default function InvoiceDetail({
                 <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '.04em', color: '#888780', marginBottom: '2px' }}>Invoice #</div>
                 <div style={{ fontSize: '13px', fontWeight: 600 }}>{job.invoice_number ?? 'Pending'}</div>
               </div>
+              {estimateRecord?.estimate_number && (
+                <div>
+                  <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '.04em', color: '#888780', marginBottom: '2px' }}>Estimate ref</div>
+                  <div style={{ fontSize: '13px', fontWeight: 600 }}>{estimateRecord.estimate_number}</div>
+                </div>
+              )}
               <div>
                 <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '.04em', color: '#888780', marginBottom: '2px' }}>Service date</div>
                 <div style={{ fontSize: '13px', fontWeight: 600 }}>{fmtDate(job.job_date)}</div>
@@ -847,9 +925,21 @@ export default function InvoiceDetail({
               borderBottom: '1px solid #e2e1da',
             }}>
               <strong style={{ display: 'block', marginBottom: '6px' }}>
-                {job.diagnoses?.invoice_description ?? job.diagnoses?.repair_code ?? (adhocBundle ? 'Ad-hoc repair service' : 'Service performed')}
+                {customerInvoiceTitle}
               </strong>
-              {job.diagnoses?.repair_notes ?? adhocBundle?.tech_description ?? ''}
+              {customerInvoiceBody}
+            </div>
+
+            <div style={{ marginBottom: '14px', paddingBottom: '14px', borderBottom: '1px solid #e2e1da' }}>
+              <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '.04em', color: '#888780', marginBottom: '8px' }}>Charges</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {invoiceCalc.lineItems.map(item => (
+                  <div key={`${item.label}-${item.amount}`} style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', fontSize: '13px' }}>
+                    <div style={{ color: '#1a1a18' }}>{item.label}</div>
+                    <div style={{ color: '#1a1a18', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{fmtMoney(item.amount)}</div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Total + tax */}

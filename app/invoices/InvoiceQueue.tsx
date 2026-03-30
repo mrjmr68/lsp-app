@@ -29,8 +29,6 @@ export default function InvoiceQueue({ jobs, blockerMap }: Props) {
 
   return (
     <div style={{ padding: '16px', maxWidth: '640px', margin: '0 auto' }}>
-
-      {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
         <div>
           <div style={{ fontSize: '15px', fontWeight: 700 }}>Invoice review</div>
@@ -38,15 +36,18 @@ export default function InvoiceQueue({ jobs, blockerMap }: Props) {
         </div>
         {jobs.length > 0 && (
           <span style={{
-            fontSize: '11px', fontWeight: 700, borderRadius: '5px',
-            padding: '2px 8px', background: '#fcebeb', color: '#a32d2d',
+            fontSize: '11px',
+            fontWeight: 700,
+            borderRadius: '5px',
+            padding: '2px 8px',
+            background: '#fcebeb',
+            color: '#a32d2d',
           }}>
             {jobs.length} job{jobs.length !== 1 ? 's' : ''}
           </span>
         )}
       </div>
 
-      {/* Job cards */}
       {jobs.length === 0 && (
         <div style={{ fontSize: '13px', color: '#888780', padding: '20px 0' }}>
           No jobs pending review.
@@ -55,9 +56,10 @@ export default function InvoiceQueue({ jobs, blockerMap }: Props) {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
         {jobs.map(job => {
+          const estimate = Array.isArray(job.job_estimates) ? (job.job_estimates[0] ?? null) : (job.job_estimates ?? null)
           const techName = job.users
             ? `${job.users.first_name} ${job.users.last_name.charAt(0)}.`
-            : '—'
+            : '-'
           const needsCost = blockerMap[job.id] ?? false
           const flagged = job.flagged_for_review
 
@@ -73,40 +75,50 @@ export default function InvoiceQueue({ jobs, blockerMap }: Props) {
                 cursor: 'pointer',
               }}
             >
-              {/* Customer + location */}
               <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '2px' }}>
-                {job.customers?.name ?? '—'}
-                {' — '}
+                {job.customers?.name ?? '-'}
+                {' - '}
                 {job.locations?.name ?? ''}
-                {job.manual_unit ? ` · ${job.manual_unit}` : job.units ? ` · ${(job.units as any).name}` : ''}
+                {job.manual_unit ? ` · ${job.manual_unit}` : job.units ? ` · ${job.units.name}` : ''}
               </div>
 
-              {/* Diagnosis + tech */}
               <div style={{ fontSize: '11px', color: '#5f5e5a', marginBottom: '5px' }}>
-                {job.diagnoses?.repair_code ?? '—'} · {techName}
+                {job.diagnoses?.repair_code ?? '-'} · {techName}
+                {estimate?.estimate_number ? ` · ${estimate.estimate_number}` : ''}
               </div>
 
-              {/* Pills + time */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px', flexWrap: 'wrap' }}>
                 {flagged ? (
                   <span style={{
-                    fontSize: '10px', fontWeight: 600, borderRadius: '4px',
-                    padding: '2px 7px', background: '#fcebeb', color: '#a32d2d',
+                    fontSize: '10px',
+                    fontWeight: 600,
+                    borderRadius: '4px',
+                    padding: '2px 7px',
+                    background: '#fcebeb',
+                    color: '#a32d2d',
                   }}>
                     flagged
                   </span>
                 ) : (
                   <span style={{
-                    fontSize: '10px', fontWeight: 600, borderRadius: '4px',
-                    padding: '2px 7px', background: '#faeeda', color: '#854f0b',
+                    fontSize: '10px',
+                    fontWeight: 600,
+                    borderRadius: '4px',
+                    padding: '2px 7px',
+                    background: '#faeeda',
+                    color: '#854f0b',
                   }}>
                     pending
                   </span>
                 )}
                 {needsCost && (
                   <span style={{
-                    fontSize: '10px', fontWeight: 600, borderRadius: '4px',
-                    padding: '2px 7px', background: '#fcebeb', color: '#a32d2d',
+                    fontSize: '10px',
+                    fontWeight: 600,
+                    borderRadius: '4px',
+                    padding: '2px 7px',
+                    background: '#fcebeb',
+                    color: '#a32d2d',
                   }}>
                     needs cost entry
                   </span>

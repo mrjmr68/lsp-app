@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import AppShell from '@/app/components/AppShell'
 import JobFlow from './JobFlow'
+import { CatalogItem, DiagnosisItem, HistoryJob, Job, JobAddOn, JobCrewMember, JobMessage, JobWorkflow, RepairBundle } from './types'
 
 export default async function JobPage({
   params,
@@ -23,7 +24,8 @@ export default async function JobPage({
   const { data: job, error: jobError } = await supabase
     .from('jobs')
     .select(`
-      id, status, priority, workflow_type, manual_unit, problem_description,
+      id, status, job_status, resolution_type, commercial_state,
+      priority, workflow_type, manual_unit, problem_description,
       access_confirmation_needed, access_confirmed,
       assigned_tech, actual_tech, job_date, arrived_at, completed_at,
       tstat_mode, tstat_fan,
@@ -72,11 +74,11 @@ export default async function JobPage({
 
   const serviceHistoryPromise = job.system_id
     ? supabase
-        .from('jobs')
-        .select('id, job_date, status, manual_unit, diagnoses!jobs_diagnosis_id_fkey(repair_code)')
+      .from('jobs')
+        .select('id, job_date, status, job_status, resolution_type, commercial_state, manual_unit, diagnoses!jobs_diagnosis_id_fkey(repair_code)')
         .eq('system_id', job.system_id)
         .neq('id', id)
-        .in('status', ['completed', 'invoiced'])
+        .eq('job_status', 'completed')
         .order('job_date', { ascending: false })
         .limit(10)
     : Promise.resolve({ data: [], error: null })
@@ -251,27 +253,29 @@ export default async function JobPage({
         : null
     })
     .filter((member, index, list): member is NonNullable<typeof member> => !!member && list.findIndex(other => other?.id === member.id) === index)
+  const viewerRole = (profile?.role ?? null) as 'tech' | 'dispatcher' | 'admin' | 'owner' | null
+  const jobData = {
+    ...job,
+    systems: primarySystem,
+    system_components: systemComponents ?? [],
+    observation_circuits: observationCircuits ?? [],
+    adhoc_bundle: adhocBundle ?? null,
+  } as Job
 
   return (
     <AppShell>
       <JobFlow
-        viewerRole={(profile?.role ?? null) as any}
+        viewerRole={viewerRole}
         currentUserId={user.id}
-        job={{
-          ...(job as any),
-          systems: primarySystem as any,
-          system_components: (systemComponents ?? []) as any,
-          observation_circuits: (observationCircuits ?? []) as any,
-          adhoc_bundle: (adhocBundle ?? null) as any,
-        }}
-        serviceHistory={(serviceHistory ?? []) as any}
-        diagnoses={(diagnoses ?? []) as any}
-        repairBundles={(repairBundles ?? []) as any}
-        catalogItems={(catalogItems ?? []) as any}
-        existingAddOns={(existingAddOns ?? []) as any}
-        workflow={(workflow ?? null) as any}
-        jobMessages={(jobMessages ?? []) as any}
-        crewMembers={(crewMembers ?? []) as any}
+        job={jobData}
+        serviceHistory={(serviceHistory ?? []) as HistoryJob[]}
+        diagnoses={(diagnoses ?? []) as DiagnosisItem[]}
+        repairBundles={(repairBundles ?? []) as RepairBundle[]}
+        catalogItems={(catalogItems ?? []) as CatalogItem[]}
+        existingAddOns={(existingAddOns ?? []) as JobAddOn[]}
+        workflow={(workflow ?? null) as JobWorkflow | null}
+        jobMessages={(jobMessages ?? []) as JobMessage[]}
+        crewMembers={crewMembers as JobCrewMember[]}
       />
     </AppShell>
   )

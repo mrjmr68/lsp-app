@@ -1,7 +1,12 @@
 import { redirect } from 'next/navigation'
 import AppShell from '@/app/components/AppShell'
 import InvoiceQueue from './InvoiceQueue'
+import { InvoiceQueueJob } from './types'
 import { requireRole } from '@/utils/auth/roles'
+
+function firstRelation<T>(value: T | T[] | null | undefined) {
+  return Array.isArray(value) ? value[0] ?? null : (value ?? null)
+}
 
 export default async function InvoicesPage() {
   const { supabase, error } = await requireRole('owner')
@@ -12,15 +17,34 @@ export default async function InvoicesPage() {
   const { data: pendingJobs, error: jobsError } = await supabase
     .from('jobs')
     .select(`
-      id, status, priority, manual_unit, job_date, completed_at,
+      id, status, job_status, resolution_type, commercial_state,
+      priority, manual_unit, job_date, completed_at,
       needs_admin_review, flagged_for_review, diagnosis_id,
       customers!jobs_customer_id_fkey(id, name),
       locations!jobs_location_id_fkey(id, name),
       units!jobs_unit_id_fkey(id, name),
       diagnoses!jobs_diagnosis_id_fkey(id, repair_code),
-      users!jobs_actual_tech_fkey(id, first_name, last_name)
+      users!jobs_actual_tech_fkey(id, first_name, last_name),
+      job_estimates(
+        id,
+        estimate_number,
+        status,
+        customer_summary,
+        scope_of_work,
+        line_items,
+        subtotal,
+        tax_rate,
+        tax,
+        total,
+        send_to_email,
+        cc_email,
+        generated_at,
+        sent_at,
+        approved_at
+      )
     `)
-    .eq('status', 'completed')
+    .eq('job_status', 'completed')
+    .eq('commercial_state', 'ready_for_invoice')
     .eq('needs_admin_review', true)
     .order('completed_at', { ascending: false })
 
@@ -35,16 +59,23 @@ export default async function InvoicesPage() {
     .map(j => j.diagnosis_id as string)
 
   // 2. Find bundles that contain placeholder items
-  let placeholderDiagnosisIds: Set<string> = new Set()
+  const placeholderDiagnosisIds = new Set<string>()
   if (diagnosisIds.length > 0) {
     const { data: bundles } = await supabase
       .from('repair_bundles')
       .select('diagnosis_id, repair_bundle_lines(items(is_placeholder))')
       .in('diagnosis_id', diagnosisIds)
 
-    for (const b of bundles ?? []) {
-      const lines = (b as any).repair_bundle_lines ?? []
-      const hasPlaceholder = lines.some((l: any) => l.items?.is_placeholder)
+    type BundleWithPlaceholderLines = {
+      diagnosis_id: string
+      repair_bundle_lines: Array<{
+        items: { is_placeholder: boolean }[] | { is_placeholder: boolean } | null
+      }> | null
+    }
+
+    for (const b of (bundles ?? []) as BundleWithPlaceholderLines[]) {
+      const lines = b.repair_bundle_lines ?? []
+      const hasPlaceholder = lines.some(line => firstRelation(line.items)?.is_placeholder)
       if (hasPlaceholder) placeholderDiagnosisIds.add(b.diagnosis_id)
     }
   }
@@ -80,10 +111,19 @@ export default async function InvoicesPage() {
     }
   }
 
+  const normalizedPendingJobs = (pendingJobs ?? []).map(job => ({
+    ...job,
+    customers: firstRelation(job.customers),
+    locations: firstRelation(job.locations),
+    units: firstRelation(job.units),
+    diagnoses: firstRelation(job.diagnoses),
+    users: firstRelation(job.users),
+  }))
+
   return (
     <AppShell>
       <InvoiceQueue
-        jobs={(pendingJobs ?? []) as any}
+        jobs={normalizedPendingJobs as InvoiceQueueJob[]}
         blockerMap={blockerMap}
       />
     </AppShell>

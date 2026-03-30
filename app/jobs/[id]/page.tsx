@@ -14,10 +14,16 @@ export default async function JobPage({
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
+  const { data: profile } = await supabase
+    .from('users')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
+
   const { data: job, error: jobError } = await supabase
     .from('jobs')
     .select(`
-      id, status, priority, manual_unit, problem_description,
+      id, status, priority, workflow_type, manual_unit, problem_description,
       access_confirmation_needed, access_confirmed,
       assigned_tech, actual_tech, job_date, arrived_at, completed_at,
       tstat_mode, tstat_fan,
@@ -119,6 +125,32 @@ export default async function JobPage({
     .limit(1)
     .maybeSingle()
 
+  const workflowPromise = supabase
+    .from('job_workflows')
+    .select(`
+      id, workflow_type, status, started_at, completed_at,
+      job_workflow_items(
+        id, phase, sort_order, label, details, action_key,
+        required, completed, completed_at, completed_by, note
+      )
+    `)
+    .eq('job_id', id)
+    .maybeSingle()
+
+  const jobMessagesPromise = supabase
+    .from('job_messages')
+    .select(`
+      id, message_type, body, quick_action_key, created_at, user_id,
+      users!job_messages_user_id_fkey(first_name, last_name)
+    `)
+    .eq('job_id', id)
+    .order('created_at', { ascending: true })
+
+  const crewAssignmentsPromise = supabase
+    .from('job_tech')
+    .select('user_id, role')
+    .eq('job_id', id)
+
   const [
     { data: serviceHistory, error: serviceHistoryError },
     { data: diagnoses, error: diagnosesError },
@@ -128,6 +160,9 @@ export default async function JobPage({
     { data: systemComponents, error: systemComponentsError },
     { data: observationCircuits, error: observationCircuitsError },
     { data: adhocBundle, error: adhocBundleError },
+    { data: workflow, error: workflowError },
+    { data: jobMessages, error: jobMessagesError },
+    { data: crewAssignments, error: crewAssignmentsError },
   ] = await Promise.all([
     serviceHistoryPromise,
     diagnosesPromise,
@@ -137,6 +172,9 @@ export default async function JobPage({
     systemComponentsPromise,
     observationCircuitsPromise,
     adhocBundlePromise,
+    workflowPromise,
+    jobMessagesPromise,
+    crewAssignmentsPromise,
   ])
 
   if (serviceHistoryError) {
@@ -163,10 +201,62 @@ export default async function JobPage({
   if (adhocBundleError) {
     console.error('Ad-hoc bundle query error:', adhocBundleError.message, adhocBundleError.details, adhocBundleError.hint)
   }
+  if (workflowError) {
+    console.error('Job workflow query error:', workflowError.message, workflowError.details, workflowError.hint)
+  }
+  if (jobMessagesError) {
+    console.error('Job messages query error:', jobMessagesError.message, jobMessagesError.details, jobMessagesError.hint)
+  }
+  if (crewAssignmentsError) {
+    console.error('Job crew query error:', crewAssignmentsError.message, crewAssignmentsError.details, crewAssignmentsError.hint)
+  }
+
+  const crewUserIds = Array.from(new Set([
+    job.assigned_tech,
+    job.actual_tech,
+    ...((crewAssignments ?? []).map(assignment => assignment.user_id)),
+  ].filter((value): value is string => !!value)))
+
+  const { data: crewUsers, error: crewUsersError } = crewUserIds.length > 0
+    ? await supabase
+        .from('users')
+        .select('id, first_name, last_name, role')
+        .in('id', crewUserIds)
+    : { data: [], error: null }
+
+  if (crewUsersError) {
+    console.error('Job crew user query error:', crewUsersError.message, crewUsersError.details, crewUsersError.hint)
+  }
+
+  const crewById = new Map((crewUsers ?? []).map(member => [member.id, member]))
+  const crewMembers = [
+    job.assigned_tech ? { id: job.assigned_tech, assignment_role: 'assigned' as const } : null,
+    job.actual_tech ? { id: job.actual_tech, assignment_role: 'actual' as const } : null,
+    ...((crewAssignments ?? []).map(assignment => ({
+      id: assignment.user_id,
+      assignment_role: assignment.role as 'primary' | 'assist',
+    }))),
+  ]
+    .filter((member): member is { id: string; assignment_role: 'assigned' | 'actual' | 'primary' | 'assist' } => !!member)
+    .map(member => {
+      const details = crewById.get(member.id)
+      return details
+        ? {
+            id: details.id,
+            first_name: details.first_name,
+            last_name: details.last_name,
+            role: details.role,
+            assignment_role: member.assignment_role,
+          }
+        : null
+    })
+    .filter((member, index, list): member is NonNullable<typeof member> => !!member && list.findIndex(other => other?.id === member.id) === index)
 
   return (
     <AppShell>
       <JobFlow
+        viewerRole={(profile?.role ?? null) as any}
+        currentUserId={user.id}
         job={{
           ...(job as any),
           systems: primarySystem as any,
@@ -179,6 +269,9 @@ export default async function JobPage({
         repairBundles={(repairBundles ?? []) as any}
         catalogItems={(catalogItems ?? []) as any}
         existingAddOns={(existingAddOns ?? []) as any}
+        workflow={(workflow ?? null) as any}
+        jobMessages={(jobMessages ?? []) as any}
+        crewMembers={(crewMembers ?? []) as any}
       />
     </AppShell>
   )

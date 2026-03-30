@@ -1,12 +1,15 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useEffect, useMemo, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { DiagnosisItem, Job, JobAddOn, JobAdhocLine, ObservationCircuitState } from './types'
-import { closeJob } from './actions'
+import { DiagnosisItem, Job, JobAddOn, JobAdhocLine, JobCrewMember, JobMessage, JobWorkflow, ObservationCircuitState } from './types'
+import { closeJob, saveJobChecklistItemNote, setJobChecklistItemStatus, updateJobWorkflowStatus } from './actions'
 
 interface Props {
   job: Job
+  workflow: JobWorkflow | null
+  crewMembers: JobCrewMember[]
+  jobMessages: JobMessage[]
   workflowMode: 'diagnosis' | 'adhoc'
   selectedDiagnosis: DiagnosisItem | null
   adhocDescription: string
@@ -97,6 +100,9 @@ function formatReading(value: string, suffix: string) {
 
 export default function Step5Close({
   job,
+  workflow,
+  crewMembers,
+  jobMessages,
   workflowMode,
   selectedDiagnosis,
   adhocDescription,
@@ -113,8 +119,35 @@ export default function Step5Close({
   canCloseJob,
 }: Props) {
   const [isPending, startTransition] = useTransition()
+  const [isChecklistPending, startChecklistTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
+  const [noteDrafts, setNoteDrafts] = useState<Record<string, string>>({})
   const router = useRouter()
+  const workflowRequiredItems = workflow?.job_workflow_items.filter(item => item.required) ?? []
+  const completedWorkflowItems = workflowRequiredItems.filter(item => item.completed).length
+  const sharedWorkflowJob = workflow != null
+  const closeoutItems = useMemo(
+    () => (workflow?.job_workflow_items ?? [])
+      .filter(item => item.phase === 'closeout')
+      .sort((a, b) => a.sort_order - b.sort_order),
+    [workflow],
+  )
+
+  useEffect(() => {
+    setNoteDrafts(Object.fromEntries(closeoutItems.map(item => [item.id, item.note ?? ''])))
+  }, [closeoutItems])
+
+  function handleChecklistAction(task: () => Promise<{ error?: string | null }>) {
+    setError(null)
+    startChecklistTransition(async () => {
+      const result = await task()
+      if (result.error) {
+        setError(result.error)
+        return
+      }
+      router.refresh()
+    })
+  }
 
   function handleClose() {
     setError(null)
@@ -138,6 +171,146 @@ export default function Step5Close({
 
   return (
     <div style={{ padding: '16px', maxWidth: '600px', margin: '0 auto' }}>
+      {sharedWorkflowJob && (
+        <>
+          <div style={{ background: '#fff', border: '1px solid #e2e1da', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px' }}>
+            <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
+              Shared Workflow
+            </div>
+            <div style={{ fontSize: '14px', fontWeight: 600 }}>
+              {workflow.workflow_type === 'install' ? 'Install' : 'Major Repair'}
+            </div>
+            <div style={{ fontSize: '12px', color: '#5f5e5a', marginTop: '6px' }}>
+              {completedWorkflowItems} of {workflowRequiredItems.length} required checklist items complete
+            </div>
+            {workflow.status !== 'closeout' && workflow.status !== 'complete' && (
+              <button
+                type="button"
+                onClick={() => handleChecklistAction(() => updateJobWorkflowStatus(job.id, 'closeout'))}
+                disabled={isChecklistPending}
+                style={{
+                  marginTop: '10px',
+                  padding: '8px 12px',
+                  borderRadius: '9px',
+                  border: '1px solid #d3d1c7',
+                  background: '#fff',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  fontFamily: 'inherit',
+                  cursor: isChecklistPending ? 'not-allowed' : 'pointer',
+                }}
+              >
+                Move to Closeout
+              </button>
+            )}
+          </div>
+
+          <div style={{ background: '#fff', border: '1px solid #e2e1da', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px' }}>
+            <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
+              Crew
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {crewMembers.map(member => (
+                <span
+                  key={`${member.id}-${member.assignment_role}`}
+                  style={{ borderRadius: '999px', background: '#f1efe8', color: '#1a1a18', padding: '6px 10px', fontSize: '12px', fontWeight: 600 }}
+                >
+                  {[member.first_name, member.last_name].filter(Boolean).join(' ')}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ background: '#fff', border: '1px solid #e2e1da', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px' }}>
+            <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
+              Message Activity
+            </div>
+            <div style={{ fontSize: '13px', color: '#1a1a18' }}>
+              {jobMessages.length} shared update{jobMessages.length === 1 ? '' : 's'} captured
+            </div>
+          </div>
+
+          {closeoutItems.length > 0 && (
+            <div style={{ background: '#fff', border: '1px solid #e2e1da', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px' }}>
+              <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
+                Completion Checklist
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {closeoutItems.map(item => (
+                  <div key={item.id} style={{ border: '1px solid #ece8de', borderRadius: '8px', padding: '10px 12px', background: item.completed ? '#f4fbef' : '#fcfbf8' }}>
+                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a18' }}>
+                          {item.label}
+                        </div>
+                        {item.details && (
+                          <div style={{ fontSize: '12px', color: '#716a5e', marginTop: '4px', lineHeight: 1.45 }}>
+                            {item.details}
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleChecklistAction(() => setJobChecklistItemStatus(item.id, !item.completed))}
+                        disabled={isChecklistPending}
+                        style={{
+                          padding: '6px 10px',
+                          borderRadius: '999px',
+                          border: item.completed ? '1px solid #9cca72' : '1px solid #d3d1c7',
+                          background: item.completed ? '#eaf3de' : '#fff',
+                          color: item.completed ? '#31590f' : '#5f5e5a',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          fontFamily: 'inherit',
+                          cursor: isChecklistPending ? 'not-allowed' : 'pointer',
+                        }}
+                      >
+                        {item.completed ? 'Done' : 'Mark Done'}
+                      </button>
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+                      <input
+                        type="text"
+                        value={noteDrafts[item.id] ?? ''}
+                        onChange={event => setNoteDrafts(current => ({ ...current, [item.id]: event.target.value }))}
+                        placeholder="Add completion note"
+                        style={{
+                          flex: 1,
+                          fontSize: '12px',
+                          padding: '8px 10px',
+                          borderRadius: '9px',
+                          border: '1px solid #d7d4ca',
+                          background: '#fff',
+                          fontFamily: 'inherit',
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleChecklistAction(() => saveJobChecklistItemNote(item.id, noteDrafts[item.id] ?? ''))}
+                        disabled={isChecklistPending}
+                        style={{
+                          padding: '8px 12px',
+                          borderRadius: '9px',
+                          border: '1px solid #d3d1c7',
+                          background: '#fff',
+                          fontSize: '12px',
+                          fontFamily: 'inherit',
+                          cursor: isChecklistPending ? 'not-allowed' : 'pointer',
+                        }}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      {!sharedWorkflowJob && (
+        <>
       <div style={{ background: '#fff', border: '1px solid #e2e1da', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px' }}>
         <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
           {workflowMode === 'adhoc' ? 'Repair Path' : 'Diagnosis'}
@@ -203,6 +376,8 @@ export default function Step5Close({
           ))}
         </div>
       )}
+        </>
+      )}
 
       <div style={{ background: '#fff', border: '1px solid #e2e1da', borderRadius: '8px', padding: '12px 14px', marginBottom: '16px' }}>
         <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>Photos</div>
@@ -232,7 +407,9 @@ export default function Step5Close({
           color: '#a32d2d',
           marginBottom: '14px',
         }}>
-          Select a diagnosis or save an ad-hoc repair before completing the job.
+          {sharedWorkflowJob
+            ? 'Complete the required shared workflow checklist items before closing the job.'
+            : 'Select a diagnosis or save an ad-hoc repair before completing the job.'}
         </div>
       )}
 

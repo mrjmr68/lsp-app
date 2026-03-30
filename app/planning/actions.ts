@@ -13,6 +13,7 @@ export async function addJob(formData: FormData) {
   const locationId = formData.get('location_id') as string
   const unit = formData.get('unit') as string
   const priority = formData.get('priority') as string
+  const workflowType = formData.get('workflow_type') as string
   const assignedTech = formData.get('assigned_tech') as string
   const problemDesc = formData.get('problem_description') as string
   const accessNeeded = formData.get('access_confirmation_needed') === 'true'
@@ -43,6 +44,7 @@ export async function addJob(formData: FormData) {
     location_id: locationId,
     manual_unit: unit || null,
     priority: priority || 'routine',
+    workflow_type: workflowType || 'standard',
     assigned_tech: assignedTech || null,
     problem_description: problemDesc || null,
     access_confirmation_needed: accessNeeded,

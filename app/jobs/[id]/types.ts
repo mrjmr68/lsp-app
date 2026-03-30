@@ -3,6 +3,14 @@
 export interface JobCustomer { id: string; name: string }
 export interface JobLocation { id: string; name: string; access_notes: string | null }
 export interface JobUnit { id: string; name: string; unit_type: string }
+export interface JobCrewMember {
+  id: string
+  first_name: string
+  last_name: string
+  role: string
+  assignment_role: 'assigned' | 'actual' | 'primary' | 'assist'
+}
+
 export interface ObservationCircuit {
   id: string
   circuit_number: 1 | 2
@@ -11,6 +19,7 @@ export interface ObservationCircuit {
   liquid_pressure: number | null
   liquid_line_temp: number | null
 }
+
 export interface ObservationCircuitState {
   id?: string | null
   circuit_number: 1 | 2
@@ -19,6 +28,7 @@ export interface ObservationCircuitState {
   liquid_pressure: string
   liquid_line_temp: string
 }
+
 export interface ObservedComponentState {
   id?: string | null
   key: string
@@ -32,18 +42,35 @@ export interface ObservedComponentState {
   metering_device: string
   heating_capacity_btu: string
 }
+
 export interface JobSystem {
-  id: string; name: string; system_type: string | null; system_subtype: string | null
-  group_name: string | null; tonnage: number | null
-  make: string | null; model: string | null; serial_number: string | null
-  refrigerant_type: string | null; metering_device: string | null
+  id: string
+  name: string
+  system_type: string | null
+  system_subtype: string | null
+  group_name: string | null
+  tonnage: number | null
+  make: string | null
+  model: string | null
+  serial_number: string | null
+  refrigerant_type: string | null
+  metering_device: string | null
   heating_capacity_btu: number | null
   notes: string | null
-  served_areas: string | null; thermostat_location: string | null
-  equipment_location: string | null; controls_notes: string | null
-  manufacture_date: string | null; manufacture_date_source: string | null
+  served_areas: string | null
+  thermostat_location: string | null
+  equipment_location: string | null
+  controls_notes: string | null
+  manufacture_date: string | null
+  manufacture_date_source: string | null
 }
-export interface JobDiagnosis { id: string; repair_code: string; repair_notes: string | null }
+
+export interface JobDiagnosis {
+  id: string
+  repair_code: string
+  repair_notes: string | null
+}
+
 export interface JobAdhocLine {
   id?: string | null
   quantity: number
@@ -55,6 +82,7 @@ export interface JobAdhocLine {
     is_placeholder?: boolean
   } | null
 }
+
 export interface JobAdhocBundle {
   id: string
   tech_description: string
@@ -65,16 +93,29 @@ export interface JobAdhocBundle {
 }
 
 export interface Job {
-  id: string; status: string; priority: string
-  manual_unit: string | null; problem_description: string | null
-  access_confirmation_needed: boolean; access_confirmed: boolean
-  assigned_tech: string | null; actual_tech: string | null
-  job_date: string; arrived_at: string | null; completed_at: string | null
-  tstat_mode: string | null; tstat_fan: string | null; system_response: string | null
-  temp_outdoor: number | null; temp_outdoor_auto: number | null
-  temp_return: number | null; temp_supply: number | null
-  arrival_notes: string | null; diagnosis_id: string | null
-  needs_admin_review?: boolean; new_diagnosis_requested?: boolean
+  id: string
+  status: string
+  priority: string
+  manual_unit: string | null
+  problem_description: string | null
+  access_confirmation_needed: boolean
+  access_confirmed: boolean
+  assigned_tech: string | null
+  actual_tech: string | null
+  job_date: string
+  arrived_at: string | null
+  completed_at: string | null
+  tstat_mode: string | null
+  tstat_fan: string | null
+  system_response: string | null
+  temp_outdoor: number | null
+  temp_outdoor_auto: number | null
+  temp_return: number | null
+  temp_supply: number | null
+  arrival_notes: string | null
+  diagnosis_id: string | null
+  needs_admin_review?: boolean
+  new_diagnosis_requested?: boolean
   system_id: string | null
   customers: JobCustomer | null
   locations: JobLocation | null
@@ -87,37 +128,101 @@ export interface Job {
 }
 
 export interface DiagnosisItem {
-  id: string; repair_code: string
-  location: string | null; component: string | null; action: string | null
-  cat1: string | null; cat2: string | null; cat3: string | null
-  invoice_description: string | null; repair_notes: string | null
-  one_shot: boolean; variable_pricing: boolean
+  id: string
+  repair_code: string
+  location: string | null
+  component: string | null
+  action: string | null
+  cat1: string | null
+  cat2: string | null
+  cat3: string | null
+  invoice_description: string | null
+  repair_notes: string | null
+  one_shot: boolean
+  variable_pricing: boolean
 }
 
 export interface BundleLineItem {
-  id: string; name: string; type: string; unit: string; is_placeholder: boolean
+  id: string
+  name: string
+  type: string
+  unit: string
+  is_placeholder: boolean
 }
+
 export interface BundleLine {
-  id: string; quantity: number; items: BundleLineItem | null
+  id: string
+  quantity: number
+  items: BundleLineItem | null
 }
+
 export interface RepairBundle {
-  id: string; diagnosis_id: string; name: string
-  addon_eligible: boolean; addon_description: string | null
+  id: string
+  diagnosis_id: string
+  name: string
+  addon_eligible: boolean
+  addon_description: string | null
   notes: string | null
   repair_bundle_lines: BundleLine[]
 }
 
 export interface JobAddOn {
-  id: string; type: 'bundle' | 'item'; quantity: number
+  id: string
+  type: 'bundle' | 'item'
+  quantity: number
   repair_bundles: { id: string; name: string } | null
   items: { id: string; name: string; unit: string } | null
 }
 
 export interface CatalogItem {
-  id: string; name: string; type: string; unit: string; is_placeholder: boolean; unit_cost?: number | null
+  id: string
+  name: string
+  type: string
+  unit: string
+  is_placeholder: boolean
+  unit_cost?: number | null
 }
 
 export interface HistoryJob {
-  id: string; job_date: string; status: string; manual_unit: string | null
+  id: string
+  job_date: string
+  status: string
+  manual_unit: string | null
   diagnoses: { repair_code: string } | null
+}
+
+export interface JobWorkflowItem {
+  id: string
+  phase: 'prep' | 'materials' | 'execution' | 'closeout'
+  sort_order: number
+  label: string
+  details: string | null
+  action_key: string | null
+  required: boolean
+  completed: boolean
+  completed_at: string | null
+  completed_by: string | null
+  note: string | null
+}
+
+export interface JobWorkflow {
+  id: string
+  workflow_type: 'install' | 'major_repair'
+  status: 'prep' | 'on_site' | 'closeout' | 'complete'
+  started_at: string
+  completed_at: string | null
+  job_workflow_items: JobWorkflowItem[]
+}
+
+export interface JobMessage {
+  id: string
+  message_type: 'text' | 'quick_action' | 'system'
+  body: string
+  quick_action_key: string | null
+  created_at: string
+  user_id: string
+  users: {
+    first_name: string
+    last_name: string
+  } | null
 }

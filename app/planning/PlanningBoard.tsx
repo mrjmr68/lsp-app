@@ -269,6 +269,17 @@ function AddJobModal({
               </select>
             </div>
             <div>
+              <label style={labelStyle}>Workflow</label>
+              <select name="workflow_type" style={inputStyle} defaultValue="standard">
+                <option value="standard">Standard service</option>
+                <option value="install">Install</option>
+                <option value="major_repair">Major repair</option>
+              </select>
+            </div>
+          </div>
+
+          <div style={{ marginBottom: '14px' }}>
+            <div>
               <label style={labelStyle}>Assign to</label>
               <select name="assigned_tech" style={inputStyle}>
                 <option value="">— unassigned —</option>

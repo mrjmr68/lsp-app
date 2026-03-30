@@ -1,12 +1,17 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { HistoryJob, Job } from './types'
-import { markArrived } from './actions'
+import { useRouter } from 'next/navigation'
+import { HistoryJob, Job, JobCrewMember, JobWorkflow } from './types'
+import { markArrived, startJobWorkflow } from './actions'
+import { JobWorkflowType } from '@/utils/job-workflows'
 
 interface Props {
+  viewerRole: 'tech' | 'dispatcher' | 'admin' | 'owner' | null
   job: Job
   serviceHistory: HistoryJob[]
+  workflow: JobWorkflow | null
+  crewMembers: JobCrewMember[]
   onArrived: (arrivedAt: string, lat: number | null, lng: number | null) => void
 }
 
@@ -71,16 +76,31 @@ const inlineContentStyle: React.CSSProperties = {
   color: '#1a1a18',
 }
 
-export default function Step1Arrive({ job, serviceHistory, onArrived }: Props) {
+export default function Step1Arrive({ viewerRole, job, serviceHistory, workflow, crewMembers, onArrived }: Props) {
   const [isPending, startTransition] = useTransition()
+  const [isWorkflowPending, startWorkflowTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [detailsExpanded, setDetailsExpanded] = useState(false)
+  const router = useRouter()
 
   const alreadyArrived = job.status === 'in_progress' && !!job.arrived_at
   const unitLabel = job.units?.name ?? job.manual_unit ?? ''
   const destinationLabel = [job.locations?.name, unitLabel].filter(Boolean).join(' - ')
   const equipmentLabel = [job.systems?.make, toTitleLabel(job.systems?.system_type) || job.systems?.system_subtype].filter(Boolean).join(' ')
   const contextCount = (job.problem_description ? 1 : 0) + serviceHistory.length
+  const canStartWorkflow = !workflow && ['owner', 'admin', 'dispatcher'].includes(viewerRole ?? '')
+
+  function handleStartWorkflow(workflowType: JobWorkflowType) {
+    setError(null)
+    startWorkflowTransition(async () => {
+      const result = await startJobWorkflow(job.id, workflowType)
+      if (result.error) {
+        setError(result.error)
+        return
+      }
+      router.refresh()
+    })
+  }
 
   function handleArrive() {
     setError(null)
@@ -91,7 +111,7 @@ export default function Step1Arrive({ job, serviceHistory, onArrived }: Props) {
         setError(result.error)
       } else {
         onArrived(
-          job.arrived_at ?? new Date().toISOString(),
+          result.arrivedAt ?? job.arrived_at ?? new Date().toISOString(),
           position?.lat ?? null,
           position?.lng ?? null,
         )
@@ -249,6 +269,68 @@ export default function Step1Arrive({ job, serviceHistory, onArrived }: Props) {
           </div>
         )}
       </div>
+
+      {(workflow || canStartWorkflow) && (
+        <div style={infoCardStyle}>
+          <div style={{ fontSize: '10px', color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px', fontWeight: 700 }}>
+            Shared Crew Workflow
+          </div>
+          {workflow ? (
+            <>
+              <div style={{ fontSize: '16px', fontWeight: 700, color: '#1a1a18' }}>
+                {workflow.workflow_type === 'install' ? 'Install' : 'Major Repair'}
+              </div>
+              <div style={{ fontSize: '13px', color: '#5f5e5a', marginTop: '6px' }}>
+                {crewMembers.length > 0 ? `${crewMembers.length} crew member${crewMembers.length === 1 ? '' : 's'} synced` : 'Shared workspace is active.'}
+              </div>
+            </>
+          ) : (
+            <>
+              <div style={{ fontSize: '14px', color: '#1a1a18', marginBottom: '12px', lineHeight: 1.45 }}>
+                Start the shared workflow before travel so prep, materials, and field check-ins stay synced for the whole crew.
+              </div>
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={() => handleStartWorkflow('install')}
+                  disabled={isWorkflowPending}
+                  style={{
+                    padding: '10px 14px',
+                    borderRadius: '8px',
+                    border: '1px solid #d3d1c7',
+                    background: '#fff',
+                    color: '#1a1a18',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    cursor: isWorkflowPending ? 'not-allowed' : 'pointer',
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  {isWorkflowPending ? 'Starting...' : 'Start Install'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleStartWorkflow('major_repair')}
+                  disabled={isWorkflowPending}
+                  style={{
+                    padding: '10px 14px',
+                    borderRadius: '8px',
+                    border: '1px solid #d3d1c7',
+                    background: '#fff',
+                    color: '#1a1a18',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    cursor: isWorkflowPending ? 'not-allowed' : 'pointer',
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  {isWorkflowPending ? 'Starting...' : 'Start Major Repair'}
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
       {error && (
         <div style={{

@@ -3,6 +3,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { inferManufactureDate } from '@/utils/hvac/systems'
+import { buildWorkflowSeedItems, JobWorkflowPhase, JobWorkflowType, QuickActionKey } from '@/utils/job-workflows'
 
 function cleanNullableText(value: string | null | undefined) {
   const trimmed = value?.trim()
@@ -90,6 +91,138 @@ type JobAdhocLineInput = {
   quantity: number
 }
 
+type SharedWorkflowStatus = 'prep' | 'on_site' | 'closeout' | 'complete'
+
+async function getJobWorkspaceContext(jobId: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return { supabase, user: null, role: null as string | null, job: null, error: 'Not authenticated' }
+  }
+
+  const [{ data: profile, error: profileError }, { data: job, error: jobError }] = await Promise.all([
+    supabase.from('users').select('role').eq('id', user.id).maybeSingle(),
+    supabase.from('jobs').select('id, assigned_tech, actual_tech').eq('id', jobId).maybeSingle(),
+  ])
+
+  if (profileError) return { supabase, user, role: null as string | null, job: null, error: profileError.message }
+  if (jobError || !job) return { supabase, user, role: profile?.role ?? null, job: null, error: jobError?.message ?? 'Job not found.' }
+
+  const role = profile?.role ?? null
+  const privileged = role === 'owner' || role === 'admin' || role === 'dispatcher'
+  const directAssignment = job.assigned_tech === user.id || job.actual_tech === user.id
+
+  let helperAssignment = false
+  if (!privileged && !directAssignment) {
+    const { count, error: helperError } = await supabase
+      .from('job_tech')
+      .select('id', { count: 'exact', head: true })
+      .eq('job_id', jobId)
+      .eq('user_id', user.id)
+
+    if (helperError) {
+      return { supabase, user, role, job, error: helperError.message }
+    }
+    helperAssignment = (count ?? 0) > 0
+  }
+
+  if (!privileged && !directAssignment && !helperAssignment) {
+    return { supabase, user, role, job, error: 'Only assigned crew members can use this shared workspace.' }
+  }
+
+  return { supabase, user, role, job, error: null as string | null }
+}
+
+async function ensureJobWorkflow(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  userId: string,
+  jobId: string,
+  workflowType: JobWorkflowType,
+) {
+  const { data: existing, error: existingError } = await supabase
+    .from('job_workflows')
+    .select('id, status')
+    .eq('job_id', jobId)
+    .maybeSingle()
+
+  if (existingError) return { workflowId: null, error: existingError.message }
+
+  let workflowId = existing?.id ?? null
+
+  if (!workflowId) {
+    const { data: inserted, error: insertError } = await supabase
+      .from('job_workflows')
+      .insert({
+        job_id: jobId,
+        workflow_type: workflowType,
+        status: 'prep',
+        started_at: new Date().toISOString(),
+        started_by: userId,
+      })
+      .select('id')
+      .single()
+
+    if (insertError || !inserted) return { workflowId: null, error: insertError?.message ?? 'Failed to create workflow.' }
+    workflowId = inserted.id
+  }
+
+  const { count, error: itemCountError } = await supabase
+    .from('job_workflow_items')
+    .select('id', { count: 'exact', head: true })
+    .eq('workflow_id', workflowId)
+
+  if (itemCountError) return { workflowId, error: itemCountError.message }
+
+  if ((count ?? 0) === 0) {
+    const itemRows = buildWorkflowSeedItems(workflowType).map(item => ({
+      workflow_id: workflowId,
+      phase: item.phase,
+      sort_order: item.sortOrder,
+      label: item.label,
+      details: item.details ?? null,
+      action_key: item.actionKey ?? null,
+      required: item.required ?? true,
+    }))
+
+    if (itemRows.length > 0) {
+      const { error: itemInsertError } = await supabase
+        .from('job_workflow_items')
+        .insert(itemRows)
+
+      if (itemInsertError) return { workflowId, error: itemInsertError.message }
+    }
+  }
+
+  return { workflowId, error: null as string | null }
+}
+
+async function insertWorkflowMessage(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  jobId: string,
+  userId: string,
+  messageType: 'text' | 'quick_action' | 'system',
+  body: string,
+  quickActionKey?: string | null,
+) {
+  const { error } = await supabase
+    .from('job_messages')
+    .insert({
+      job_id: jobId,
+      user_id: userId,
+      message_type: messageType,
+      body,
+      quick_action_key: quickActionKey ?? null,
+    })
+
+  return error?.message ?? null
+}
+
+function revalidateJobWorkspace(jobId: string) {
+  revalidatePath('/jobs')
+  revalidatePath('/planning')
+  revalidatePath(`/jobs/${jobId}`)
+}
+
 export async function markArrived(
   jobId: string,
   lat: number | null,
@@ -120,6 +253,11 @@ export async function markArrived(
       gps_lat: lat,
       gps_lng: lng,
     })
+
+    await supabase
+      .from('job_workflows')
+      .update({ status: 'on_site', updated_at: new Date().toISOString() })
+      .eq('job_id', jobId)
   }
 
   revalidatePath('/jobs')
@@ -781,6 +919,266 @@ export async function saveObservedSystemSnapshot(
   return { success: true, systems: systems ?? [], primarySystemId, groupName }
 }
 
+export async function startJobWorkflow(jobId: string, workflowType: JobWorkflowType) {
+  const context = await getJobWorkspaceContext(jobId)
+  if (context.error || !context.user) return { error: context.error ?? 'Not authenticated' }
+
+  const { error: jobUpdateError } = await context.supabase
+    .from('jobs')
+    .update({ workflow_type: workflowType })
+    .eq('id', jobId)
+
+  if (jobUpdateError) return { error: jobUpdateError.message }
+
+  const result = await ensureJobWorkflow(context.supabase, context.user.id, jobId, workflowType)
+  if (result.error) return { error: result.error }
+
+  const messageError = await insertWorkflowMessage(
+    context.supabase,
+    jobId,
+    context.user.id,
+    'system',
+    workflowType === 'install' ? 'Shared install workflow started.' : 'Shared major repair workflow started.',
+  )
+
+  if (messageError) return { error: messageError }
+
+  revalidateJobWorkspace(jobId)
+  return { success: true, workflowId: result.workflowId }
+}
+
+export async function updateJobWorkflowStatus(jobId: string, status: SharedWorkflowStatus) {
+  const context = await getJobWorkspaceContext(jobId)
+  if (context.error || !context.user) return { error: context.error ?? 'Not authenticated' }
+
+  const { data: workflow, error: workflowError } = await context.supabase
+    .from('job_workflows')
+    .select('id')
+    .eq('job_id', jobId)
+    .maybeSingle()
+
+  if (workflowError || !workflow) return { error: workflowError?.message ?? 'No workflow found.' }
+
+  const payload: {
+    status: SharedWorkflowStatus
+    updated_at?: string
+    completed_at?: string | null
+  } = { status, updated_at: new Date().toISOString() }
+
+  if (status === 'complete') payload.completed_at = new Date().toISOString()
+  if (status !== 'complete') payload.completed_at ??= null
+
+  const { error: updateError } = await context.supabase
+    .from('job_workflows')
+    .update(payload)
+    .eq('id', workflow.id)
+
+  if (updateError) return { error: updateError.message }
+
+  const statusLabel: Record<SharedWorkflowStatus, string> = {
+    prep: 'Workflow moved to prep.',
+    on_site: 'Crew marked on site.',
+    closeout: 'Workflow moved to closeout.',
+    complete: 'Shared workflow marked complete.',
+  }
+
+  const messageError = await insertWorkflowMessage(
+    context.supabase,
+    jobId,
+    context.user.id,
+    'system',
+    statusLabel[status],
+  )
+
+  if (messageError) return { error: messageError }
+
+  revalidateJobWorkspace(jobId)
+  return { success: true }
+}
+
+export async function setJobChecklistItemStatus(itemId: string, completed: boolean) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Not authenticated' }
+
+  const { data: item, error: itemError } = await supabase
+    .from('job_workflow_items')
+    .select(`
+      id, workflow_id,
+      job_workflows!inner(job_id)
+    `)
+    .eq('id', itemId)
+    .single()
+
+  if (itemError || !item) return { error: itemError?.message ?? 'Checklist item not found.' }
+
+  const workflow = Array.isArray(item.job_workflows) ? item.job_workflows[0] : item.job_workflows
+  const jobId = workflow?.job_id ?? null
+  if (!jobId) return { error: 'Checklist item is missing a job link.' }
+
+  const context = await getJobWorkspaceContext(jobId)
+  if (context.error) return { error: context.error }
+
+  const payload = {
+    completed,
+    completed_at: completed ? new Date().toISOString() : null,
+    completed_by: completed ? user.id : null,
+  }
+
+  const { error: updateError } = await supabase
+    .from('job_workflow_items')
+    .update(payload)
+    .eq('id', itemId)
+
+  if (updateError) return { error: updateError.message }
+
+  revalidateJobWorkspace(jobId)
+  return { success: true }
+}
+
+export async function saveJobChecklistItemNote(itemId: string, note: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Not authenticated' }
+
+  const { data: item, error: itemError } = await supabase
+    .from('job_workflow_items')
+    .select(`
+      id,
+      job_workflows!inner(job_id)
+    `)
+    .eq('id', itemId)
+    .single()
+
+  if (itemError || !item) return { error: itemError?.message ?? 'Checklist item not found.' }
+  const workflow = Array.isArray(item.job_workflows) ? item.job_workflows[0] : item.job_workflows
+  const jobId = workflow?.job_id ?? null
+  if (!jobId) return { error: 'Checklist item is missing a job link.' }
+
+  const context = await getJobWorkspaceContext(jobId)
+  if (context.error) return { error: context.error }
+
+  const { error: updateError } = await supabase
+    .from('job_workflow_items')
+    .update({ note: cleanNullableText(note) })
+    .eq('id', itemId)
+
+  if (updateError) return { error: updateError.message }
+
+  revalidateJobWorkspace(jobId)
+  return { success: true }
+}
+
+export async function addJobChecklistItem(jobId: string, phase: JobWorkflowPhase, label: string) {
+  const context = await getJobWorkspaceContext(jobId)
+  if (context.error || !context.user) return { error: context.error ?? 'Not authenticated' }
+
+  const { data: existingWorkflow, error: workflowError } = await context.supabase
+    .from('job_workflows')
+    .select('id, workflow_type')
+    .eq('job_id', jobId)
+    .maybeSingle()
+
+  if (workflowError || !existingWorkflow) return { error: workflowError?.message ?? 'No workflow found.' }
+
+  const ensured = await ensureJobWorkflow(context.supabase, context.user.id, jobId, existingWorkflow.workflow_type as JobWorkflowType)
+  if (ensured.error || !ensured.workflowId) return { error: ensured.error ?? 'No workflow found.' }
+
+  const trimmedLabel = label.trim()
+  if (!trimmedLabel) return { error: 'Checklist item label is required.' }
+
+  const { data: existingItems, error: existingItemsError } = await context.supabase
+    .from('job_workflow_items')
+    .select('sort_order')
+    .eq('workflow_id', ensured.workflowId)
+    .eq('phase', phase)
+    .order('sort_order', { ascending: false })
+    .limit(1)
+
+  if (existingItemsError) return { error: existingItemsError.message }
+
+  const nextSortOrder = (existingItems?.[0]?.sort_order ?? 0) + 1
+
+  const { error: insertError } = await context.supabase
+    .from('job_workflow_items')
+    .insert({
+      workflow_id: ensured.workflowId,
+      phase,
+      label: trimmedLabel,
+      sort_order: nextSortOrder,
+      required: false,
+    })
+
+  if (insertError) return { error: insertError.message }
+
+  revalidateJobWorkspace(jobId)
+  return { success: true }
+}
+
+export async function addJobMessage(jobId: string, body: string) {
+  const context = await getJobWorkspaceContext(jobId)
+  if (context.error || !context.user) return { error: context.error ?? 'Not authenticated' }
+
+  const trimmedBody = body.trim()
+  if (!trimmedBody) return { error: 'Message cannot be empty.' }
+
+  const messageError = await insertWorkflowMessage(
+    context.supabase,
+    jobId,
+    context.user.id,
+    'text',
+    trimmedBody,
+  )
+
+  if (messageError) return { error: messageError }
+
+  revalidateJobWorkspace(jobId)
+  return { success: true }
+}
+
+export async function addJobQuickAction(jobId: string, quickActionKey: string, label: string) {
+  const context = await getJobWorkspaceContext(jobId)
+  if (context.error || !context.user) return { error: context.error ?? 'Not authenticated' }
+
+  const trimmedLabel = label.trim()
+  if (!trimmedLabel) return { error: 'Quick action label is required.' }
+
+  const messageError = await insertWorkflowMessage(
+    context.supabase,
+    jobId,
+    context.user.id,
+    'quick_action',
+    trimmedLabel,
+    quickActionKey,
+  )
+
+  if (messageError) return { error: messageError }
+
+  const { data: workflow, error: workflowError } = await context.supabase
+    .from('job_workflows')
+    .select('id')
+    .eq('job_id', jobId)
+    .maybeSingle()
+
+  if (workflowError) return { error: workflowError.message }
+
+  if (workflow?.id) {
+    await context.supabase
+      .from('job_workflow_items')
+      .update({
+        completed: true,
+        completed_at: new Date().toISOString(),
+        completed_by: context.user.id,
+      })
+      .eq('workflow_id', workflow.id)
+      .eq('action_key', quickActionKey as QuickActionKey)
+      .eq('completed', false)
+  }
+
+  revalidateJobWorkspace(jobId)
+  return { success: true }
+}
+
 export async function closeJob(
   jobId: string,
   lat: number | null,
@@ -798,6 +1196,28 @@ export async function closeJob(
 
   if (jobError || !job) return { error: jobError?.message ?? 'Job not found.' }
 
+  const { data: workflow, error: workflowError } = await supabase
+    .from('job_workflows')
+    .select('id')
+    .eq('job_id', jobId)
+    .maybeSingle()
+
+  if (workflowError) return { error: workflowError.message }
+
+  if (workflow?.id) {
+    const { count: incompleteRequiredCount, error: workflowItemsError } = await supabase
+      .from('job_workflow_items')
+      .select('id', { count: 'exact', head: true })
+      .eq('workflow_id', workflow.id)
+      .eq('required', true)
+      .eq('completed', false)
+
+    if (workflowItemsError) return { error: workflowItemsError.message }
+    if ((incompleteRequiredCount ?? 0) > 0) {
+      return { error: 'Complete the required shared workflow checklist items before closing the job.' }
+    }
+  }
+
   const { count: adhocBundleCount, error: adhocBundleError } = await supabase
     .from('job_adhoc_bundles')
     .select('id', { count: 'exact', head: true })
@@ -808,7 +1228,7 @@ export async function closeJob(
   const hasDiagnosis = !!job.diagnosis_id
   const hasAdhocBundle = (adhocBundleCount ?? 0) > 0
 
-  if (!hasDiagnosis && !hasAdhocBundle) {
+  if (!workflow?.id && !hasDiagnosis && !hasAdhocBundle) {
     return { error: 'Complete the job with a diagnosis or save an ad-hoc repair before closing it out.' }
   }
 
@@ -818,7 +1238,7 @@ export async function closeJob(
       status:             'completed',
       completed_at:       new Date().toISOString(),
       needs_admin_review: true,
-      new_diagnosis_requested: !hasDiagnosis && hasAdhocBundle,
+      new_diagnosis_requested: workflow?.id ? true : (!hasDiagnosis && hasAdhocBundle),
       actual_tech:        user.id,
     })
     .eq('id', jobId)
@@ -832,6 +1252,17 @@ export async function closeJob(
     gps_lat:    lat,
     gps_lng:    lng,
   })
+
+  if (workflow?.id) {
+    await supabase
+      .from('job_workflows')
+      .update({
+        status: 'complete',
+        updated_at: new Date().toISOString(),
+        completed_at: new Date().toISOString(),
+      })
+      .eq('id', workflow.id)
+  }
 
   revalidatePath('/jobs')
   revalidatePath(`/jobs/${jobId}`)

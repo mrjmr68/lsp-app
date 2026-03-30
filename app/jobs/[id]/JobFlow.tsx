@@ -5,11 +5,14 @@ import {
   CatalogItem,
   JobAdhocBundle,
   JobAdhocLine,
+  JobCrewMember,
   DiagnosisItem,
   HistoryJob,
   Job,
   JobAddOn,
+  JobMessage,
   JobSystem,
+  JobWorkflow,
   ObservationCircuit,
   ObservationCircuitState,
   ObservedComponentState,
@@ -20,6 +23,7 @@ import Step2Observe from './Step2Observe'
 import Step3Diagnose from './Step3Diagnose'
 import Step4Work from './Step4Work'
 import Step5Close from './Step5Close'
+import InstallWorkspace from './InstallWorkspace'
 import { clearJobAdhocBundle, saveJobAdhocBundle, saveObservations, saveObservedSystemSnapshot, setDiagnosis } from './actions'
 
 function useElapsed(arrivedAt: string | null) {
@@ -44,7 +48,8 @@ function fmt(seconds: number) {
   return [hours, minutes, remainder].map(value => String(value).padStart(2, '0')).join(':')
 }
 
-const STEPS: string[] = ['Arrive', 'Observe', 'Diagnose', 'Repair', 'Close']
+const STANDARD_STEPS: string[] = ['Arrive', 'Observe', 'Diagnose', 'Repair', 'Close']
+const SHARED_WORKFLOW_STEPS: string[] = ['Arrive', 'Prep', 'Execution', 'Messages', 'Close']
 type WorkflowMode = 'diagnosis' | 'adhoc'
 
 function componentTemplate(systemType: string) {
@@ -186,12 +191,17 @@ function withApartmentDefault(value: string | null | undefined, fallback: string
 }
 
 interface Props {
+  viewerRole: 'tech' | 'dispatcher' | 'admin' | 'owner' | null
+  currentUserId: string
   job: Job
   serviceHistory: HistoryJob[]
   diagnoses: DiagnosisItem[]
   repairBundles: RepairBundle[]
   catalogItems: CatalogItem[]
   existingAddOns: JobAddOn[]
+  workflow: JobWorkflow | null
+  jobMessages: JobMessage[]
+  crewMembers: JobCrewMember[]
 }
 
 function initialWorkflowMode(job: Job): WorkflowMode {
@@ -202,8 +212,21 @@ function initialAdhocLines(job: Job): JobAdhocLine[] {
   return job.adhoc_bundle?.job_adhoc_bundle_lines ?? []
 }
 
-export default function JobFlow({ job, serviceHistory, diagnoses, repairBundles, catalogItems, existingAddOns }: Props) {
+export default function JobFlow({
+  viewerRole,
+  currentUserId,
+  job,
+  serviceHistory,
+  diagnoses,
+  repairBundles,
+  catalogItems,
+  existingAddOns,
+  workflow,
+  jobMessages,
+  crewMembers,
+}: Props) {
   const apartmentJob = isApartmentJob(job)
+  const sharedWorkflowJob = workflow != null
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1)
   const [jobStatus, setJobStatus] = useState(job.status)
   const [arrivedAt, setArrivedAt] = useState<string | null>(job.arrived_at)
@@ -273,11 +296,14 @@ export default function JobFlow({ job, serviceHistory, diagnoses, repairBundles,
   const [observeSystemError, setObserveSystemError] = useState<string | null>(null)
 
   const elapsed = useElapsed(arrivedAt)
-  const step2Valid = !!tstatMode && !!tstatFan
-  const step3Valid = workflowMode === 'diagnosis' ? !!selectedDiagnosis : !!adhocDescription.trim()
+  const steps = sharedWorkflowJob ? SHARED_WORKFLOW_STEPS : STANDARD_STEPS
+  const workflowRequiredItems = workflow?.job_workflow_items.filter(item => item.required) ?? []
+  const workflowReadyToClose = sharedWorkflowJob && workflowRequiredItems.every(item => item.completed)
+  const step2Valid = sharedWorkflowJob ? true : (!!tstatMode && !!tstatFan)
+  const step3Valid = sharedWorkflowJob ? true : (workflowMode === 'diagnosis' ? !!selectedDiagnosis : !!adhocDescription.trim())
   const hasDiagnosisPath = workflowMode === 'diagnosis' && !!selectedDiagnosis
   const hasAdhocPath = workflowMode === 'adhoc' && !!adhocDescription.trim()
-  const canCloseJob = hasDiagnosisPath || !!savedAdhocBundle || hasAdhocPath
+  const canCloseJob = sharedWorkflowJob ? workflowReadyToClose : (hasDiagnosisPath || !!savedAdhocBundle || hasAdhocPath)
 
   function handleArrived(at: string, lat: number | null, lng: number | null) {
     setArrivedAt(at)
@@ -370,6 +396,11 @@ export default function JobFlow({ job, serviceHistory, diagnoses, repairBundles,
 
   async function handleNext() {
     setAdhocError(null)
+
+    if (sharedWorkflowJob) {
+      setStep(current => Math.min(5, current + 1) as 1 | 2 | 3 | 4 | 5)
+      return
+    }
 
     if (step === 2) {
       if (!step2Valid) return
@@ -476,7 +507,7 @@ export default function JobFlow({ job, serviceHistory, diagnoses, repairBundles,
         </div>
 
         <div style={{ display: 'flex', gap: '0', marginTop: '10px', borderBottom: '1px solid #e2e1da' }}>
-          {STEPS.map((label, index) => {
+          {steps.map((label, index) => {
             const number = (index + 1) as 1 | 2 | 3 | 4 | 5
             const active = step === number
             const complete = step > number
@@ -507,9 +538,26 @@ export default function JobFlow({ job, serviceHistory, diagnoses, repairBundles,
 
       <div style={{ flex: 1, overflowY: 'auto' }}>
         {step === 1 && (
-          <Step1Arrive job={job} serviceHistory={serviceHistory} onArrived={handleArrived} />
+          <Step1Arrive
+            viewerRole={viewerRole}
+            job={job}
+            serviceHistory={serviceHistory}
+            workflow={workflow}
+            crewMembers={crewMembers}
+            onArrived={handleArrived}
+          />
         )}
-        {step === 2 && (
+        {step === 2 && sharedWorkflowJob && workflow && (
+          <InstallWorkspace
+            jobId={job.id}
+            workflow={workflow}
+            jobMessages={jobMessages}
+            crewMembers={crewMembers}
+            currentUserId={currentUserId}
+            activeTab="prep"
+          />
+        )}
+        {step === 2 && !sharedWorkflowJob && (
           <Step2Observe
             job={job}
             arrivedLat={arrivedLat}
@@ -562,7 +610,17 @@ export default function JobFlow({ job, serviceHistory, diagnoses, repairBundles,
             observeSystemError={observeSystemError}
           />
         )}
-        {step === 3 && (
+        {step === 3 && sharedWorkflowJob && workflow && (
+          <InstallWorkspace
+            jobId={job.id}
+            workflow={workflow}
+            jobMessages={jobMessages}
+            crewMembers={crewMembers}
+            currentUserId={currentUserId}
+            activeTab="execution"
+          />
+        )}
+        {step === 3 && !sharedWorkflowJob && (
           <Step3Diagnose
             job={job}
             diagnoses={diagnoses}
@@ -623,7 +681,17 @@ export default function JobFlow({ job, serviceHistory, diagnoses, repairBundles,
             adhocError={adhocError}
           />
         )}
-        {step === 4 && (
+        {step === 4 && sharedWorkflowJob && workflow && (
+          <InstallWorkspace
+            jobId={job.id}
+            workflow={workflow}
+            jobMessages={jobMessages}
+            crewMembers={crewMembers}
+            currentUserId={currentUserId}
+            activeTab="messages"
+          />
+        )}
+        {step === 4 && !sharedWorkflowJob && (
           <Step4Work
             jobId={job.id}
             workflowMode={workflowMode}
@@ -644,6 +712,9 @@ export default function JobFlow({ job, serviceHistory, diagnoses, repairBundles,
         {step === 5 && (
           <Step5Close
             job={job}
+            workflow={workflow}
+            crewMembers={crewMembers}
+            jobMessages={jobMessages}
             workflowMode={workflowMode}
             selectedDiagnosis={selectedDiagnosis}
             adhocDescription={adhocDescription}
@@ -693,7 +764,7 @@ export default function JobFlow({ job, serviceHistory, diagnoses, repairBundles,
               fontFamily: 'inherit',
             }}
           >
-            {transitioning ? 'Saving...' : `${STEPS[step] ?? 'Next'} ->`}
+            {transitioning ? 'Saving...' : `${steps[step] ?? 'Next'} ->`}
           </button>
         </div>
       )}

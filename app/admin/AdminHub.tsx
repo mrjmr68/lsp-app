@@ -21,6 +21,41 @@ interface Props {
     bundleLines: number
   }
   users: AdminUser[]
+  appConfig: {
+    labor_cost_per_hour: number
+    travel_time_hours: number
+    refrigerant_cost_per_lb: number
+    profit_per_hour_target: number
+  } | null
+  catalogTemplates: Array<{
+    id: string
+    location: string
+    component: string
+    action: string
+    repair_code: string
+    invoice_description: string | null
+    repair_notes: string | null
+    variable_pricing: boolean
+    one_shot: boolean
+    active: boolean
+    repair_bundles: {
+      id: string
+      flat_rate: number | null
+      travel_time_hours: number | null
+      work_time_hours: number | null
+      total_time_hours: number | null
+      labor_cost: number | null
+      part_material_cost: number | null
+      profit_amount: number | null
+      profit_per_hour: number | null
+      margin_percent: number | null
+      refrigerant_lbs: number | null
+      refrigerant_cost: number | null
+      materials_label: string | null
+      material_cost: number | null
+      pricing_notes: string | null
+    } | null
+  }>
   canManageCatalog: boolean
   canManageUsers: boolean
 }
@@ -35,6 +70,8 @@ const ROLE_OPTIONS = [
 export default function AdminHub({
   counts,
   users,
+  appConfig,
+  catalogTemplates,
   canManageCatalog,
   canManageUsers,
 }: Props) {
@@ -59,7 +96,13 @@ export default function AdminHub({
       {tab === 'users' ? (
         <UsersPanel users={users} canManageUsers={canManageUsers} />
       ) : (
-        <CatalogAdmin counts={counts} canManageCatalog={canManageCatalog} compact />
+        <CatalogAdmin
+          counts={counts}
+          appConfig={appConfig}
+          templates={catalogTemplates}
+          canManageCatalog={canManageCatalog}
+          compact
+        />
       )}
     </div>
   )

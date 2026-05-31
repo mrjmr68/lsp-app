@@ -1,7 +1,7 @@
 import { redirect, notFound } from 'next/navigation'
 import AppShell from '@/app/components/AppShell'
 import InvoiceDetail from './InvoiceDetail'
-import { InvoiceAddOn, InvoiceAdhocBundle, InvoiceJob, InvoiceRepairBundle, ParentCustomer, PhotoCounts, PlaceholderCost, VarianceData } from '../types'
+import { InvoiceAddOn, InvoiceAdhocBundle, InvoiceJob, InvoiceRepairBundle, InvoiceSnapshot, ParentCustomer, PhotoCounts, PlaceholderCost, VarianceData } from '../types'
 import { requireRole } from '@/utils/auth/roles'
 
 function firstRelation<T>(value: T | T[] | null | undefined) {
@@ -128,6 +128,17 @@ export default async function InvoiceDetailPage({
     .select('id, item_id, actual_cost')
     .eq('job_id', id)
 
+  const { data: invoiceSnapshot } = await supabase
+    .from('job_invoice_snapshots')
+    .select(`
+      id, job_id, invoice_number, invoice_date, source, send_to_email, cc_email,
+      bill_to_name, bill_to_email, customer_name, location_name, unit_label, tech_name,
+      service_date, reference_line, description_title, description_body, primary_label,
+      line_items, subtotal, tax_rate, tax, total
+    `)
+    .eq('job_id', id)
+    .maybeSingle()
+
   // 5. Parent customer (if bill_to_parent)
   let parentCustomer = null
   const cust = firstRelation(job.customers)
@@ -201,6 +212,7 @@ export default async function InvoiceDetailPage({
     systems: firstRelation(job.systems),
     diagnoses: firstRelation(job.diagnoses),
     users: firstRelation(job.users),
+    invoice_snapshot: (invoiceSnapshot ?? null) as InvoiceSnapshot | null,
   }
 
   return (

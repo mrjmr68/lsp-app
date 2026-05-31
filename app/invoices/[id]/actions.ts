@@ -37,6 +37,13 @@ function buildInvoiceLineItemsFromEstimate(
   }))
 }
 
+function inferInvoiceSource(job: { diagnosis_id: string | null }, estimate: { id: string } | null, hasAdhocBundle: boolean) {
+  if (estimate?.id) return 'estimate'
+  if (job.diagnosis_id) return 'diagnosis_bundle'
+  if (hasAdhocBundle) return 'adhoc_bundle'
+  return 'diagnosis_bundle'
+}
+
 async function nextInvoiceNumber(supabase: Awaited<ReturnType<typeof requireInvoiceOwner>>['supabase']) {
   const year = new Date().getFullYear()
   const { data: latest, error } = await supabase
@@ -316,6 +323,7 @@ export async function approveInvoice(
   let invoiceNumber: string | null = null
   let invoicePdfPath: string | null = null
   let pdfBytes: Uint8Array | null = null
+  const snapshotSource = inferInvoiceSource(job, estimate, hasAdhocBundle)
 
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const numberResult = await nextInvoiceNumber(supabase)
@@ -370,6 +378,37 @@ export async function approveInvoice(
         continue
       }
       return { error: updateError.message }
+    }
+
+    const { error: snapshotError } = await supabase
+      .from('job_invoice_snapshots')
+      .upsert({
+        job_id: jobId,
+        invoice_number: invoiceNumber,
+        invoice_date: approvedAt,
+        source: snapshotSource,
+        send_to_email: data.sendToEmail.trim(),
+        cc_email: data.ccEmail.trim() || null,
+        bill_to_name: documentBase.billToName,
+        bill_to_email: documentBase.billToEmail,
+        customer_name: documentBase.customerName,
+        location_name: documentBase.locationName,
+        unit_label: documentBase.unitLabel,
+        tech_name: documentBase.techName,
+        service_date: job.job_date,
+        reference_line: documentBase.referenceLine,
+        description_title: documentBase.descriptionTitle,
+        description_body: documentBase.descriptionBody,
+        primary_label: primaryLabel,
+        line_items: lineItems,
+        subtotal,
+        tax_rate: taxRate,
+        tax,
+        total,
+      }, { onConflict: 'job_id' })
+
+    if (snapshotError) {
+      return { error: `Invoice snapshot failed: ${snapshotError.message}` }
     }
 
     break

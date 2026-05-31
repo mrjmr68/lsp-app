@@ -105,6 +105,7 @@ export default function InvoiceDetail({
   const [isPending, startTransition] = useTransition()
   const estimateRecord = Array.isArray(job.job_estimates) ? (job.job_estimates[0] ?? null) : (job.job_estimates ?? null)
   const partsRequest = Array.isArray(job.job_parts_requests) ? (job.job_parts_requests[0] ?? null) : (job.job_parts_requests ?? null)
+  const invoiceSnapshot = job.invoice_snapshot ?? null
 
   // ── State ────────────────────────────────────────────────────────────────
 
@@ -125,8 +126,8 @@ export default function InvoiceDetail({
 
   // Pre-fill billing email
   const billToCustomer = parentCustomer ?? job.customers
-  const [sendToEmail, setSendToEmail] = useState(estimateRecord?.send_to_email ?? billToCustomer?.billing_email ?? '')
-  const [ccEmail, setCcEmail] = useState(estimateRecord?.cc_email ?? '')
+  const [sendToEmail, setSendToEmail] = useState(invoiceSnapshot?.send_to_email ?? estimateRecord?.send_to_email ?? billToCustomer?.billing_email ?? '')
+  const [ccEmail, setCcEmail] = useState(invoiceSnapshot?.cc_email ?? estimateRecord?.cc_email ?? '')
 
   // ── Placeholder items detection ──────────────────────────────────────────
 
@@ -147,6 +148,18 @@ export default function InvoiceDetail({
   // ── Invoice calculation ──────────────────────────────────────────────────
 
   const invoiceCalc = useMemo(() => {
+    if (invoiceSnapshot?.line_items?.length) {
+      return {
+        primaryCharge: invoiceSnapshot.line_items[0]?.amount ?? 0,
+        addOnCharges: invoiceSnapshot.line_items.slice(1).reduce((sum, item) => sum + item.amount, 0),
+        lineItems: invoiceSnapshot.line_items,
+        subtotal: invoiceSnapshot.subtotal,
+        taxRate: invoiceSnapshot.tax_rate,
+        tax: invoiceSnapshot.tax,
+        total: invoiceSnapshot.total,
+      }
+    }
+
     const parsedOverride = parseFloat(flatRateStr)
     const fallbackPrimaryCharge = !isNaN(parsedOverride) ? parsedOverride : (bundle?.flat_rate ?? 0)
     const fallbackLineItems = [
@@ -180,7 +193,7 @@ export default function InvoiceDetail({
       tax,
       total,
     }
-  }, [flatRateStr, bundle, addOns, job.locations, job.diagnoses, adhocBundle, estimateRecord])
+  }, [flatRateStr, bundle, addOns, job.locations, job.diagnoses, adhocBundle, estimateRecord, invoiceSnapshot])
 
   // ── Internal cost breakdown ──────────────────────────────────────────────
 

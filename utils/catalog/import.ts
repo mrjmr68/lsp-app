@@ -46,6 +46,14 @@ function normalizeKey(value: string | null | undefined) {
   return (value ?? '').trim().toLowerCase()
 }
 
+function getRowValue(row: OperationRow, ...keys: string[]) {
+  for (const key of keys) {
+    const value = row[key]
+    if (typeof value === 'string' && value.trim()) return value.trim()
+  }
+  return ''
+}
+
 function parseMoney(value: string | null | undefined) {
   const text = (value ?? '').trim().replace(/\$/g, '').replace(/,/g, '').replace(/%/g, '')
   if (!text) return 0
@@ -256,18 +264,18 @@ async function ensureOperationItem(
 
 function buildDiagnosisPayload(row: OperationRow) {
   return {
-    location: row.Location,
-    component: row.Component,
-    action: row.Action,
-    cat1: row['Cat 1'] || null,
-    cat2: row['Cat 2'] || null,
-    cat3: row['Cat 3'] || null,
-    repair_notes: row['Repair Notes'] || null,
-    invoice_description: row['QB Repair Description'] || null,
-    variable_pricing: parseBoolean(row.Variable),
-    one_shot: parseBoolean(row['One Shot']),
-    est_work_hours: parseNumber(row['Total Time']) || null,
-    historic_price: parseMoney(row['Historic Price']) || null,
+    location: getRowValue(row, 'Location'),
+    component: getRowValue(row, 'Component'),
+    action: getRowValue(row, 'Action'),
+    cat1: getRowValue(row, 'Cat 1') || null,
+    cat2: getRowValue(row, 'Cat 2') || null,
+    cat3: getRowValue(row, 'Cat 3') || null,
+    repair_notes: getRowValue(row, 'Repair Notes') || null,
+    invoice_description: getRowValue(row, 'QB Repair Description') || null,
+    variable_pricing: parseBoolean(getRowValue(row, 'Variable')),
+    one_shot: parseBoolean(getRowValue(row, 'One Shot')),
+    est_work_hours: parseNumber(getRowValue(row, 'Total Time')) || null,
+    historic_price: parseMoney(getRowValue(row, 'Historic Price', 'Flat Rate')) || null,
     active: true,
   }
 }
@@ -275,11 +283,24 @@ function buildDiagnosisPayload(row: OperationRow) {
 function buildBundlePayload(row: OperationRow, diagnosisId: string) {
   return {
     diagnosis_id: diagnosisId,
-    name: row['Repair Code'],
-    flat_rate: parseMoney(row['Flat Rate']) || null,
+    name: getRowValue(row, 'Repair Code'),
+    flat_rate: parseMoney(getRowValue(row, 'Flat Rate', 'Historic Price')) || null,
     addon_eligible: false,
     addon_description: null,
-    notes: row['? / Note'] || null,
+    notes: getRowValue(row, '? / Note') || null,
+    travel_time_hours: parseNumber(getRowValue(row, 'Travel Time')) || null,
+    work_time_hours: parseNumber(getRowValue(row, 'Work Time')) || null,
+    total_time_hours: parseNumber(getRowValue(row, 'Total Time')) || null,
+    labor_cost: parseMoney(getRowValue(row, 'Labor Cost')) || null,
+    part_material_cost: parseMoney(getRowValue(row, 'Part and Material Cost')) || null,
+    profit_amount: parseMoney(getRowValue(row, 'Profit')) || null,
+    profit_per_hour: parseMoney(getRowValue(row, 'Profit / HR')) || null,
+    margin_percent: parseMoney(getRowValue(row, 'Margin')) / 100 || null,
+    refrigerant_lbs: parseNumber(getRowValue(row, 'Refrigerant')) || null,
+    refrigerant_cost: parseMoney(getRowValue(row, 'Refrigerant $')) || null,
+    materials_label: getRowValue(row, 'Materials') || null,
+    material_cost: parseMoney(getRowValue(row, 'Material $')) || null,
+    pricing_notes: getRowValue(row, 'Repair Notes') || null,
   }
 }
 

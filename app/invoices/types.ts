@@ -67,6 +67,7 @@ export interface InvoiceJob {
   users: { id: string; first_name: string; last_name: string } | null
   job_estimates?: InvoiceEstimateRecord[] | InvoiceEstimateRecord | null
   job_parts_requests?: InvoicePartsRequest[] | InvoicePartsRequest | null
+  invoice_snapshot?: InvoiceSnapshot | null
   new_diagnosis_requested?: boolean
 }
 
@@ -233,4 +234,35 @@ export interface AppConfig {
   travel_time_hours: number
   refrigerant_cost_per_lb: number
   profit_per_hour_target: number
+}
+
+export interface InvoiceSnapshotLineItem {
+  label: string
+  amount: number
+}
+
+export interface InvoiceSnapshot {
+  id: string
+  job_id: string
+  invoice_number: string | null
+  invoice_date: string
+  source: 'estimate' | 'diagnosis_bundle' | 'adhoc_bundle'
+  send_to_email: string | null
+  cc_email: string | null
+  bill_to_name: string
+  bill_to_email: string | null
+  customer_name: string
+  location_name: string
+  unit_label: string | null
+  tech_name: string | null
+  service_date: string | null
+  reference_line: string | null
+  description_title: string
+  description_body: string | null
+  primary_label: string
+  line_items: InvoiceSnapshotLineItem[]
+  subtotal: number
+  tax_rate: number
+  tax: number
+  total: number
 }

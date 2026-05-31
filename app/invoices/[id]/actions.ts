@@ -232,6 +232,7 @@ export async function approveInvoice(
   let primaryLabel = 'Service'
   let descriptionTitle = 'Service performed'
   let descriptionBody = job.problem_description ?? ''
+  let diagnosisBundleMissingPrice = false
 
   if (job.flat_rate_override != null) {
     primaryCharge = job.flat_rate_override
@@ -251,6 +252,7 @@ export async function approveInvoice(
     if (job.flat_rate_override == null) {
       primaryCharge = bundle?.flat_rate ?? 0
     }
+    diagnosisBundleMissingPrice = !bundle || (bundle.flat_rate ?? 0) <= 0
 
     primaryLabel = diagnosis?.repair_code ?? 'Repair service'
     descriptionTitle = diagnosis?.invoice_description ?? diagnosis?.repair_code ?? 'Repair service'
@@ -267,6 +269,9 @@ export async function approveInvoice(
   }
   if (!job.diagnosis_id && hasAdhocBundle && job.flat_rate_override == null) {
     return { error: 'Enter a flat-rate override before approving an ad-hoc repair.' }
+  }
+  if (job.diagnosis_id && diagnosisBundleMissingPrice && job.flat_rate_override == null) {
+    return { error: 'Enter a flat-rate override before approving. This diagnosis does not currently resolve to a priced repair bundle.' }
   }
 
   const fallbackLineItems = [

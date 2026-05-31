@@ -276,7 +276,11 @@ export default function InvoiceDetail({
   const isInvoiced = job.commercial_state === 'invoiced'
   const activePrimaryRepair = bundle ? 'diagnosis' : adhocBundle ? 'adhoc' : 'none'
   const parsedManualPrice = parseFloat(flatRateStr)
-  const requiresManualPrice = activePrimaryRepair === 'adhoc' && (Number.isNaN(parsedManualPrice) || parsedManualPrice <= 0)
+  const diagnosisNeedsManualPrice = !!job.diagnosis_id && (!bundle || (bundle.flat_rate ?? 0) <= 0)
+  const requiresManualPrice = (
+    activePrimaryRepair === 'adhoc'
+    || diagnosisNeedsManualPrice
+  ) && (Number.isNaN(parsedManualPrice) || parsedManualPrice <= 0)
 
   // ── Photo total ──────────────────────────────────────────────────────────
 
@@ -815,7 +819,9 @@ export default function InvoiceDetail({
               <div style={{ fontSize: '11px', color: '#888780' }}>
                 {activePrimaryRepair === 'adhoc'
                   ? 'Required for ad-hoc repairs before finalizing'
-                  : 'Adjust before finalizing if needed'}
+                  : diagnosisNeedsManualPrice
+                    ? 'Required because this diagnosis does not have a priced catalog bundle yet'
+                    : 'Adjust before finalizing if needed'}
               </div>
             </div>
           )}
@@ -1021,7 +1027,9 @@ export default function InvoiceDetail({
               {hasUnfilledPlaceholders
                 ? 'Enter placeholder costs above before approving.'
                 : requiresManualPrice
-                  ? 'Enter the owner-set flat rate before approving this ad-hoc repair.'
+                  ? activePrimaryRepair === 'adhoc'
+                    ? 'Enter the owner-set flat rate before approving this ad-hoc repair.'
+                    : 'Enter a flat-rate override before approving. This diagnosis does not currently resolve to a priced repair bundle.'
                 : `Approving will finalize this invoice for ${sendToEmail || 'the billing address'}. A PDF will be saved and emailed automatically.`
               }
             </div>

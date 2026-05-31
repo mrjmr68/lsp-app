@@ -170,7 +170,7 @@ export interface InvoiceRepairBundle {
   id: string
   diagnosis_id: string
   name: string
-  flat_rate: number
+  flat_rate: number | null
   repair_notes: string | null
   repair_bundle_lines: InvoiceBundleLine[]
 }

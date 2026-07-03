@@ -63,10 +63,10 @@ export default async function Home() {
       color: '#1b1e23',
     },
     {
-      href: '/jobs',
+      href: '/quick-update',
       label: 'Update Job',
       metric: 'Note',
-      description: 'Find an active job and add status, access, or field notes.',
+      description: 'Add notes, access facts, timing, or status changes fast.',
       tone: '#dce6ed',
       color: '#213747',
     },

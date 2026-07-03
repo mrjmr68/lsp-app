@@ -57,6 +57,15 @@ export default function InvoiceQueue({ jobs, blockerMap }: Props) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
         {jobs.map(job => {
           const estimate = Array.isArray(job.job_estimates) ? (job.job_estimates[0] ?? null) : (job.job_estimates ?? null)
+          const visitRepairs = job.service_visit?.visit_repairs ?? []
+          const firstVisitRepair = visitRepairs[0] ?? null
+          const repairLabel = firstVisitRepair
+            ? (firstVisitRepair.repair_code ?? firstVisitRepair.description_title)
+            : (job.diagnoses?.repair_code ?? '-')
+          const repairTotal = visitRepairs.reduce((sum, repair) => {
+            const amount = repair.flat_rate_amount ?? 0
+            return sum + amount * Number(repair.quantity ?? 1)
+          }, 0)
           const techName = job.users
             ? `${job.users.first_name} ${job.users.last_name.charAt(0)}.`
             : '-'
@@ -83,8 +92,10 @@ export default function InvoiceQueue({ jobs, blockerMap }: Props) {
               </div>
 
               <div style={{ fontSize: '11px', color: '#5f5e5a', marginBottom: '5px' }}>
-                {job.diagnoses?.repair_code ?? '-'} · {techName}
-                {estimate?.estimate_number ? ` · ${estimate.estimate_number}` : ''}
+                {repairLabel} - {techName}
+                {visitRepairs.length > 1 ? ` - ${visitRepairs.length} repairs` : ''}
+                {repairTotal > 0 ? ` - $${repairTotal.toLocaleString()}` : ''}
+                {estimate?.estimate_number ? ` - ${estimate.estimate_number}` : ''}
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px', flexWrap: 'wrap' }}>

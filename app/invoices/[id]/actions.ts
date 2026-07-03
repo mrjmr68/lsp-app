@@ -37,6 +37,43 @@ function buildInvoiceLineItemsFromEstimate(
   }))
 }
 
+type VisitRepairForInvoice = {
+  id: string
+  repair_code: string | null
+  description_title: string
+  description_body: string | null
+  customer_description: string | null
+  flat_rate_amount: number | null
+  variable_pricing: boolean
+  quantity: number
+}
+
+function buildInvoiceLineItemsFromVisitRepairs(
+  repairs: VisitRepairForInvoice[],
+  overrideAmount: number | null,
+) {
+  if (repairs.length === 0) return null
+
+  let usedOverride = false
+  return repairs.map(repair => {
+    const quantity = Number(repair.quantity ?? 1)
+    const storedAmount = repair.flat_rate_amount == null ? 0 : Number(repair.flat_rate_amount) * quantity
+    const shouldUseOverride = repair.variable_pricing || storedAmount <= 0
+    const amount = shouldUseOverride && overrideAmount != null && !usedOverride
+      ? overrideAmount
+      : storedAmount
+
+    if (shouldUseOverride && overrideAmount != null && !usedOverride) {
+      usedOverride = true
+    }
+
+    return {
+      label: repair.customer_description ?? repair.repair_code ?? repair.description_title,
+      amount,
+    }
+  })
+}
+
 function inferInvoiceSource(job: { diagnosis_id: string | null }, estimate: { id: string } | null, hasAdhocBundle: boolean) {
   if (estimate?.id) return 'estimate'
   if (job.diagnosis_id) return 'diagnosis_bundle'
@@ -209,12 +246,38 @@ export async function approveInvoice(
 
   if (addOnError) return { error: addOnError.message }
 
+  const { data: serviceVisit, error: serviceVisitError } = await supabase
+    .from('service_visits')
+    .select(`
+      id,
+      service_request_id,
+      legacy_job_id,
+      visit_repairs(
+        id,
+        repair_code,
+        description_title,
+        description_body,
+        customer_description,
+        flat_rate_amount,
+        variable_pricing,
+        quantity
+      )
+    `)
+    .eq('legacy_job_id', jobId)
+    .order('completed_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (serviceVisitError) return { error: serviceVisitError.message }
+
   const customer = Array.isArray(job.customers) ? job.customers[0] ?? null : job.customers
   const location = Array.isArray(job.locations) ? job.locations[0] ?? null : job.locations
   const unit = Array.isArray(job.units) ? job.units[0] ?? null : job.units
   const diagnosis = Array.isArray(job.diagnoses) ? job.diagnoses[0] ?? null : job.diagnoses
   const tech = Array.isArray(job.users) ? job.users[0] ?? null : job.users
   const estimate = firstRelation(job.job_estimates)
+  const visitRepairs = ((serviceVisit?.visit_repairs ?? []) as VisitRepairForInvoice[])
+  const hasVisitRepairs = visitRepairs.length > 0
 
   let parentCustomer: { id: string; name: string; billing_email: string | null } | null = null
   if (customer?.bill_to_parent && customer.parent_id) {
@@ -233,12 +296,29 @@ export async function approveInvoice(
   let descriptionTitle = 'Service performed'
   let descriptionBody = job.problem_description ?? ''
   let diagnosisBundleMissingPrice = false
+  let visitRepairNeedsManualPrice = false
 
   if (job.flat_rate_override != null) {
     primaryCharge = job.flat_rate_override
   }
 
-  if (job.diagnosis_id) {
+  if (hasVisitRepairs) {
+    const firstRepair = visitRepairs[0]
+    const visitRepairLineItems = buildInvoiceLineItemsFromVisitRepairs(visitRepairs, job.flat_rate_override) ?? []
+
+    primaryCharge = visitRepairLineItems[0]?.amount ?? 0
+    primaryLabel = firstRepair.customer_description ?? firstRepair.repair_code ?? firstRepair.description_title
+    descriptionTitle = visitRepairs.length === 1
+      ? primaryLabel
+      : 'Completed HVAC repairs'
+    descriptionBody = visitRepairs
+      .map(repair => repair.description_body ?? repair.description_title)
+      .filter(Boolean)
+      .join('\n\n') || job.problem_description || ''
+    visitRepairNeedsManualPrice = visitRepairs.some(repair => (
+      repair.variable_pricing || (repair.flat_rate_amount ?? 0) <= 0
+    ))
+  } else if (job.diagnosis_id) {
     const { data: bundles, error: bundleError } = await supabase
       .from('repair_bundles')
       .select('flat_rate')
@@ -264,8 +344,11 @@ export async function approveInvoice(
   }
 
   const hasAdhocBundle = !!adhocBundle
-  if (!job.diagnosis_id && !hasAdhocBundle) {
-    return { error: 'This job cannot be invoiced until it has a diagnosis or an ad-hoc repair.' }
+  if (!hasVisitRepairs && !job.diagnosis_id && !hasAdhocBundle) {
+    return { error: 'This job cannot be invoiced until it has a selected visit repair, diagnosis, or ad-hoc repair.' }
+  }
+  if (hasVisitRepairs && visitRepairNeedsManualPrice && job.flat_rate_override == null) {
+    return { error: 'Enter a flat-rate override before approving this variable or unpriced visit repair.' }
   }
   if (!job.diagnosis_id && hasAdhocBundle && job.flat_rate_override == null) {
     return { error: 'Enter a flat-rate override before approving an ad-hoc repair.' }
@@ -274,17 +357,23 @@ export async function approveInvoice(
     return { error: 'Enter a flat-rate override before approving. This diagnosis does not currently resolve to a priced repair bundle.' }
   }
 
-  const fallbackLineItems = [
-    { label: primaryLabel, amount: primaryCharge },
-    ...(addOns ?? []).map(addOn => ({
-      label: addOn.type === 'bundle'
-        ? (firstRelation(addOn.repair_bundles)?.name ?? 'Additional bundle')
-        : (firstRelation(addOn.items)?.name ?? 'Additional item'),
-      amount: addOn.type === 'bundle'
-        ? (firstRelation(addOn.repair_bundles)?.flat_rate ?? 0)
-        : (firstRelation(addOn.items)?.unit_cost ?? 0) * addOn.quantity,
-    })),
-  ]
+  const addOnLineItems = (addOns ?? []).map(addOn => ({
+    label: addOn.type === 'bundle'
+      ? (firstRelation(addOn.repair_bundles)?.name ?? 'Additional bundle')
+      : (firstRelation(addOn.items)?.name ?? 'Additional item'),
+    amount: addOn.type === 'bundle'
+      ? (firstRelation(addOn.repair_bundles)?.flat_rate ?? 0)
+      : (firstRelation(addOn.items)?.unit_cost ?? 0) * addOn.quantity,
+  }))
+  const fallbackLineItems = hasVisitRepairs
+    ? [
+        ...(buildInvoiceLineItemsFromVisitRepairs(visitRepairs, job.flat_rate_override) ?? []),
+        ...addOnLineItems,
+      ]
+    : [
+        { label: primaryLabel, amount: primaryCharge },
+        ...addOnLineItems,
+      ]
 
   const lineItems = buildInvoiceLineItemsFromEstimate(estimate, job.flat_rate_override) ?? fallbackLineItems
   const subtotal = Math.round(lineItems.reduce((sum, item) => sum + item.amount, 0) * 100) / 100
@@ -385,6 +474,17 @@ export async function approveInvoice(
       return { error: updateError.message }
     }
 
+    if (serviceVisit?.id) {
+      const { error: visitBillingError } = await supabase
+        .from('service_visits')
+        .update({ billing_status: 'invoiced' })
+        .eq('id', serviceVisit.id)
+
+      if (visitBillingError) {
+        return { error: `Service visit billing update failed: ${visitBillingError.message}` }
+      }
+    }
+
     const { error: snapshotError } = await supabase
       .from('job_invoice_snapshots')
       .upsert({
@@ -392,6 +492,8 @@ export async function approveInvoice(
         invoice_number: invoiceNumber,
         invoice_date: approvedAt,
         source: snapshotSource,
+        service_request_id: serviceVisit?.service_request_id ?? null,
+        service_visit_id: serviceVisit?.id ?? null,
         send_to_email: data.sendToEmail.trim(),
         cc_email: data.ccEmail.trim() || null,
         bill_to_name: documentBase.billToName,
@@ -438,6 +540,8 @@ export async function approveInvoice(
   revalidatePath('/invoices')
   revalidatePath(`/invoices/${jobId}`)
   revalidatePath('/planning')
+  revalidatePath('/today')
+  if (serviceVisit?.id) revalidatePath(`/visits/${serviceVisit.id}`)
 
   if (emailResult.error) {
     return {

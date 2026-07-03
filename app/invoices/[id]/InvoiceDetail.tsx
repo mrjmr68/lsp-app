@@ -36,6 +36,8 @@ interface Props {
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
+const EMPTY_VISIT_REPAIRS: NonNullable<InvoiceJob['service_visit']>['visit_repairs'] = []
+
 function fmtMoney(n: number) {
   return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })
 }
@@ -106,6 +108,9 @@ export default function InvoiceDetail({
   const estimateRecord = Array.isArray(job.job_estimates) ? (job.job_estimates[0] ?? null) : (job.job_estimates ?? null)
   const partsRequest = Array.isArray(job.job_parts_requests) ? (job.job_parts_requests[0] ?? null) : (job.job_parts_requests ?? null)
   const invoiceSnapshot = job.invoice_snapshot ?? null
+  const visitRepairs = job.service_visit?.visit_repairs ?? EMPTY_VISIT_REPAIRS
+  const hasVisitRepairs = visitRepairs.length > 0
+  const firstVisitRepair = visitRepairs[0] ?? null
 
   // ── State ────────────────────────────────────────────────────────────────
 
@@ -120,7 +125,7 @@ export default function InvoiceDetail({
 
   const [adminNotes, setAdminNotes] = useState(job.admin_notes ?? '')
   const [flatRateStr, setFlatRateStr] = useState(
-    String(job.flat_rate_override ?? bundle?.flat_rate ?? '')
+    String(job.flat_rate_override ?? (visitRepairs.length === 1 ? firstVisitRepair?.flat_rate_amount : null) ?? bundle?.flat_rate ?? '')
   )
   const [showConfirmModal, setShowConfirmModal] = useState(false)
 
@@ -161,17 +166,43 @@ export default function InvoiceDetail({
     }
 
     const parsedOverride = parseFloat(flatRateStr)
+    let usedVisitOverride = false
+    const visitRepairLineItems = visitRepairs.map(repair => {
+      const quantity = Number(repair.quantity ?? 1)
+      const storedAmount = repair.flat_rate_amount == null ? null : Number(repair.flat_rate_amount) * quantity
+      const shouldUseOverride = repair.variable_pricing || !storedAmount || storedAmount <= 0
+      const amount = shouldUseOverride && !isNaN(parsedOverride) && !usedVisitOverride
+        ? parsedOverride
+        : (storedAmount ?? 0)
+
+      if (shouldUseOverride && !isNaN(parsedOverride) && !usedVisitOverride) {
+        usedVisitOverride = true
+      }
+
+      return {
+        label: repair.customer_description ?? repair.repair_code ?? repair.description_title,
+        amount,
+      }
+    })
     const fallbackPrimaryCharge = !isNaN(parsedOverride) ? parsedOverride : (bundle?.flat_rate ?? 0)
-    const fallbackLineItems = [
-      {
-        label: job.diagnoses?.repair_code ?? (adhocBundle ? 'Ad-hoc repair' : 'Service'),
-        amount: fallbackPrimaryCharge,
-      },
-      ...addOns.map(a => ({
-        label: a.type === 'bundle' ? (a.repair_bundles?.name ?? 'Additional bundle') : (a.items?.name ?? 'Additional item'),
-        amount: a.type === 'bundle' ? (a.repair_bundles?.flat_rate ?? 0) : (a.items?.unit_cost ?? 0) * a.quantity,
-      })),
-    ]
+    const fallbackLineItems = hasVisitRepairs
+      ? [
+          ...visitRepairLineItems,
+          ...addOns.map(a => ({
+            label: a.type === 'bundle' ? (a.repair_bundles?.name ?? 'Additional bundle') : (a.items?.name ?? 'Additional item'),
+            amount: a.type === 'bundle' ? (a.repair_bundles?.flat_rate ?? 0) : (a.items?.unit_cost ?? 0) * a.quantity,
+          })),
+        ]
+      : [
+          {
+            label: job.diagnoses?.repair_code ?? (adhocBundle ? 'Ad-hoc repair' : 'Service'),
+            amount: fallbackPrimaryCharge,
+          },
+          ...addOns.map(a => ({
+            label: a.type === 'bundle' ? (a.repair_bundles?.name ?? 'Additional bundle') : (a.items?.name ?? 'Additional item'),
+            amount: a.type === 'bundle' ? (a.repair_bundles?.flat_rate ?? 0) : (a.items?.unit_cost ?? 0) * a.quantity,
+          })),
+        ]
     const lineItems = estimateRecord?.line_items?.length
       ? estimateRecord.line_items.map((item, index) => ({
           label: item.label,
@@ -193,7 +224,7 @@ export default function InvoiceDetail({
       tax,
       total,
     }
-  }, [flatRateStr, bundle, addOns, job.locations, job.diagnoses, adhocBundle, estimateRecord, invoiceSnapshot])
+  }, [flatRateStr, bundle, addOns, job.locations, job.diagnoses, adhocBundle, estimateRecord, invoiceSnapshot, hasVisitRepairs, visitRepairs])
 
   // ── Internal cost breakdown ──────────────────────────────────────────────
 
@@ -274,11 +305,15 @@ export default function InvoiceDetail({
   // ── Already invoiced guard ───────────────────────────────────────────────
 
   const isInvoiced = job.commercial_state === 'invoiced'
-  const activePrimaryRepair = bundle ? 'diagnosis' : adhocBundle ? 'adhoc' : 'none'
+  const activePrimaryRepair = hasVisitRepairs ? 'visit' : bundle ? 'diagnosis' : adhocBundle ? 'adhoc' : 'none'
   const parsedManualPrice = parseFloat(flatRateStr)
   const diagnosisNeedsManualPrice = !!job.diagnosis_id && (!bundle || (bundle.flat_rate ?? 0) <= 0)
+  const visitRepairNeedsManualPrice = hasVisitRepairs && visitRepairs.some(repair => (
+    repair.variable_pricing || (repair.flat_rate_amount ?? 0) <= 0
+  ))
   const requiresManualPrice = (
     activePrimaryRepair === 'adhoc'
+    || visitRepairNeedsManualPrice
     || diagnosisNeedsManualPrice
   ) && (Number.isNaN(parsedManualPrice) || parsedManualPrice <= 0)
 
@@ -291,11 +326,22 @@ export default function InvoiceDetail({
   const techName = job.users
     ? `${job.users.first_name} ${job.users.last_name}`
     : '—'
+  const visitRepairTitle = visitRepairs.length === 1
+    ? (firstVisitRepair?.customer_description ?? firstVisitRepair?.repair_code ?? firstVisitRepair?.description_title)
+    : hasVisitRepairs
+      ? 'Completed HVAC repairs'
+      : null
+  const visitRepairBody = visitRepairs
+    .map(repair => repair.description_body ?? repair.description_title)
+    .filter(Boolean)
+    .join('\n\n')
   const customerInvoiceTitle = estimateRecord?.customer_summary
+    ?? visitRepairTitle
     ?? job.diagnoses?.invoice_description
     ?? job.diagnoses?.repair_code
     ?? (adhocBundle ? 'Ad-hoc repair service' : 'Service performed')
   const customerInvoiceBody = estimateRecord?.scope_of_work
+    ?? (visitRepairBody || null)
     ?? job.diagnoses?.repair_notes
     ?? adhocBundle?.tech_description
     ?? ''
@@ -314,6 +360,9 @@ export default function InvoiceDetail({
   // ── Unit label ───────────────────────────────────────────────────────────
 
   const unitLabel = job.manual_unit ?? job.units?.name ?? '—'
+  const repairSummary = hasVisitRepairs
+    ? visitRepairs.map(repair => repair.repair_code ?? repair.description_title).join(', ')
+    : (job.diagnoses?.repair_code ?? 'No diagnosis')
 
   // ── Render ───────────────────────────────────────────────────────────────
 
@@ -337,7 +386,7 @@ export default function InvoiceDetail({
           {unitLabel !== '—' && ` · ${unitLabel}`}
         </div>
         <div style={{ fontSize: '11px', color: '#888780', marginTop: '2px' }}>
-          {job.diagnoses?.repair_code ?? 'No diagnosis'} · {techName}
+          {repairSummary} - {techName}
           {isInvoiced && ` · ${job.invoice_number}`}
         </div>
       </div>
@@ -623,9 +672,35 @@ export default function InvoiceDetail({
         </Card>
 
         {/* ── 5. Diagnosis & repair bundle ──────────────────────────────── */}
-        <Card title={activePrimaryRepair === 'adhoc' ? 'Ad-hoc repair review' : 'Diagnosis & repair bundle'}>
+        <Card title={activePrimaryRepair === 'visit' ? 'Selected visit repairs' : activePrimaryRepair === 'adhoc' ? 'Ad-hoc repair review' : 'Diagnosis & repair bundle'}>
+          {hasVisitRepairs && (
+            <div style={{ display: 'grid', gap: '8px', marginBottom: '12px' }}>
+              {visitRepairs.map(repair => (
+                <div key={repair.id} style={{ background: '#f5f4f0', borderRadius: '8px', padding: '12px 14px', border: '1px solid #e2e1da' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap', marginBottom: '4px' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 700 }}>
+                      {repair.repair_code ?? repair.description_title}
+                    </div>
+                    <div style={{ fontSize: '13px', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+                      {repair.flat_rate_amount != null && repair.flat_rate_amount > 0
+                        ? fmtMoney(Number(repair.flat_rate_amount) * Number(repair.quantity ?? 1))
+                        : 'Price review needed'}
+                    </div>
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#5f5e5a', lineHeight: 1.5 }}>
+                    {repair.customer_description ?? repair.description_title}
+                  </div>
+                  {repair.variable_pricing && (
+                    <div style={{ fontSize: '11px', color: '#854f0b', marginTop: '5px', fontWeight: 700 }}>
+                      Variable pricing - owner override required before approval.
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
           {/* Diagnosis block */}
-          {job.diagnoses ? (
+          {!hasVisitRepairs && job.diagnoses ? (
             <div style={{ background: '#f5f4f0', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px' }}>
               <div style={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.05em', color: '#888780', marginBottom: '3px' }}>
                 {job.diagnoses.repair_code}
@@ -639,7 +714,7 @@ export default function InvoiceDetail({
                 </div>
               )}
             </div>
-          ) : adhocBundle ? (
+          ) : !hasVisitRepairs && adhocBundle ? (
             <div style={{ background: '#fdf7ea', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px', border: '1px solid #ecd8ad' }}>
               <div style={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.05em', color: '#854f0b', marginBottom: '3px' }}>
                 Ad-hoc repair
@@ -648,9 +723,9 @@ export default function InvoiceDetail({
                 {adhocBundle.tech_description}
               </div>
             </div>
-          ) : (
+          ) : !hasVisitRepairs ? (
             <div style={{ fontSize: '12px', color: '#888780', marginBottom: '12px' }}>No diagnosis or ad-hoc repair set</div>
-          )}
+          ) : null}
 
           {/* Internal banner */}
           {(bundle || adhocBundle) && (
@@ -817,7 +892,11 @@ export default function InvoiceDetail({
                 }}
               />
               <div style={{ fontSize: '11px', color: '#888780' }}>
-                {activePrimaryRepair === 'adhoc'
+                {activePrimaryRepair === 'visit'
+                  ? visitRepairNeedsManualPrice
+                    ? 'Required because one selected visit repair is variable or missing a flat rate'
+                    : 'Adjust selected visit repair pricing before finalizing if needed'
+                  : activePrimaryRepair === 'adhoc'
                   ? 'Required for ad-hoc repairs before finalizing'
                   : diagnosisNeedsManualPrice
                     ? 'Required because this diagnosis does not have a priced catalog bundle yet'
@@ -1027,7 +1106,9 @@ export default function InvoiceDetail({
               {hasUnfilledPlaceholders
                 ? 'Enter placeholder costs above before approving.'
                 : requiresManualPrice
-                  ? activePrimaryRepair === 'adhoc'
+                  ? activePrimaryRepair === 'visit'
+                    ? 'Enter a flat-rate override before approving this variable or unpriced visit repair.'
+                    : activePrimaryRepair === 'adhoc'
                     ? 'Enter the owner-set flat rate before approving this ad-hoc repair.'
                     : 'Enter a flat-rate override before approving. This diagnosis does not currently resolve to a priced repair bundle.'
                 : `Approving will finalize this invoice for ${sendToEmail || 'the billing address'}. A PDF will be saved and emailed automatically.`
@@ -1118,7 +1199,9 @@ export default function InvoiceDetail({
             <div style={{ fontSize: '12px', color: '#888780', marginBottom: '16px', lineHeight: 1.5 }}>
               {activePrimaryRepair === 'adhoc'
                 ? 'This ad-hoc repair will use the owner-set flat rate. Approval finalizes the invoice, saves the PDF, and sends it automatically.'
-                : 'Approval finalizes the invoice, saves the PDF, and sends it automatically.'}
+                : activePrimaryRepair === 'visit'
+                  ? 'Approval will use the selected visit repair snapshot, save the PDF, and send it automatically.'
+                  : 'Approval finalizes the invoice, saves the PDF, and sends it automatically.'}
             </div>
 
             {/* Send to */}

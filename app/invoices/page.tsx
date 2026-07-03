@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import AppShell from '@/app/components/AppShell'
 import InvoiceQueue from './InvoiceQueue'
-import { InvoiceQueueJob } from './types'
+import { InvoiceQueueJob, InvoiceServiceVisit } from './types'
 import { requireRole } from '@/utils/auth/roles'
 
 function firstRelation<T>(value: T | T[] | null | undefined) {
@@ -82,6 +82,40 @@ export default async function InvoicesPage() {
 
   // 3. Check which jobs already have placeholder costs entered
   const jobIds = (pendingJobs ?? []).map(j => j.id)
+
+  const { data: serviceVisits } = jobIds.length > 0
+    ? await supabase
+        .from('service_visits')
+        .select(`
+          id,
+          service_request_id,
+          legacy_job_id,
+          billing_status,
+          outcome,
+          completed_at,
+          visit_repairs(
+            id,
+            repair_code,
+            description_title,
+            description_body,
+            customer_description,
+            flat_rate_amount,
+            variable_pricing,
+            quantity,
+            selected_at
+          )
+        `)
+        .in('legacy_job_id', jobIds)
+        .order('completed_at', { ascending: false })
+    : { data: [] }
+
+  const serviceVisitByJobId = new Map<string, InvoiceServiceVisit>()
+  for (const visit of (serviceVisits ?? []) as InvoiceServiceVisit[]) {
+    if (visit.legacy_job_id && !serviceVisitByJobId.has(visit.legacy_job_id)) {
+      serviceVisitByJobId.set(visit.legacy_job_id, visit)
+    }
+  }
+
   const { data: existingCosts } = jobIds.length > 0
     ? await supabase
         .from('job_placeholder_costs')
@@ -118,6 +152,7 @@ export default async function InvoicesPage() {
     units: firstRelation(job.units),
     diagnoses: firstRelation(job.diagnoses),
     users: firstRelation(job.users),
+    service_visit: serviceVisitByJobId.get(job.id) ?? null,
   }))
 
   return (

@@ -21,6 +21,7 @@ export interface InvoiceQueueJob {
   diagnoses: { id: string; repair_code: string } | null
   users: { id: string; first_name: string; last_name: string } | null
   job_estimates?: InvoiceEstimateRecord[] | InvoiceEstimateRecord | null
+  service_visit?: InvoiceServiceVisit | null
 }
 
 // ── Invoice detail ───────────────────────────────────────────────────────────
@@ -68,7 +69,30 @@ export interface InvoiceJob {
   job_estimates?: InvoiceEstimateRecord[] | InvoiceEstimateRecord | null
   job_parts_requests?: InvoicePartsRequest[] | InvoicePartsRequest | null
   invoice_snapshot?: InvoiceSnapshot | null
+  service_visit?: InvoiceServiceVisit | null
   new_diagnosis_requested?: boolean
+}
+
+export interface InvoiceVisitRepair {
+  id: string
+  repair_code: string | null
+  description_title: string
+  description_body: string | null
+  customer_description: string | null
+  flat_rate_amount: number | null
+  variable_pricing: boolean
+  quantity: number
+  selected_at: string
+}
+
+export interface InvoiceServiceVisit {
+  id: string
+  service_request_id: string
+  legacy_job_id: string | null
+  billing_status: string
+  outcome: string | null
+  completed_at: string | null
+  visit_repairs: InvoiceVisitRepair[]
 }
 
 export interface InvoiceEstimateRecord {

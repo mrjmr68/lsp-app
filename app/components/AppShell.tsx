@@ -9,6 +9,10 @@ interface AppShellProps {
 }
 
 const navItems = [
+  { href: '/',          label: 'Home'      },
+  { href: '/today',     label: 'Today'     },
+  { href: '/quick-add', label: 'Add'       },
+  { href: '/quick-update', label: 'Update' },
   { href: '/planning',  label: 'Planning'  },
   { href: '/jobs',      label: 'Jobs'      },
   { href: '/admin',     label: 'Admin'     },
@@ -97,7 +101,7 @@ export default function AppShell({ children }: AppShellProps) {
           width: isCompact ? '100%' : 'auto',
         }}>
           {navItems.map(item => {
-            const active = pathname.startsWith(item.href)
+            const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
             return (
               <Link
                 key={item.href}

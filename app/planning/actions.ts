@@ -46,6 +46,8 @@ export async function addJob(formData: FormData) {
   const assistTechIds = parseAssistTechIds(formData).filter(techId => techId !== assignedTech)
   const problemDesc = formData.get('problem_description') as string
   const accessNeeded = formData.get('access_confirmation_needed') === 'true'
+  const requestSource = (formData.get('source') as string) || 'dispatcher'
+  const accessNotes = (formData.get('access_notes') as string)?.trim() || null
 
   if (!customerId || !locationId) {
     return { error: 'Customer and location are required' }
@@ -103,9 +105,75 @@ export async function addJob(formData: FormData) {
     return { error: 'Job was created but no id was returned.' }
   }
 
+  const { data: serviceRequest, error: requestError } = await supabase
+    .from('service_requests')
+    .insert({
+      created_from_legacy_job_id: insertedJob.id,
+      request_kind: 'service_call',
+      billable: true,
+      customer_id: customerId,
+      location_id: locationId,
+      source: requestSource,
+      status: assignedTech ? 'scheduled' : 'intake',
+      priority: priority || 'routine',
+      problem_description: problemDesc || null,
+      access_notes: accessNotes,
+      manual_unit: unit || null,
+      requested_by: user.id,
+      created_by: user.id,
+    })
+    .select('id')
+    .single()
+
+  if (requestError || !serviceRequest?.id) {
+    console.error('Insert service request error:', requestError?.message, requestError?.details, requestError?.hint)
+    await supabase
+      .from('jobs')
+      .delete()
+      .eq('id', insertedJob.id)
+
+    return { error: requestError?.message ?? 'Service request was not created.' }
+  }
+
+  const { data: serviceVisit, error: visitError } = await supabase
+    .from('service_visits')
+    .insert({
+      service_request_id: serviceRequest.id,
+      legacy_job_id: insertedJob.id,
+      visit_sequence: 1,
+      is_initial_visit: true,
+      billable: true,
+      assigned_tech: assignedTech || null,
+      scheduled_date: today,
+      queue_position: queuePosition,
+      status: 'scheduled',
+      billing_status: 'not_ready',
+      access_confirmation_needed: accessNeeded,
+    })
+    .select('id')
+    .single()
+
+  if (visitError || !serviceVisit?.id) {
+    console.error('Insert service visit error:', visitError?.message, visitError?.details, visitError?.hint)
+    await supabase
+      .from('service_requests')
+      .delete()
+      .eq('id', serviceRequest.id)
+    await supabase
+      .from('jobs')
+      .delete()
+      .eq('id', insertedJob.id)
+
+    return { error: visitError?.message ?? 'Service visit was not created.' }
+  }
+
   if (assistTechIds.length > 0) {
     const assistError = await syncPlanningAssistTechs(supabase, insertedJob.id, assistTechIds)
     if (assistError) {
+      await supabase
+        .from('service_requests')
+        .delete()
+        .eq('id', serviceRequest.id)
       await supabase
         .from('jobs')
         .delete()
@@ -115,8 +183,11 @@ export async function addJob(formData: FormData) {
     }
   }
 
+  revalidatePath('/')
+  revalidatePath('/today')
   revalidatePath('/planning')
-  return { success: true }
+  revalidatePath('/jobs')
+  return { success: true, jobId: insertedJob.id, serviceRequestId: serviceRequest.id, serviceVisitId: serviceVisit.id }
 }
 
 export async function assignJob(jobId: string, techId: string) {

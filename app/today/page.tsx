@@ -140,8 +140,7 @@ function badge(label: string, colors: { background: string; color: string; borde
 }
 
 function VisitRow({ visit }: { visit: VisitCard }) {
-  const detailHref = visit.legacyJobId ? `/jobs/${visit.legacyJobId}` : `/today`
-  const isActionable = Boolean(visit.legacyJobId)
+  const detailHref = `/visits/${visit.id}`
 
   return (
     <article style={{
@@ -162,7 +161,7 @@ function VisitRow({ visit }: { visit: VisitCard }) {
             {visit.needsReturnVisit && badge('return needed', { background: '#f5e8d7', color: '#6d4220', border: '#dec4a4' })}
           </div>
           <h2 style={{ margin: 0, fontSize: 18, lineHeight: 1.2, color: '#202329' }}>
-            {visit.locationName} <span style={{ color: '#68645d', fontWeight: 600 }}>· {visit.unitLabel}</span>
+            {visit.locationName} <span style={{ color: '#68645d', fontWeight: 600 }}>- {visit.unitLabel}</span>
           </h2>
           <p style={{ margin: '5px 0 0', color: '#5b5851', lineHeight: 1.4 }}>
             {visit.problemDescription || 'No issue description recorded.'}
@@ -182,31 +181,32 @@ function VisitRow({ visit }: { visit: VisitCard }) {
           <span>Access: {visit.accessConfirmed ? 'confirmed' : visit.accessConfirmationNeeded ? 'needs confirmation' : 'not flagged'}</span>
         </div>
 
-        {isActionable ? (
-          <Link
-            href={detailHref}
-            style={{
-              background: '#202329',
-              color: '#fff8df',
-              border: '1px solid #111318',
-              borderRadius: 6,
-              padding: '9px 12px',
-              textDecoration: 'none',
-              fontSize: 13,
-              fontWeight: 800,
-            }}
-          >
-            Open visit
-          </Link>
-        ) : (
-          <span style={{ color: '#6e695f', fontSize: 12 }}>Visit-only record</span>
-        )}
+        <Link
+          href={detailHref}
+          style={{
+            background: '#202329',
+            color: '#fff8df',
+            border: '1px solid #111318',
+            borderRadius: 6,
+            padding: '9px 12px',
+            textDecoration: 'none',
+            fontSize: 13,
+            fontWeight: 800,
+          }}
+        >
+          Open visit
+        </Link>
       </div>
     </article>
   )
 }
 
-export default async function TodayPage() {
+export default async function TodayPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>
+}) {
+  const { error: pageError } = await searchParams
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -305,6 +305,12 @@ export default async function TodayPage() {
         {error && (
           <div style={{ border: '1px solid #e0b8ae', background: '#fff0ec', color: '#7a3125', borderRadius: 8, padding: 12, marginBottom: 14 }}>
             Today&apos;s visit queue could not load: {error.message}
+          </div>
+        )}
+
+        {pageError && (
+          <div style={{ border: '1px solid #e0b8ae', background: '#fff0ec', color: '#7a3125', borderRadius: 8, padding: 12, marginBottom: 14 }}>
+            {pageError}
           </div>
         )}
 

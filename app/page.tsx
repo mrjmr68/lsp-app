@@ -1,192 +1,135 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import AppShell from '@/app/components/AppShell'
 import { createClient } from '@/utils/supabase/server'
+import { firstRelation, SupabaseRelation } from '@/utils/supabase/relations'
 
-export default async function Home() {
+type VisitRow = {
+  id: string
+  status: 'scheduled' | 'en_route' | 'on_site' | 'completed' | 'cancelled'
+  billing_status: string
+  scheduled_date: string | null
+  queue_position: number | null
+  assigned_user: SupabaseRelation<{ first_name: string; last_name: string }>
+  service_requests: SupabaseRelation<{
+    problem_description: string | null
+    customers: SupabaseRelation<{ name: string }>
+    locations: SupabaseRelation<{ name: string; street_address: string | null }>
+  }>
+}
+
+function statusClass(status: VisitRow['status']) {
+  if (status === 'completed') return 'bg-emerald-100 text-emerald-800 border-emerald-200'
+  if (status === 'on_site') return 'bg-amber-100 text-amber-800 border-amber-200'
+  if (status === 'en_route') return 'bg-sky-100 text-sky-800 border-sky-200'
+  if (status === 'cancelled') return 'bg-red-100 text-red-800 border-red-200'
+  return 'bg-neutral-100 text-neutral-700 border-neutral-200'
+}
+
+function crewName(user: { first_name: string; last_name: string } | null) {
+  if (!user) return 'Unassigned'
+  return `${user.first_name} ${user.last_name}`.trim()
+}
+
+export default async function DailyBoard({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>
+}) {
+  const { error: pageError } = await searchParams
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-
   if (!user) redirect('/login')
 
-  const { data: profile } = await supabase
-    .from('users')
-    .select('first_name, role')
-    .eq('id', user.id)
-    .maybeSingle()
-
   const today = new Date().toISOString().split('T')[0]
-  const canViewAll = ['owner', 'admin', 'dispatcher'].includes(profile?.role ?? '')
-
-  let todayQuery = supabase
+  const { data: visits, error } = await supabase
     .from('service_visits')
-    .select('id', { count: 'exact', head: true })
+    .select(`
+      id,
+      status,
+      billing_status,
+      scheduled_date,
+      queue_position,
+      assigned_user:users!service_visits_assigned_tech_fkey(first_name, last_name),
+      service_requests!service_visits_service_request_id_fkey(
+        problem_description,
+        customers!service_requests_customer_id_fkey(name),
+        locations!service_requests_location_id_fkey(name, street_address)
+      )
+    `)
     .eq('scheduled_date', today)
     .neq('status', 'cancelled')
-    .neq('status', 'completed')
+    .order('queue_position', { ascending: true, nullsFirst: false })
+    .order('created_at', { ascending: true })
 
-  if (!canViewAll) {
-    todayQuery = todayQuery.eq('assigned_tech', user.id)
-  }
-
-  const [
-    { count: activeVisitsCount },
-    { count: waitingPartsCount },
-    { count: readyForInvoiceCount },
-  ] = await Promise.all([
-    todayQuery,
-    supabase
-      .from('service_requests')
-      .select('id', { count: 'exact', head: true })
-      .eq('status', 'waiting_parts'),
-    supabase
-      .from('service_visits')
-      .select('id', { count: 'exact', head: true })
-      .eq('billing_status', 'ready_for_invoice'),
-  ])
-
-  const quickActions = [
-    {
-      href: '/today',
-      label: "Today's Jobs",
-      metric: activeVisitsCount ?? 0,
-      description: 'Assigned service visits, ordered for field work.',
-      tone: '#202329',
-      color: '#fff8df',
-    },
-    {
-      href: '/quick-add',
-      label: 'Add Job',
-      metric: '+',
-      description: 'Create a request and first visit from a call or text.',
-      tone: '#ead39f',
-      color: '#1b1e23',
-    },
-    {
-      href: '/quick-update',
-      label: 'Update Job',
-      metric: 'Note',
-      description: 'Add notes, access facts, timing, or status changes fast.',
-      tone: '#dce6ed',
-      color: '#213747',
-    },
-    {
-      href: '/estimates',
-      label: 'Parts / Waiting',
-      metric: waitingPartsCount ?? 0,
-      description: 'Review work blocked by parts or follow-up scheduling.',
-      tone: '#f2dfc4',
-      color: '#5b3c1f',
-    },
-    {
-      href: '/invoices',
-      label: 'Dashboard',
-      metric: readyForInvoiceCount ?? 0,
-      description: 'Invoice-ready work and owner review queues.',
-      tone: '#e4eadc',
-      color: '#31452e',
-    },
-  ]
+  const rows = (visits ?? []) as VisitRow[]
 
   return (
-    <AppShell>
-      <div style={{ maxWidth: 1040, margin: '0 auto', padding: '24px 14px 42px' }}>
-        <header style={{ marginBottom: 20 }}>
-          <p style={{ margin: 0, fontSize: 12, color: '#6a655c', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.12em' }}>
-            Legend Service Pros
-          </p>
-          <h1 style={{ margin: '8px 0 0', fontSize: 34, lineHeight: 1.04, color: '#202329' }}>
-            {profile?.first_name ? `Good to see you, ${profile.first_name}.` : 'Field operations home'}
-          </h1>
-          <p style={{ margin: '9px 0 0', maxWidth: 660, color: '#5d584f', lineHeight: 1.5 }}>
-            The v1.0 workflow starts here: today&apos;s visits, fast intake, quick updates, waiting parts, and invoice-ready review.
-          </p>
+    <main className="min-h-dvh bg-neutral-50 text-neutral-950">
+      <div className="mx-auto min-h-dvh w-full max-w-xl px-4 py-5 pb-28">
+        <header className="mb-5 flex items-end justify-between gap-4">
+          <div>
+            <p className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-neutral-500">Daily Board</p>
+            <h1 className="text-4xl font-black leading-none tracking-[-0.05em]">Today</h1>
+          </div>
+          <Link href="/invoices" className="flex min-h-12 items-center rounded-2xl border border-neutral-300 bg-white px-4 text-sm font-black text-neutral-800">
+            Billing
+          </Link>
         </header>
 
-        <section style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))',
-          gap: 12,
-          marginBottom: 22,
-        }}>
-          {quickActions.map(action => (
-            <Link
-              key={action.href}
-              href={action.href}
-              style={{
-                minHeight: 152,
-                display: 'grid',
-                alignContent: 'space-between',
-                gap: 16,
-                padding: 16,
-                borderRadius: 8,
-                border: '1px solid rgba(31, 34, 39, 0.18)',
-                background: '#fffdf8',
-                color: '#202329',
-                textDecoration: 'none',
-                boxShadow: '0 10px 22px rgba(43, 46, 52, 0.06)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-                <h2 style={{ margin: 0, fontSize: 17, lineHeight: 1.15 }}>{action.label}</h2>
-                <span style={{
-                  minWidth: 38,
-                  height: 32,
-                  borderRadius: 6,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '0 9px',
-                  background: action.tone,
-                  color: action.color,
-                  fontSize: 13,
-                  fontWeight: 900,
-                }}>
-                  {action.metric}
-                </span>
-              </div>
-              <p style={{ margin: 0, color: '#625d54', lineHeight: 1.4, fontSize: 13 }}>
-                {action.description}
-              </p>
-            </Link>
-          ))}
+        {(pageError || error) && (
+          <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-base font-bold text-red-800">
+            {pageError ?? error?.message}
+          </div>
+        )}
+
+        <section className="grid gap-3">
+          {rows.length === 0 ? (
+            <div className="rounded-3xl border border-dashed border-neutral-300 bg-white p-6 text-lg font-bold text-neutral-500">
+              No visits scheduled for today.
+            </div>
+          ) : (
+            rows.map(row => {
+              const request = firstRelation(row.service_requests)
+              const customer = firstRelation(request?.customers)
+              const location = firstRelation(request?.locations)
+              const tech = firstRelation(row.assigned_user)
+
+              return (
+                <Link
+                  key={row.id}
+                  href={`/visits/${row.id}/transit`}
+                  className="block rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm active:scale-[0.99]"
+                >
+                  <div className="mb-4 flex items-start justify-between gap-3">
+                    <div>
+                      <div className="text-xl font-black leading-tight">{customer?.name ?? 'Unknown customer'}</div>
+                      <div className="mt-1 text-base font-bold text-neutral-500">{location?.name ?? location?.street_address ?? 'Unknown address'}</div>
+                    </div>
+                    <span className={`rounded-full border px-3 py-1 text-xs font-black uppercase ${statusClass(row.status)}`}>
+                      {row.status.replaceAll('_', ' ')}
+                    </span>
+                  </div>
+                  <p className="line-clamp-2 text-base font-semibold text-neutral-700">
+                    {request?.problem_description ?? 'No problem description.'}
+                  </p>
+                  <div className="mt-4 flex items-center justify-between text-sm font-black text-neutral-500">
+                    <span>{crewName(tech)}</span>
+                    <span>{row.queue_position ? `Stop ${row.queue_position}` : row.billing_status.replaceAll('_', ' ')}</span>
+                  </div>
+                </Link>
+              )
+            })
+          )}
         </section>
 
-        <section style={{
-          border: '1px solid #d7d0c1',
-          background: 'rgba(255, 253, 248, 0.72)',
-          borderRadius: 8,
-          padding: 16,
-          display: 'grid',
-          gap: 10,
-        }}>
-          <h2 style={{ margin: 0, fontSize: 18, color: '#202329' }}>Build 1 lane</h2>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(145px, 1fr))',
-            gap: 8,
-            color: '#58544d',
-            fontSize: 13,
-            lineHeight: 1.35,
-          }}>
-            {['New request', 'Technician assignment', "Today's Jobs", 'Active Visit', 'Repair or parts', 'Invoice-ready'].map((step, index) => (
-              <div
-                key={step}
-                style={{
-                  border: '1px solid #ddd5c8',
-                  borderRadius: 6,
-                  padding: 10,
-                  background: index === 2 ? '#202329' : '#fffdf8',
-                  color: index === 2 ? '#fff8df' : '#373a40',
-                  fontWeight: 800,
-                }}
-              >
-                {step}
-              </div>
-            ))}
-          </div>
-        </section>
+        <Link
+          href="/intake"
+          aria-label="Fast Intake"
+          className="fixed bottom-6 right-6 flex h-20 w-20 items-center justify-center rounded-full bg-neutral-950 text-5xl font-black leading-none text-white shadow-2xl active:scale-95"
+        >
+          +
+        </Link>
       </div>
-    </AppShell>
+    </main>
   )
 }

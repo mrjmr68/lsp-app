@@ -1,260 +1,143 @@
-import { redirect, notFound } from 'next/navigation'
-import AppShell from '@/app/components/AppShell'
-import InvoiceDetail from './InvoiceDetail'
-import { InvoiceAddOn, InvoiceAdhocBundle, InvoiceJob, InvoiceRepairBundle, InvoiceServiceVisit, InvoiceSnapshot, ParentCustomer, PhotoCounts, PlaceholderCost, VarianceData } from '../types'
-import { requireRole } from '@/utils/auth/roles'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+import LeanShell from '@/app/components/LeanShell'
+import { BigButton, FieldLabel, TextInput } from '@/app/components/LeanShell'
+import { createClient } from '@/utils/supabase/server'
+import { firstRelation, SupabaseRelation } from '@/utils/supabase/relations'
+import { approveInvoice, saveFlatRateOverride } from './actions'
 
-function firstRelation<T>(value: T | T[] | null | undefined) {
-  return Array.isArray(value) ? value[0] ?? null : (value ?? null)
+type InvoiceVisit = {
+  id: string
+  legacy_job_id: string | null
+  service_requests: SupabaseRelation<{
+    customers: SupabaseRelation<{ name: string; billing_email: string | null }>
+    locations: SupabaseRelation<{ name: string }>
+  }>
+  visit_repairs: Array<{
+    id: string
+    repair_code: string | null
+    description_title: string
+    customer_description: string | null
+    flat_rate_amount: number | null
+    variable_pricing: boolean
+  }>
 }
 
-export default async function InvoiceDetailPage({
+function money(value: number) {
+  return '$' + value.toLocaleString('en-US', { maximumFractionDigits: 2 })
+}
+
+export default async function InvoiceReview({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ error?: string }>
 }) {
   const { id } = await params
-  const { supabase, error } = await requireRole('owner')
-  if (error === 'Not authenticated') redirect('/login')
-  if (error) redirect('/planning')
+  const { error } = await searchParams
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
 
-  // 1. Job with ALL fields including pricing + admin + invoice
-  const { data: job, error: jobErr } = await supabase
-    .from('jobs')
+  const { data } = await supabase
+    .from('service_visits')
     .select(`
-      id, status, job_status, resolution_type, commercial_state,
-      priority, manual_unit, problem_description,
-      job_date, arrived_at, completed_at, how_it_came_in,
-      tstat_mode, tstat_fan, system_response,
-      temp_outdoor, temp_return, temp_supply,
-      arrival_notes, diagnosis_id, needs_admin_review, new_diagnosis_requested,
-      flagged_for_review, admin_notes, flat_rate_override,
-      invoice_number, invoice_pdf_path, invoice_subtotal, invoice_tax, invoice_total,
-      approved_at, approved_by, customer_id, location_id,
-      customers!jobs_customer_id_fkey(id, name, type, billing_email, bill_to_parent, parent_id),
-      locations!jobs_location_id_fkey(id, name, tax_rate),
-      units!jobs_unit_id_fkey(id, name, unit_type),
-      systems!jobs_system_id_fkey(
-        id, name, system_subtype, group_name, tonnage,
-        make, model, refrigerant_type, metering_device
+      id,
+      legacy_job_id,
+      service_requests!service_visits_service_request_id_fkey(
+        customers!service_requests_customer_id_fkey(name, billing_email),
+        locations!service_requests_location_id_fkey(name)
       ),
-      diagnoses!jobs_diagnosis_id_fkey(id, repair_code, invoice_description, repair_notes, variable_pricing),
-      users!jobs_actual_tech_fkey(id, first_name, last_name),
-      job_estimates(
-        id,
-        estimate_number,
-        status,
-        customer_summary,
-        scope_of_work,
-        line_items,
-        subtotal,
-        tax_rate,
-        tax,
-        total,
-        send_to_email,
-        cc_email,
-        generated_at,
-        sent_at,
-        approved_at
-      ),
-      job_parts_requests(
-        id,
-        vendor_name,
-        vendor_email,
-        eta_date,
-        vendor_notes,
-        email_subject,
-        email_body,
-        vendor_email_sent_at,
-        ordered_at,
-        ready_to_schedule_at,
-        job_parts_request_lines(
-          id,
-          item_id,
-          part_name,
-          part_number,
-          quantity,
-          unit_cost,
-          notes,
-          ordered,
-          sort_order
-        )
-      )
+      visit_repairs(id, repair_code, description_title, customer_description, flat_rate_amount, variable_pricing)
     `)
     .eq('id', id)
     .single()
 
-  if (jobErr || !job) return notFound()
+  if (!data) redirect('/invoices')
+  const visit = data as InvoiceVisit
+  const request = firstRelation(visit.service_requests)
+  const customer = firstRelation(request?.customers)
+  const location = firstRelation(request?.locations)
+  const needsOverride = visit.visit_repairs.some(repair => repair.variable_pricing || (repair.flat_rate_amount ?? 0) <= 0)
+  const total = visit.visit_repairs.reduce((sum, repair) => sum + (repair.flat_rate_amount ?? 0), 0)
 
-  // 2. Repair bundle WITH pricing (flat_rate, lines with unit_cost, is_placeholder)
-  let bundle = null
-  if (job.diagnosis_id) {
-    const { data } = await supabase
-      .from('repair_bundles')
-      .select(`
-        id, diagnosis_id, name, flat_rate, repair_notes,
-        repair_bundle_lines(id, quantity, cost_at_build, items(id, name, type, unit, unit_cost, is_placeholder))
-      `)
-      .eq('diagnosis_id', job.diagnosis_id)
-      .order('created_at', { ascending: false })
-      .limit(1)
-    bundle = data?.[0] ?? null
-  }
+  async function approveVisitInvoice(formData: FormData) {
+    'use server'
 
-  const { data: adhocBundle } = await supabase
-    .from('job_adhoc_bundles')
-    .select(`
-      id, tech_description, reviewed_by_admin, admin_action, promoted_diagnosis_id,
-      job_adhoc_bundle_lines(id, quantity, cost_at_build, items(id, name, type, unit, unit_cost, is_placeholder))
-    `)
-    .eq('job_id', id)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
+    const visitId = formData.get('visit_id')?.toString()
+    const jobId = formData.get('legacy_job_id')?.toString()
+    const overrideText = formData.get('flat_rate_override')?.toString().trim()
+    const sendToEmail = formData.get('send_to_email')?.toString().trim() ?? ''
 
-  // 3. Job add-ons WITH pricing
-  const { data: addOns } = await supabase
-    .from('job_addons')
-    .select(`
-      id, type, quantity,
-      repair_bundles(id, name, flat_rate),
-      items(id, name, unit, unit_cost)
-    `)
-    .eq('job_id', id)
+    if (!visitId || !jobId) redirect('/invoices?error=Missing invoice target.')
 
-  // 4. Placeholder costs for this job
-  const { data: placeholderCosts } = await supabase
-    .from('job_placeholder_costs')
-    .select('id, item_id, actual_cost')
-    .eq('job_id', id)
-
-  const { data: invoiceSnapshot } = await supabase
-    .from('job_invoice_snapshots')
-    .select(`
-      id, job_id, invoice_number, invoice_date, source, send_to_email, cc_email,
-      bill_to_name, bill_to_email, customer_name, location_name, unit_label, tech_name,
-      service_date, reference_line, description_title, description_body, primary_label,
-      line_items, subtotal, tax_rate, tax, total
-    `)
-    .eq('job_id', id)
-    .maybeSingle()
-
-  const { data: serviceVisit } = await supabase
-    .from('service_visits')
-    .select(`
-      id,
-      service_request_id,
-      legacy_job_id,
-      billing_status,
-      outcome,
-      completed_at,
-      visit_repairs(
-        id,
-        repair_code,
-        description_title,
-        description_body,
-        customer_description,
-        flat_rate_amount,
-        variable_pricing,
-        quantity,
-        selected_at
-      )
-    `)
-    .eq('legacy_job_id', id)
-    .order('completed_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-
-  // 5. Parent customer (if bill_to_parent)
-  let parentCustomer = null
-  const cust = firstRelation(job.customers)
-  if (cust?.bill_to_parent && cust?.parent_id) {
-    const { data } = await supabase
-      .from('customers')
-      .select('id, name, billing_email')
-      .eq('id', cust.parent_id)
-      .maybeSingle()
-    parentCustomer = data
-  }
-
-  // 6. Variance — historical invoice amounts for the same diagnosis
-  let variance = null
-  if (job.diagnosis_id) {
-      const { data: historicalJobs } = await supabase
-        .from('jobs')
-        .select('invoice_amount')
-        .eq('diagnosis_id', job.diagnosis_id)
-        .eq('commercial_state', 'invoiced')
-        .not('invoice_amount', 'is', null)
-
-    const amounts = ((historicalJobs ?? []) as Array<{ invoice_amount: number | null }>)
-      .map(jobRow => jobRow.invoice_amount ?? 0)
-      .filter(a => a > 0)
-
-    if (amounts.length > 0) {
-      const sum = amounts.reduce((s: number, a: number) => s + a, 0)
-      variance = {
-        count: amounts.length,
-        avg: Math.round((sum / amounts.length) * 100) / 100,
-        min: Math.min(...amounts),
-        max: Math.max(...amounts),
-      }
+    const parsedOverride = overrideText ? Number(overrideText) : null
+    if (parsedOverride !== null && (!Number.isFinite(parsedOverride) || parsedOverride <= 0)) {
+      redirect(`/invoices/${visitId}?error=${encodeURIComponent('Enter a valid price override.')}`)
     }
-  }
 
-  // 7. Photo counts from storage
-  const photoCounts: PhotoCounts = { arrival: 0, fault: 0, post_repair: 0 }
-  for (const type of ['observation', 'fault', 'post_repair'] as const) {
-    const { data: files } = await supabase.storage
-      .from('job-photos')
-      .list(`${id}/${type}`)
-    const count = (files ?? []).filter(f => !f.name.startsWith('.')).length
-    if (type === 'observation') {
-      photoCounts.arrival = count
-    } else {
-      photoCounts[type] = count
+    if (parsedOverride != null) {
+      const saveResult = await saveFlatRateOverride(jobId, parsedOverride)
+      if (saveResult.error) redirect(`/invoices/${visitId}?error=${encodeURIComponent(saveResult.error)}`)
     }
-  }
 
-  let invoicePdfUrl: string | null = null
-  if (job.invoice_pdf_path) {
-    const { data: signedUrlData } = await supabase.storage
-      .from('invoice-pdfs')
-      .createSignedUrl(job.invoice_pdf_path, 60 * 60)
-    invoicePdfUrl = signedUrlData?.signedUrl ?? null
-  }
+    const result = await approveInvoice(jobId, { sendToEmail, ccEmail: '' })
+    if (result.error) redirect(`/invoices/${visitId}?error=${encodeURIComponent(result.error)}`)
 
-  const normalizedAddOns = (addOns ?? []).map(addOn => ({
-    ...addOn,
-    repair_bundles: firstRelation(addOn.repair_bundles),
-    items: firstRelation(addOn.items),
-  }))
-
-  const normalizedJob = {
-    ...job,
-    customers: firstRelation(job.customers),
-    locations: firstRelation(job.locations),
-    units: firstRelation(job.units),
-    systems: firstRelation(job.systems),
-    diagnoses: firstRelation(job.diagnoses),
-    users: firstRelation(job.users),
-    invoice_snapshot: (invoiceSnapshot ?? null) as InvoiceSnapshot | null,
-    service_visit: (serviceVisit ?? null) as InvoiceServiceVisit | null,
+    revalidatePath('/invoices')
+    revalidatePath('/')
+    redirect('/invoices')
   }
 
   return (
-    <AppShell>
-      <InvoiceDetail
-        job={normalizedJob as InvoiceJob}
-        bundle={bundle as InvoiceRepairBundle | null}
-        adhocBundle={adhocBundle as InvoiceAdhocBundle | null}
-        addOns={normalizedAddOns as InvoiceAddOn[]}
-        placeholderCosts={(placeholderCosts ?? []) as PlaceholderCost[]}
-        parentCustomer={parentCustomer as ParentCustomer | null}
-        variance={variance as VarianceData | null}
-        photoCounts={photoCounts}
-        invoicePdfUrl={invoicePdfUrl}
-      />
-    </AppShell>
+    <LeanShell title="Approve bill" eyebrow="Invoice review" backHref="/invoices">
+      {error && <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-base font-bold text-red-800">{error}</div>}
+      <section className="mb-5 rounded-3xl border border-neutral-200 bg-white p-5">
+        <div className="text-2xl font-black">{customer?.name ?? 'Unknown customer'}</div>
+        <div className="mt-1 text-base font-bold text-neutral-500">{location?.name ?? 'Unknown location'}</div>
+      </section>
+
+      <section className="mb-5 grid gap-3">
+        {visit.visit_repairs.map(repair => (
+          <div key={repair.id} className="rounded-3xl border border-neutral-200 bg-white p-5">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="text-lg font-black">{repair.repair_code ?? repair.description_title}</div>
+                <p className="mt-2 text-base font-semibold text-neutral-600">{repair.customer_description ?? repair.description_title}</p>
+              </div>
+              <div className="text-lg font-black">{repair.flat_rate_amount ? money(repair.flat_rate_amount) : 'Review'}</div>
+            </div>
+            {repair.variable_pricing && <div className="mt-3 rounded-2xl bg-amber-100 px-4 py-2 text-sm font-black text-amber-800">Variable price</div>}
+          </div>
+        ))}
+      </section>
+
+      <form action={approveVisitInvoice} className="grid gap-5">
+        <input type="hidden" name="visit_id" value={visit.id} />
+        <input type="hidden" name="legacy_job_id" value={visit.legacy_job_id ?? ''} />
+
+        <div>
+          <FieldLabel>Send to</FieldLabel>
+          <TextInput name="send_to_email" type="email" defaultValue={customer?.billing_email ?? ''} required placeholder="billing@example.com" />
+        </div>
+
+        {needsOverride && (
+          <div>
+            <FieldLabel>Price override</FieldLabel>
+            <TextInput name="flat_rate_override" inputMode="decimal" placeholder="0.00" required />
+          </div>
+        )}
+
+        {!needsOverride && (
+          <div className="rounded-3xl border border-neutral-200 bg-white p-5">
+            <div className="text-sm font-black uppercase tracking-[0.14em] text-neutral-500">Total</div>
+            <div className="mt-2 text-4xl font-black tracking-[-0.05em]">{money(total)}</div>
+          </div>
+        )}
+
+        <BigButton type="submit" tone="green">Approve & Send</BigButton>
+      </form>
+    </LeanShell>
   )
 }

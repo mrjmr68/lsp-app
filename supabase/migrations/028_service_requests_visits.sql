@@ -493,12 +493,12 @@ select
   j.access_confirmed,
   j.access_confirmation_needed,
   (
-    j.commercial_state in ('parts_needed', 'parts_ordered', 'ready_to_schedule')
-    or j.resolution_type = 'parts_sourcing'
+    coalesce(j.commercial_state in ('parts_needed', 'parts_ordered', 'ready_to_schedule'), false)
+    or coalesce(j.resolution_type = 'parts_sourcing', false)
   ),
   (
-    j.commercial_state in ('parts_needed', 'parts_ordered', 'ready_to_schedule')
-    or j.resolution_type = 'parts_sourcing'
+    coalesce(j.commercial_state in ('parts_needed', 'parts_ordered', 'ready_to_schedule'), false)
+    or coalesce(j.resolution_type = 'parts_sourcing', false)
   ),
   j.arrival_notes,
   j.departed_at,

@@ -55,10 +55,10 @@ export default async function Home() {
       color: '#fff8df',
     },
     {
-      href: '/planning',
+      href: '/quick-add',
       label: 'Add Job',
       metric: '+',
-      description: 'Create or assign a request from the current planning flow.',
+      description: 'Create a request and first visit from a call or text.',
       tone: '#ead39f',
       color: '#1b1e23',
     },

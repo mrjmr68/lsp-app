@@ -11,6 +11,7 @@ interface AppShellProps {
 const navItems = [
   { href: '/',          label: 'Home'      },
   { href: '/today',     label: 'Today'     },
+  { href: '/quick-add', label: 'Add'       },
   { href: '/planning',  label: 'Planning'  },
   { href: '/jobs',      label: 'Jobs'      },
   { href: '/admin',     label: 'Admin'     },

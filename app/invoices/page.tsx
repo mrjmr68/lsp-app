@@ -1,166 +1,78 @@
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import AppShell from '@/app/components/AppShell'
-import InvoiceQueue from './InvoiceQueue'
-import { InvoiceQueueJob, InvoiceServiceVisit } from './types'
-import { requireRole } from '@/utils/auth/roles'
+import LeanShell from '@/app/components/LeanShell'
+import { createClient } from '@/utils/supabase/server'
+import { firstRelation, SupabaseRelation } from '@/utils/supabase/relations'
 
-function firstRelation<T>(value: T | T[] | null | undefined) {
-  return Array.isArray(value) ? value[0] ?? null : (value ?? null)
+type BillingVisit = {
+  id: string
+  completed_at: string | null
+  legacy_job_id: string | null
+  service_requests: SupabaseRelation<{
+    customers: SupabaseRelation<{ name: string }>
+    locations: SupabaseRelation<{ name: string }>
+  }>
+  visit_repairs: Array<{
+    repair_code: string | null
+    description_title: string
+    flat_rate_amount: number | null
+  }>
 }
 
-export default async function InvoicesPage() {
-  const { supabase, error } = await requireRole('owner')
-  if (error === 'Not authenticated') redirect('/login')
-  if (error) redirect('/planning')
+function money(value: number) {
+  return '$' + value.toLocaleString('en-US', { maximumFractionDigits: 2 })
+}
 
-  // Pending-review jobs (completed + needs admin review)
-  const { data: pendingJobs, error: jobsError } = await supabase
-    .from('jobs')
+export default async function BillingQueue() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
+  const { data: visits, error } = await supabase
+    .from('service_visits')
     .select(`
-      id, status, job_status, resolution_type, commercial_state,
-      priority, manual_unit, job_date, completed_at,
-      needs_admin_review, flagged_for_review, diagnosis_id,
-      customers!jobs_customer_id_fkey(id, name),
-      locations!jobs_location_id_fkey(id, name),
-      units!jobs_unit_id_fkey(id, name),
-      diagnoses!jobs_diagnosis_id_fkey(id, repair_code),
-      users!jobs_actual_tech_fkey(id, first_name, last_name),
-      job_estimates(
-        id,
-        estimate_number,
-        status,
-        customer_summary,
-        scope_of_work,
-        line_items,
-        subtotal,
-        tax_rate,
-        tax,
-        total,
-        send_to_email,
-        cc_email,
-        generated_at,
-        sent_at,
-        approved_at
-      )
+      id,
+      completed_at,
+      legacy_job_id,
+      service_requests!service_visits_service_request_id_fkey(
+        customers!service_requests_customer_id_fkey(name),
+        locations!service_requests_location_id_fkey(name)
+      ),
+      visit_repairs(repair_code, description_title, flat_rate_amount)
     `)
-    .eq('job_status', 'completed')
-    .eq('commercial_state', 'ready_for_invoice')
-    .eq('needs_admin_review', true)
-    .order('completed_at', { ascending: false })
+    .eq('billing_status', 'ready_for_invoice')
+    .order('completed_at', { ascending: true })
 
-  if (jobsError) {
-    console.error('Invoice queue error:', jobsError.message, jobsError.details, jobsError.hint)
-  }
-
-  // Detect placeholder blockers:
-  // 1. Gather diagnosis IDs from pending jobs
-  const diagnosisIds = (pendingJobs ?? [])
-    .filter(j => j.diagnosis_id)
-    .map(j => j.diagnosis_id as string)
-
-  // 2. Find bundles that contain placeholder items
-  const placeholderDiagnosisIds = new Set<string>()
-  if (diagnosisIds.length > 0) {
-    const { data: bundles } = await supabase
-      .from('repair_bundles')
-      .select('diagnosis_id, repair_bundle_lines(items(is_placeholder))')
-      .in('diagnosis_id', diagnosisIds)
-
-    type BundleWithPlaceholderLines = {
-      diagnosis_id: string
-      repair_bundle_lines: Array<{
-        items: { is_placeholder: boolean }[] | { is_placeholder: boolean } | null
-      }> | null
-    }
-
-    for (const b of (bundles ?? []) as BundleWithPlaceholderLines[]) {
-      const lines = b.repair_bundle_lines ?? []
-      const hasPlaceholder = lines.some(line => firstRelation(line.items)?.is_placeholder)
-      if (hasPlaceholder) placeholderDiagnosisIds.add(b.diagnosis_id)
-    }
-  }
-
-  // 3. Check which jobs already have placeholder costs entered
-  const jobIds = (pendingJobs ?? []).map(j => j.id)
-
-  const { data: serviceVisits } = jobIds.length > 0
-    ? await supabase
-        .from('service_visits')
-        .select(`
-          id,
-          service_request_id,
-          legacy_job_id,
-          billing_status,
-          outcome,
-          completed_at,
-          visit_repairs(
-            id,
-            repair_code,
-            description_title,
-            description_body,
-            customer_description,
-            flat_rate_amount,
-            variable_pricing,
-            quantity,
-            selected_at
-          )
-        `)
-        .in('legacy_job_id', jobIds)
-        .order('completed_at', { ascending: false })
-    : { data: [] }
-
-  const serviceVisitByJobId = new Map<string, InvoiceServiceVisit>()
-  for (const visit of (serviceVisits ?? []) as InvoiceServiceVisit[]) {
-    if (visit.legacy_job_id && !serviceVisitByJobId.has(visit.legacy_job_id)) {
-      serviceVisitByJobId.set(visit.legacy_job_id, visit)
-    }
-  }
-
-  const { data: existingCosts } = jobIds.length > 0
-    ? await supabase
-        .from('job_placeholder_costs')
-        .select('job_id, item_id, actual_cost')
-        .in('job_id', jobIds)
-    : { data: [] }
-
-  // Build blocker map: jobId → boolean (true = needs cost entry)
-  const costsByJob = new Map<string, Set<string>>()
-  for (const c of existingCosts ?? []) {
-    if (c.actual_cost != null && c.actual_cost > 0) {
-      if (!costsByJob.has(c.job_id)) costsByJob.set(c.job_id, new Set())
-      costsByJob.get(c.job_id)!.add(c.item_id)
-    }
-  }
-
-  const blockerMap: Record<string, boolean> = {}
-  for (const j of pendingJobs ?? []) {
-    if (j.diagnosis_id && placeholderDiagnosisIds.has(j.diagnosis_id)) {
-      // Job has placeholder items — check if all have costs entered
-      // For simplicity, mark as blocked if diagnosis has placeholders
-      // and we don't have costs for ALL of them for this job.
-      // A full check would compare specific item_ids, but this is good enough
-      // for the queue pill. The detail page does the full check.
-      const filledCount = costsByJob.get(j.id)?.size ?? 0
-      blockerMap[j.id] = filledCount === 0  // rough check
-    }
-  }
-
-  const normalizedPendingJobs = (pendingJobs ?? []).map(job => ({
-    ...job,
-    customers: firstRelation(job.customers),
-    locations: firstRelation(job.locations),
-    units: firstRelation(job.units),
-    diagnoses: firstRelation(job.diagnoses),
-    users: firstRelation(job.users),
-    service_visit: serviceVisitByJobId.get(job.id) ?? null,
-  }))
+  const rows = (visits ?? []) as BillingVisit[]
 
   return (
-    <AppShell>
-      <InvoiceQueue
-        jobs={normalizedPendingJobs as InvoiceQueueJob[]}
-        blockerMap={blockerMap}
-      />
-    </AppShell>
+    <LeanShell title="Billing Queue" eyebrow="End of day" backHref="/">
+      {error && <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-base font-bold text-red-800">{error.message}</div>}
+      <section className="grid gap-3">
+        {rows.length === 0 ? (
+          <div className="rounded-3xl border border-dashed border-neutral-300 bg-white p-6 text-lg font-bold text-neutral-500">
+            No visits ready for invoice.
+          </div>
+        ) : (
+          rows.map(visit => {
+            const request = firstRelation(visit.service_requests)
+            const customer = firstRelation(request?.customers)
+            const location = firstRelation(request?.locations)
+            const total = visit.visit_repairs.reduce((sum, repair) => sum + (repair.flat_rate_amount ?? 0), 0)
+
+            return (
+              <Link key={visit.id} href={`/invoices/${visit.id}`} className="block rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm active:scale-[0.99]">
+                <div className="text-xl font-black">{customer?.name ?? 'Unknown customer'}</div>
+                <div className="mt-1 text-base font-bold text-neutral-500">{location?.name ?? 'Unknown location'}</div>
+                <div className="mt-4 flex items-center justify-between gap-3 text-sm font-black text-neutral-500">
+                  <span>{visit.visit_repairs.length} repair{visit.visit_repairs.length === 1 ? '' : 's'}</span>
+                  <span>{total > 0 ? money(total) : 'Price review'}</span>
+                </div>
+              </Link>
+            )
+          })
+        )}
+      </section>
+    </LeanShell>
   )
 }

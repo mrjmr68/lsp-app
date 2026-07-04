@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Legend Service Pros Field Service Platform Spec v1.0</title>
+  <style>
+    :root {
+      --ink: #202329;
+      --muted: #5f625f;
+      --paper: #fffaf0;
+      --panel: #fffdf8;
+      --line: #d8cfbd;
+      --field: #edf3e5;
+      --field-ink: #274d2c;
+      --gold: #f4d58d;
+      --gold-ink: #67490f;
+      --blue: #dcebf5;
+      --blue-ink: #244f6c;
+      --red: #f2dfd9;
+      --red-ink: #783326;
+      --shadow: 0 22px 65px rgba(32, 35, 41, 0.11);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(244, 213, 141, 0.38), transparent 34rem),
+        linear-gradient(135deg, #f8f0df 0%, #fffaf0 42%, #ecf1e7 100%);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 64px;
+    }
+
+    .hero {
+      border: 1px solid rgba(32, 35, 41, 0.14);
+      background: rgba(255, 253, 248, 0.82);
+      border-radius: 24px;
+      padding: clamp(28px, 5vw, 54px);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      top: -90px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: rgba(32, 35, 41, 0.06);
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--gold-ink);
+      font: 800 12px/1.2 Verdana, sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.08;
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 850px;
+      font-size: clamp(36px, 6vw, 72px);
+      letter-spacing: -0.05em;
+    }
+
+    h2 {
+      font-size: clamp(24px, 3vw, 38px);
+      letter-spacing: -0.035em;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    .subtitle {
+      max-width: 780px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 28px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 11px;
+      background: #fff;
+      color: var(--muted);
+      font: 800 12px/1 Verdana, sans-serif;
+    }
+
+    .pill.good {
+      background: var(--field);
+      color: var(--field-ink);
+      border-color: #b7d4aa;
+    }
+
+    .pill.warn {
+      background: #fff1d0;
+      color: var(--gold-ink);
+      border-color: #e5c985;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    section {
+      margin-top: 24px;
+      border: 1px solid rgba(32, 35, 41, 0.13);
+      border-radius: 20px;
+      background: rgba(255, 253, 248, 0.8);
+      padding: clamp(20px, 4vw, 34px);
+      box-shadow: 0 12px 32px rgba(32, 35, 41, 0.06);
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      background: var(--panel);
+    }
+
+    .status {
+      border-left: 6px solid var(--field-ink);
+    }
+
+    .status.warn {
+      border-left-color: var(--gold);
+    }
+
+    .status.red {
+      border-left-color: var(--red-ink);
+    }
+
+    ul, ol {
+      margin: 10px 0 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    th, td {
+      text-align: left;
+      border-bottom: 1px solid #e7dfd0;
+      padding: 11px 12px;
+      vertical-align: top;
+    }
+
+    th {
+      color: #4a4e4a;
+      background: #f2eadc;
+      font: 800 12px/1.3 Verdana, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    code {
+      border: 1px solid #ddd3c1;
+      border-radius: 6px;
+      padding: 2px 5px;
+      background: #fff7e8;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.92em;
+    }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0 2px;
+      font-family: Verdana, sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .flow span {
+      padding: 9px 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .flow .arrow {
+      border-color: transparent;
+      background: transparent;
+      color: var(--muted);
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .note {
+      margin-top: 14px;
+      padding: 13px 15px;
+      border-radius: 14px;
+      background: #f6eddb;
+      color: #504735;
+      border: 1px solid #e0cfaa;
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      margin-top: 26px;
+    }
+
+    a {
+      color: #235f87;
+      font-weight: 800;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .hero, section {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">Legend Service Pros - Field Service Platform</p>
+      <h1>Operations Management App Spec v1.0</h1>
+      <p class="subtitle">
+        The v1.0 product is now the field-service golden path for a small and growing HVAC company:
+        fast request intake, assigned daily visits, concise technician execution, repair-template selection,
+        parts-needed hold states, and owner invoice review.
+      </p>
+      <div class="meta">
+        <span class="pill good">Production deployed</span>
+        <span class="pill">Last updated: July 3, 2026</span>
+        <span class="pill">Stack: Next.js + Supabase + Vercel</span>
+        <span class="pill warn">No QuickBooks sync in v1.0</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>Executive Summary</h2>
+      <div class="grid">
+        <div class="card status">
+          <h3>Current Decision</h3>
+          <p>
+            Continue with <code>mrjmr68/lsp-app</code> as the primary production codebase.
+            Do not restart from a blank repo. Do not switch to the older PM Engine project for v1.0.
+          </p>
+        </div>
+        <div class="card status">
+          <h3>Live App</h3>
+          <p>
+            Production is deployed at
+            <a href="https://lsp-app.vercel.app">https://lsp-app.vercel.app</a>.
+            PR #1 was merged into <code>main</code> and Vercel production deployment succeeded.
+          </p>
+        </div>
+        <div class="card status warn">
+          <h3>Product Boundary</h3>
+          <p>
+            v1.0 is service operations first. PM/site-survey parity, analytics, full inventory,
+            automated texting, AI diagnosis, and accounting sync remain later-phase work.
+          </p>
+        </div>
+      </div>
+      <div class="flow" aria-label="Primary workflow">
+        <span>Service request</span>
+        <span class="arrow">to</span>
+        <span>Service visit</span>
+        <span class="arrow">to</span>
+        <span>Repair or parts needed</span>
+        <span class="arrow">to</span>
+        <span>Invoice-ready</span>
+        <span class="arrow">to</span>
+        <span>Owner approval</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>What Is Live Now</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Area</th>
+            <th>Current v1.0 Capability</th>
+            <th>Primary Routes / Objects</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Home</td>
+            <td>Mobile-first operating home with quick entry points for field and office work.</td>
+            <td><code>/</code></td>
+          </tr>
+          <tr>
+            <td>Today's Jobs</td>
+            <td>Visit-centered daily queue. Office roles see the board; techs see assigned visits.</td>
+            <td><code>/today</code>, <code>service_visits</code></td>
+          </tr>
+          <tr>
+            <td>Quick Add Job</td>
+            <td>Fast intake creates a legacy job plus a v1.0 service request and initial visit.</td>
+            <td><code>/quick-add</code>, <code>service_requests</code>, <code>service_visits</code></td>
+          </tr>
+          <tr>
+            <td>Quick Update</td>
+            <td>Fast status, access, timing, and note updates without entering the full legacy job workflow.</td>
+            <td><code>/quick-update</code>, <code>visit_notes</code>, <code>job_messages</code></td>
+          </tr>
+          <tr>
+            <td>Active Visit</td>
+            <td>Status changes, access notes, quick notes, repair template selection, parts-needed, completion, and Add Unit.</td>
+            <td><code>/visits/[id]</code>, <code>visit_repairs</code>, <code>visit_parts_needed</code></td>
+          </tr>
+          <tr>
+            <td>Invoice Review</td>
+            <td>Owner invoice queue/detail now reads selected visit repairs and snapshots them on approval.</td>
+            <td><code>/invoices</code>, <code>/invoices/[id]</code>, <code>job_invoice_snapshots</code></td>
+          </tr>
+          <tr>
+            <td>Legacy Fallback</td>
+            <td>Existing planning, jobs, estimates, catalog, customers, and admin routes remain available.</td>
+            <td><code>/planning</code>, <code>/jobs/[id]</code>, <code>/admin</code>, <code>/catalog</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Lean Owner-Operator UX Direction</h2>
+      <p>
+        The next frontend direction is a five-person owner-operator model: all team members share the same
+        practical operating view, and the interface prioritizes today's work over role-specific dashboards.
+        The product should feel like a field tool, not an admin portal.
+      </p>
+      <div class="grid">
+        <div class="card status">
+          <h3>One Task Per Screen</h3>
+          <p>
+            Long pages are replaced by focused steps. Transit, diagnosis notes, resolution triage,
+            parts-needed entry, and invoice approval each get their own screen.
+          </p>
+        </div>
+        <div class="card status">
+          <h3>Thumb-Friendly</h3>
+          <p>
+            Buttons and inputs use large touch targets, full-width actions, bold typography, and generous spacing
+            for technicians working on phones, in trucks, or with gloves.
+          </p>
+        </div>
+        <div class="card status warn">
+          <h3>Shared Reality</h3>
+          <p>
+            The UI should not hide operational screens behind role-based navigation. Authentication remains required,
+            but the five-person crew operates from the same daily board and workflow surfaces.
+          </p>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Lean Route</th>
+            <th>Purpose</th>
+            <th>Primary Interaction</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/</code></td>
+            <td>Daily Board</td>
+            <td>Today's service visits with a floating Fast Intake button.</td>
+          </tr>
+          <tr>
+            <td><code>/intake</code></td>
+            <td>Fast Intake</td>
+            <td>Name, address, phone, problem, assign later or assign now.</td>
+          </tr>
+          <tr>
+            <td><code>/visits/[id]/transit</code></td>
+            <td>Travel</td>
+            <td>Destination, Maps link, Start Route, Arrived on Site.</td>
+          </tr>
+          <tr>
+            <td><code>/visits/[id]/diagnose</code></td>
+            <td>On-site notes</td>
+            <td>Problem description plus one large visit-note field.</td>
+          </tr>
+          <tr>
+            <td><code>/visits/[id]/resolve</code></td>
+            <td>Resolution triage</td>
+            <td>Add Repairs, Order Parts, or Close - No Action.</td>
+          </tr>
+          <tr>
+            <td><code>/visits/[id]/repairs</code></td>
+            <td>Repair selection</td>
+            <td>Focused catalog selection and completion for billing.</td>
+          </tr>
+          <tr>
+            <td><code>/visits/[id]/parts</code></td>
+            <td>Parts needed</td>
+            <td>Part, quantity, notes, then block billing until return.</td>
+          </tr>
+          <tr>
+            <td><code>/invoices</code></td>
+            <td>Billing Queue</td>
+            <td>Only visits marked <code>ready_for_invoice</code>.</td>
+          </tr>
+          <tr>
+            <td><code>/invoices/[id]</code></td>
+            <td>Invoice Review</td>
+            <td>Selected visit repairs, override when needed, Approve & Send.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Shared Crew Responsibilities</h2>
+      <p>
+        v1.0 no longer treats the UI as separate role-based dashboards. The language below describes common
+        responsibilities, not restricted navigation. All authenticated crew members should be able to reach the
+        same core daily workflow.
+      </p>
+      <div class="grid">
+        <div class="card">
+          <h3>Technician</h3>
+          <ul>
+            <li>Starts from Home or Today's Jobs.</li>
+            <li>Opens assigned visits.</li>
+            <li>Updates en route / on site / complete status.</li>
+            <li>Records access notes and quick notes.</li>
+            <li>Selects repair templates or marks parts needed.</li>
+            <li>Can create a new billable Add Unit request from the active visit.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Dispatcher</h3>
+          <ul>
+            <li>Creates requests through Quick Add or planning.</li>
+            <li>Assigns visits to technicians.</li>
+            <li>Uses Today's Jobs to monitor the day's work.</li>
+            <li>Uses Quick Update for phone-call and office updates.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Owner / Admin</h3>
+          <ul>
+            <li>Reviews invoice-ready work.</li>
+            <li>Confirms selected repair lines and pricing context.</li>
+            <li>Applies flat-rate override for variable or unpriced repairs.</li>
+            <li>Approves invoices, creates PDF, stores snapshot, and sends email when configured.</li>
+            <li>Manages catalog/admin surfaces.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Data Model</h2>
+      <p>
+        v1.0 introduces request/visit language without deleting the existing <code>jobs</code> foundation.
+        This is a transition architecture: new screens operate on requests and visits, while legacy screens
+        continue reading and writing <code>jobs</code> until the cutover is complete.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>v1.0 Object</th>
+            <th>Table</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Service Request</td>
+            <td><code>service_requests</code></td>
+            <td>The billable or operational customer need. A request can have one or more visits.</td>
+          </tr>
+          <tr>
+            <td>Service Visit</td>
+            <td><code>service_visits</code></td>
+            <td>The scheduled field event assigned to a technician.</td>
+          </tr>
+          <tr>
+            <td>Visit Note</td>
+            <td><code>visit_notes</code></td>
+            <td>General, access, status, timing, approval, or system notes tied to one visit.</td>
+          </tr>
+          <tr>
+            <td>Visit Repair</td>
+            <td><code>visit_repairs</code></td>
+            <td>Selected repair template snapshot for a specific visit. Protects history from future catalog edits.</td>
+          </tr>
+          <tr>
+            <td>Parts Needed</td>
+            <td><code>visit_parts_needed</code></td>
+            <td>Parts-needed hold record. Billing waits for the return visit.</td>
+          </tr>
+          <tr>
+            <td>Invoice Snapshot</td>
+            <td><code>job_invoice_snapshots</code></td>
+            <td>Durable invoice record now linkable to service request and service visit.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>Transition rule:</strong> existing <code>jobs</code> records remain readable. New v1.0 flows
+        create or mirror <code>jobs</code>, <code>service_requests</code>, and <code>service_visits</code> so
+        the older planning and invoice screens keep working while the primary UI moves to visits.
+      </div>
+    </section>
+
+    <section>
+      <h2>Canonical Lifecycle</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Request Status</th>
+            <th>Visit Status</th>
+            <th>Billing Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Intake</td>
+            <td><code>intake</code></td>
+            <td><code>scheduled</code> once a visit exists</td>
+            <td><code>not_ready</code></td>
+          </tr>
+          <tr>
+            <td>Scheduled</td>
+            <td><code>scheduled</code></td>
+            <td><code>scheduled</code></td>
+            <td><code>not_ready</code></td>
+          </tr>
+          <tr>
+            <td>En route</td>
+            <td><code>active</code></td>
+            <td><code>en_route</code></td>
+            <td><code>not_ready</code></td>
+          </tr>
+          <tr>
+            <td>On site</td>
+            <td><code>active</code></td>
+            <td><code>on_site</code></td>
+            <td><code>not_ready</code></td>
+          </tr>
+          <tr>
+            <td>Repair complete</td>
+            <td><code>completed</code></td>
+            <td><code>completed</code></td>
+            <td><code>ready_for_invoice</code></td>
+          </tr>
+          <tr>
+            <td>Parts needed</td>
+            <td><code>waiting_parts</code></td>
+            <td><code>completed</code></td>
+            <td><code>blocked_parts_return</code></td>
+          </tr>
+          <tr>
+            <td>Closed no action</td>
+            <td><code>completed</code></td>
+            <td><code>completed</code></td>
+            <td><code>not_billable</code></td>
+          </tr>
+          <tr>
+            <td>Invoiced</td>
+            <td><code>completed</code></td>
+            <td><code>completed</code></td>
+            <td><code>invoiced</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Business Rules</h2>
+      <div class="grid">
+        <div class="card status">
+          <h3>Add Unit</h3>
+          <p>
+            Add Unit always creates a new, separately billable service request and first service visit.
+            It copies the customer and location from the origin visit and stores <code>origin_visit_id</code>.
+          </p>
+        </div>
+        <div class="card status warn">
+          <h3>Parts Needed</h3>
+          <p>
+            Parts-needed visits are not billed at the first visit. The current visit is marked
+            <code>blocked_parts_return</code>, <code>needs_return_visit = true</code>, and
+            <code>no_invoice_until_return_complete = true</code>.
+          </p>
+        </div>
+        <div class="card status">
+          <h3>Repair Templates</h3>
+          <p>
+            Repair selections snapshot the catalog values into <code>visit_repairs</code>. Later catalog edits
+            must not rewrite historical invoices or field selections.
+          </p>
+        </div>
+        <div class="card status red">
+          <h3>Accounting Boundary</h3>
+          <p>
+            No QuickBooks sync in v1.0. Invoice-ready means the app has an internal durable record and PDF/email
+            workflow, not an accounting-system export.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Screen Specifications</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Home</h3>
+          <ul>
+            <li>Phone-first operating dashboard.</li>
+            <li>Entry points: Today's Jobs, Add Job, Quick Update, Planning, Invoice Review.</li>
+            <li>Shows invoice-ready and waiting-parts counts where useful.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Today's Jobs</h3>
+          <ul>
+            <li>Lists active visits for the current date.</li>
+            <li>Displays status, priority, customer, location, unit, tech, billing status, and access state.</li>
+            <li>Opens <code>/visits/[id]</code>.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Quick Add Job</h3>
+          <ul>
+            <li>Creates a service call in under 30 seconds.</li>
+            <li>Supports customer/location/unit context, issue, priority, and assigned tech.</li>
+            <li>Creates legacy job plus request/visit bridge rows.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Quick Update</h3>
+          <ul>
+            <li>Fast note/status/access updates.</li>
+            <li>Writes visit notes and mirrors important information to legacy job messages/events.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Active Visit</h3>
+          <ul>
+            <li>Status buttons: scheduled, en route, on site.</li>
+            <li>Notes and access confirmation.</li>
+            <li>Repair template selection.</li>
+            <li>Parts-needed outcome.</li>
+            <li>Complete visit as repair completed or closed no action.</li>
+            <li>Add Unit creates a new billable request.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Invoice Review</h3>
+          <ul>
+            <li>Owner-only review queue.</li>
+            <li>Shows selected visit repairs if present.</li>
+            <li>Variable or unpriced visit repairs require owner override.</li>
+            <li>Approval generates PDF, stores invoice snapshot, emails when configured, and marks visit invoiced.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Repair Catalog Contract</h2>
+      <p>
+        The original spreadsheet is a one-time seed source. After import, the app is the system of record
+        for repair templates and pricing constants.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Catalog Field</th>
+            <th>Expected Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Scope and categorization</td>
+            <td>Location, equipment, component, action, category, and repair code support browsing/search and diagnosis consistency.</td>
+          </tr>
+          <tr>
+            <td>Customer description</td>
+            <td>Customer-facing invoice text, preferably QB-ready language.</td>
+          </tr>
+          <tr>
+            <td>Technician notes</td>
+            <td>Internal work guidance shown to staff where appropriate.</td>
+          </tr>
+          <tr>
+            <td>Flat rate and variable flag</td>
+            <td>Defines whether invoice review can approve directly or requires owner pricing override.</td>
+          </tr>
+          <tr>
+            <td>Time and cost assumptions</td>
+            <td>Travel time, work time, labor cost, parts/materials, refrigerant, profit, and margin support auditability.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Testing And Launch Gates</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Smoke Test</h3>
+          <ol>
+            <li>Log in on desktop and mobile.</li>
+            <li>Create a Quick Add job.</li>
+            <li>Assign a technician.</li>
+            <li>Open from Today's Jobs.</li>
+            <li>Move through en route and on site.</li>
+            <li>Add access note and quick note.</li>
+            <li>Select repair template.</li>
+            <li>Complete visit as invoice-ready.</li>
+            <li>Review and approve invoice.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Parts Needed Test</h3>
+          <ol>
+            <li>Open an active visit.</li>
+            <li>Mark parts needed with quantity and note.</li>
+            <li>Confirm visit billing status is blocked.</li>
+            <li>Confirm no invoice is sent from the first visit.</li>
+            <li>Create/complete return visit before billing.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Add Unit Test</h3>
+          <ol>
+            <li>Open an active visit.</li>
+            <li>Use Add Unit.</li>
+            <li>Confirm a new billable request exists.</li>
+            <li>Confirm it carries the same customer/location.</li>
+            <li>Confirm it links back to origin visit.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="note">
+        <strong>Known remaining reliability gap:</strong> full offline behavior is not complete yet.
+        v1.0 still needs cached assigned jobs, local draft persistence, queued writes, and visible sync state
+        before broad field rollout.
+      </div>
+    </section>
+
+    <section>
+      <h2>Current Production State</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PR #1</td>
+            <td>Merged into <code>main</code>.</td>
+          </tr>
+          <tr>
+            <td>Production deploy</td>
+            <td>Vercel success for merged production commit.</td>
+          </tr>
+          <tr>
+            <td>Supabase migration 028</td>
+            <td>Applied manually and verified: 1,188 jobs, 1,188 requests, 1,188 visits, 0 requests without visits.</td>
+          </tr>
+          <tr>
+            <td>TypeScript</td>
+            <td><code>npx tsc --noEmit</code> passed after merge.</td>
+          </tr>
+          <tr>
+            <td>Lint</td>
+            <td>Changed-file targeted lint passed. Full project lint still has pre-existing unrelated issues.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Next Backlog</h2>
+      <ol>
+        <li>Run mobile smoke test against production URL.</li>
+        <li>Confirm all roles can access the correct surfaces: tech, dispatcher, admin, owner.</li>
+        <li>Add visible error/success feedback for Active Visit forms beyond redirect query messages.</li>
+        <li>Improve repair search/filtering inside Active Visit so the catalog is fast on mobile.</li>
+        <li>Build return-visit workflow for parts-needed cases.</li>
+        <li>Finish offline protection: cached today's visits, draft notes, queued writes, sync status.</li>
+        <li>Clean existing lint debt in customers, older job workflow, and catalog import utility.</li>
+        <li>Decide whether to keep or retire older legacy job workflow screens after pilot.</li>
+        <li>Create a short pilot checklist for the first live team users.</li>
+      </ol>
+    </section>
+
+    <p class="footer">
+      Spec generated from the current lsp-app production state on July 3, 2026.
+      This document is intended to guide v1.0 pilot hardening and team rollout.
+    </p>
+  </main>
+</body>
+</html>

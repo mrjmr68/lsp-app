@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { HistoryJob, Job, JobCrewMember, JobWorkflow } from './types'
-import { markArrived, startJobWorkflow } from './actions'
+import { HistoryJob, Job, JobCrewMember, JobWorkflow } from '../types'
+import { addJobMessage, markArrived, startJobWorkflow } from '../actions'
 import { JobWorkflowType } from '@/utils/job-workflows'
 
 interface Props {
@@ -12,7 +12,6 @@ interface Props {
   serviceHistory: HistoryJob[]
   workflow: JobWorkflow | null
   crewMembers: JobCrewMember[]
-  onArrived: (arrivedAt: string, lat: number | null, lng: number | null) => void
 }
 
 function getGps(): Promise<{ lat: number; lng: number } | null> {
@@ -60,11 +59,14 @@ const inlineContentStyle: React.CSSProperties = {
   color: '#1a1a18',
 }
 
-export default function Step1Arrive({ viewerRole, job, serviceHistory, workflow, crewMembers, onArrived }: Props) {
+export default function ArriveClient({ viewerRole, job, serviceHistory, workflow, crewMembers }: Props) {
   const [isPending, startTransition] = useTransition()
   const [isWorkflowPending, startWorkflowTransition] = useTransition()
+  const [isMessagePending, startMessageTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [detailsExpanded, setDetailsExpanded] = useState(false)
+  const [showComposer, setShowComposer] = useState(false)
+  const [messageBody, setMessageBody] = useState('')
   const router = useRouter()
 
   const alreadyArrived = (job.job_status === 'on_site' || job.job_status === 'follow_up_active') && !!job.arrived_at
@@ -93,17 +95,145 @@ export default function Step1Arrive({ viewerRole, job, serviceHistory, workflow,
       if (result.error) {
         setError(result.error)
       } else {
-        onArrived(
-          result.arrivedAt ?? job.arrived_at ?? new Date().toISOString(),
-          position?.lat ?? null,
-          position?.lng ?? null,
-        )
+        const locationName = job.locations?.name ?? 'site'
+        setMessageBody(`On site at ${locationName}`)
+        setShowComposer(true)
       }
     })
   }
 
+  function handleSendMessage() {
+    startMessageTransition(async () => {
+      if (messageBody.trim()) {
+        const result = await addJobMessage(job.id, messageBody.trim())
+        if (result.error) {
+          setError(result.error)
+          return
+        }
+      }
+      router.push(`/jobs/${job.id}/observe`)
+    })
+  }
+
+  function handleSkipMessage() {
+    router.push(`/jobs/${job.id}/observe`)
+  }
+
+  if (showComposer) {
+    return (
+      <div style={{ padding: '16px', maxWidth: '640px', margin: '0 auto' }}>
+        <div style={{
+          background: '#eaf3de',
+          border: '1px solid #b8dcb8',
+          borderRadius: '10px',
+          padding: '14px 16px',
+          textAlign: 'center',
+          fontSize: '14px',
+          color: '#3b6d11',
+          fontWeight: 700,
+          letterSpacing: '0.04em',
+          textTransform: 'uppercase',
+          marginBottom: '20px',
+        }}>
+          On-site
+        </div>
+
+        <div style={infoCardStyle}>
+          <div style={{
+            fontSize: '10px',
+            fontWeight: 700,
+            color: '#888780',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            marginBottom: '10px',
+          }}>
+            Notify the office
+          </div>
+          <div style={{
+            fontSize: '13px',
+            color: '#5f5e5a',
+            lineHeight: 1.5,
+            marginBottom: '12px',
+          }}>
+            Send a quick message to let the office know you've arrived. Edit the text below or send as-is.
+          </div>
+          <textarea
+            value={messageBody}
+            onChange={event => setMessageBody(event.target.value)}
+            rows={3}
+            style={{
+              width: '100%',
+              fontSize: '14px',
+              padding: '12px 14px',
+              borderRadius: '12px',
+              border: '1px solid #d3d1c7',
+              fontFamily: 'inherit',
+              outline: 'none',
+              resize: 'vertical',
+              lineHeight: 1.5,
+              boxSizing: 'border-box',
+            }}
+          />
+
+          {error && (
+            <div style={{
+              background: '#fcebeb',
+              border: '1px solid #f7c1c1',
+              borderRadius: '6px',
+              padding: '10px 14px',
+              fontSize: '12px',
+              color: '#a32d2d',
+              marginTop: '10px',
+            }}>
+              {error}
+            </div>
+          )}
+
+          <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
+            <button
+              type="button"
+              onClick={handleSkipMessage}
+              style={{
+                padding: '12px 18px',
+                borderRadius: '10px',
+                border: '1px solid #d3d1c7',
+                background: '#fff',
+                color: '#5f5e5a',
+                fontSize: '13px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+              }}
+            >
+              Skip
+            </button>
+            <button
+              type="button"
+              onClick={handleSendMessage}
+              disabled={isMessagePending}
+              style={{
+                flex: 1,
+                padding: '12px',
+                borderRadius: '10px',
+                border: 'none',
+                background: isMessagePending ? '#b4b2a9' : '#185fa5',
+                color: '#fff',
+                fontSize: '13px',
+                fontWeight: 700,
+                cursor: isMessagePending ? 'not-allowed' : 'pointer',
+                fontFamily: 'inherit',
+              }}
+            >
+              {isMessagePending ? 'Sending...' : 'Send & continue'}
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div style={{ padding: '16px', maxWidth: '640px', margin: '0 auto' }}>
+    <div style={{ padding: '16px', maxWidth: '640px', margin: '0 auto', overflowY: 'auto', flex: 1 }}>
       <div style={{
         background: 'linear-gradient(180deg, #35393f 0%, #22262c 100%)',
         border: '1px solid #171a1f',
@@ -330,19 +460,39 @@ export default function Step1Arrive({ viewerRole, job, serviceHistory, workflow,
       )}
 
       {alreadyArrived ? (
-        <div style={{
-          background: '#eaf3de',
-          border: '1px solid #b8dcb8',
-          borderRadius: '10px',
-          padding: '14px 16px',
-          textAlign: 'center',
-          fontSize: '14px',
-          color: '#3b6d11',
-          fontWeight: 700,
-          letterSpacing: '0.04em',
-          textTransform: 'uppercase',
-        }}>
-          On-site
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div style={{
+            background: '#eaf3de',
+            border: '1px solid #b8dcb8',
+            borderRadius: '10px',
+            padding: '14px 16px',
+            textAlign: 'center',
+            fontSize: '14px',
+            color: '#3b6d11',
+            fontWeight: 700,
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
+          }}>
+            On-site
+          </div>
+          <button
+            type="button"
+            onClick={() => router.push(`/jobs/${job.id}/observe`)}
+            style={{
+              width: '100%',
+              padding: '13px',
+              borderRadius: '10px',
+              border: 'none',
+              background: '#185fa5',
+              color: '#fff',
+              fontSize: '14px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+            }}
+          >
+            {'Observe ->'}
+          </button>
         </div>
       ) : (
         <button

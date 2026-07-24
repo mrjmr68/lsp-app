@@ -5,7 +5,11 @@
       "Bash(ls -la app/jobs/[id]/)",
       "Bash(lsof -i :3000)",
       "Bash(netstat -ano)",
-      "mcp__Claude_Preview__preview_start"
+      "mcp__Claude_Preview__preview_start",
+      "WebFetch(domain:github.com)",
+      "Bash(git diff *)",
+      "Bash(npx tsc *)",
+      "PowerShell(Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue)"
     ]
   }
 }

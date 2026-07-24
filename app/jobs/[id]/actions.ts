@@ -376,6 +376,8 @@ export async function setDiagnosis(jobId: string, diagnosisId: string | null) {
     .eq('id', jobId)
 
   if (error) return { error: error.message }
+  revalidatePath('/jobs')
+  revalidatePath(`/jobs/${jobId}`)
   return { success: true }
 }
 

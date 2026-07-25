@@ -7,13 +7,15 @@ export default async function Home() {
 
   if (!user) redirect('/login')
 
-  // Route by role once profile is loaded
   const { data: profile } = await supabase
     .from('users')
     .select('role')
     .eq('id', user.id)
     .single()
 
-  // Techs go to their day view eventually — for now everyone lands on planning
+  if (profile?.role === 'tech') {
+    redirect('/jobs')
+  }
+
   redirect('/planning')
 }

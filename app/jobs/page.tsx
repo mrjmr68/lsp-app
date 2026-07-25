@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import AppShell from '@/app/components/AppShell'
+import FieldShell from '@/app/components/FieldShell'
 import JobList, { Customer, ListJob, Location, Tech, UnassignedJob } from './JobList'
 import { addJob } from '@/app/planning/actions'
 import { DAILY_OPERATIONS_HIDDEN_COMMERCIAL_STATES_FILTER } from '@/utils/job-lifecycle'
@@ -139,8 +139,14 @@ export default async function JobsPage() {
   const availableCustomers = (customers ?? []) as Customer[]
   const availableLocations = (locations ?? []) as Location[]
 
+  const todayLabel = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  })
+
   return (
-    <AppShell>
+    <FieldShell title="My Jobs" subtitle={todayLabel}>
       <JobList
         myJobs={normalizedMyJobs}
         doneJobs={normalizedDoneJobs}
@@ -152,6 +158,6 @@ export default async function JobsPage() {
         userId={user.id}
         addJobAction={addJob}
       />
-    </AppShell>
+    </FieldShell>
   )
 }

@@ -83,7 +83,7 @@ export const getJobFull = cache(async (id: string) => {
       arrival_notes, diagnosis_id, needs_admin_review, new_diagnosis_requested,
       customer_id, location_id, unit_id, system_id,
       customers!jobs_customer_id_fkey(id, name),
-      locations!jobs_location_id_fkey(id, name, access_notes),
+      locations!jobs_location_id_fkey(id, name, access_notes, street_address, city, state, zip),
       units!jobs_unit_id_fkey(id, name, unit_type),
       systems!jobs_system_id_fkey(
         id, name, system_type, system_subtype, group_name, tonnage,
@@ -182,6 +182,42 @@ export const getServiceHistory = cache(async (jobId: string, systemId: string | 
     ...h,
     diagnoses: firstRelation(h.diagnoses),
   })) as HistoryJob[]
+})
+
+export const getSiteContacts = cache(async (customerId: string) => {
+  const supabase = await createClient()
+
+  const { data } = await supabase
+    .from('customer_contacts')
+    .select(`
+      role,
+      is_primary,
+      persons!customer_contacts_person_id_fkey(
+        id, first_name, last_name, phone
+      )
+    `)
+    .eq('customer_id', customerId)
+    .order('is_primary', { ascending: false })
+
+  return (data ?? [])
+    .map(row => {
+      const person = firstRelation(row.persons) as {
+        id: string
+        first_name: string
+        last_name: string
+        phone: string | null
+      } | null
+      if (!person?.phone) return null
+      return {
+        id: person.id,
+        first_name: person.first_name,
+        last_name: person.last_name,
+        phone: person.phone,
+        role: row.role,
+        is_primary: row.is_primary,
+      }
+    })
+    .filter((contact): contact is NonNullable<typeof contact> => contact != null)
 })
 
 // ─── Workflow + crew + messages ──────────────────────────────────────

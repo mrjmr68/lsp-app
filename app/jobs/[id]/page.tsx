@@ -1,41 +1,57 @@
-import { redirect, notFound } from 'next/navigation'
-import { getJobSummary, getViewerRole } from './queries'
+import { notFound } from 'next/navigation'
+import { getJobFull, getJobSummary, getServiceHistory } from './queries'
+import JobHub from './JobHub'
 
-export default async function JobPage({
+function toTitleLabel(value: string | null | undefined) {
+  return value ? value.replace(/_/g, ' ') : ''
+}
+
+function formatJobDate(iso: string) {
+  return new Date(`${iso}T12:00:00`).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
+
+export default async function JobHubPage({
   params,
 }: {
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const viewer = await getViewerRole()
-  if (!viewer.userId) redirect('/login')
+  const [summary, job] = await Promise.all([getJobSummary(id), getJobFull(id)])
 
-  const job = await getJobSummary(id)
-  if (!job) return notFound()
+  if (!summary || !job) return notFound()
 
-  const status = job.job_status ?? 'new'
+  const serviceHistory = await getServiceHistory(id, job.system_id)
 
-  // Determine which step to land on based on job state
-  if (status === 'completed' || status === 'invoiced') {
-    redirect(`/jobs/${id}/close`)
-  }
+  const equipmentLabel = [
+    job.systems?.make,
+    toTitleLabel(job.systems?.system_type) || job.systems?.system_subtype,
+    job.systems?.tonnage ? `${job.systems.tonnage}T` : null,
+  ].filter(Boolean).join(' · ')
 
-  const arrived = status === 'on_site' || status === 'follow_up_active'
-  if (!arrived) {
-    redirect(`/jobs/${id}/arrive`)
-  }
+  const lastVisit = serviceHistory[0]
 
-  // Arrived — figure out how far the tech has progressed
-  const hasObservations = !!job.tstat_mode && !!job.tstat_fan
-  if (!hasObservations) {
-    redirect(`/jobs/${id}/observe`)
-  }
-
-  const hasDiagnosis = !!job.diagnosis_id || job.has_adhoc_bundle
-  if (!hasDiagnosis) {
-    redirect(`/jobs/${id}/diagnose`)
-  }
-
-  // Has diagnosis → land on work
-  redirect(`/jobs/${id}/work`)
+  return (
+    <JobHub
+      jobId={summary.id}
+      customerName={summary.customer_name}
+      locationName={summary.location_name}
+      unitName={summary.unit_name}
+      problemDescription={job.problem_description}
+      equipmentLabel={equipmentLabel || null}
+      lastVisitLabel={lastVisit ? formatJobDate(lastVisit.job_date) : null}
+      jobStatus={summary.job_status}
+      commercialState={summary.commercial_state}
+      arrivedAt={summary.arrived_at}
+      tstatMode={summary.tstat_mode}
+      tstatFan={summary.tstat_fan}
+      diagnosisId={summary.diagnosis_id}
+      hasAdhocBundle={summary.has_adhoc_bundle}
+      hasWorkflow={summary.has_workflow}
+      repairCode={job.diagnoses?.repair_code ?? null}
+    />
+  )
 }

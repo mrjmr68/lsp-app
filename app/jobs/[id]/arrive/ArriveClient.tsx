@@ -111,7 +111,7 @@ export default function ArriveClient({ viewerRole, job, serviceHistory, workflow
           return
         }
       }
-      router.push(`/jobs/${job.id}/observe`)
+      router.push(`/jobs/${job.id}`)
     })
   }
 

@@ -3,7 +3,24 @@
 import { JobCommercialState, JobResolutionType, JobStatus } from '@/utils/job-lifecycle'
 
 export interface JobCustomer { id: string; name: string }
-export interface JobLocation { id: string; name: string; access_notes: string | null }
+export interface JobLocation {
+  id: string
+  name: string
+  access_notes: string | null
+  street_address?: string | null
+  city?: string | null
+  state?: string | null
+  zip?: string | null
+}
+
+export interface SiteContact {
+  id: string
+  first_name: string
+  last_name: string
+  phone: string | null
+  role: string | null
+  is_primary: boolean
+}
 export interface JobUnit { id: string; name: string; unit_type: string }
 export interface JobCrewMember {
   id: string

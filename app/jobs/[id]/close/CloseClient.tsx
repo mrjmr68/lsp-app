@@ -39,25 +39,6 @@ async function uploadPhotos(jobId: string, type: string, files: File[]) {
   if (failures.length > 0) throw new Error(`Photo upload failed for: ${failures.map(r => r.fileName).join(', ')}`)
 }
 
-function Row({ label, value }: { label: string; value: string }) {
-  return (
-    <div style={{ display: 'flex', gap: '12px', padding: '5px 0', borderBottom: '1px solid #f5f4f0' }}>
-      <span style={{ fontSize: '11px', color: '#888780', width: '110px', flexShrink: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</span>
-      <span style={{ fontSize: '13px', color: '#1a1a18' }}>{value || '-'}</span>
-    </div>
-  )
-}
-
-const tstatLabels: Record<string, string> = { cool: 'Cool', heat: 'Heat', em_heat: 'Em heat', fan_only: 'Fan only', off: 'Off' }
-
-function formatDelta(r: string, s: string, mode: string) {
-  const rv = parseFloat(r), sv = parseFloat(s)
-  if (Number.isNaN(rv) || Number.isNaN(sv)) return '-'
-  const raw = mode === 'heat' || mode === 'em_heat' ? sv - rv : rv - sv
-  return `${Math.round(raw * 10) / 10} F`
-}
-
-function formatReading(v: string, suffix: string) { return v ? `${v} ${suffix}` : '-' }
 
 export default function CloseClient({ job, workflow, crewMembers, jobMessages, workflowMode, selectedDiagnosis, addOns }: Props) {
   const [isPending, startTransition] = useTransition()
@@ -107,20 +88,6 @@ export default function CloseClient({ job, workflow, crewMembers, jobMessages, w
       }
     })
   }
-
-  // Read observation data from the server-fetched job
-  const tstatMode = job.tstat_mode ?? ''
-  const tstatFan = job.tstat_fan ?? ''
-  const tempOutdoor = job.temp_outdoor != null ? String(job.temp_outdoor) : ''
-  const tempReturn = job.temp_return != null ? String(job.temp_return) : ''
-  const tempSupply = job.temp_supply != null ? String(job.temp_supply) : ''
-  const circuits = (job.observation_circuits ?? []).map(c => ({
-    circuit_number: c.circuit_number,
-    suction_pressure: c.suction_pressure != null ? String(c.suction_pressure) : '',
-    suction_line_temp: c.suction_line_temp != null ? String(c.suction_line_temp) : '',
-    liquid_pressure: c.liquid_pressure != null ? String(c.liquid_pressure) : '',
-    liquid_line_temp: c.liquid_line_temp != null ? String(c.liquid_line_temp) : '',
-  }))
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -178,78 +145,30 @@ export default function CloseClient({ job, workflow, crewMembers, jobMessages, w
         )}
 
         {!sharedWorkflowJob && (
-          <>
-            <div style={{ background: '#fff', border: '1px solid #e2e1da', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px' }}>
-              <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
-                {workflowMode === 'adhoc' ? 'Repair Path' : 'Diagnosis'}
-              </div>
-              {workflowMode === 'adhoc' ? (
-                <>
-                  <div style={{ fontSize: '14px', fontWeight: 600 }}>Ad-hoc repair</div>
-                  <div style={{ fontSize: '12px', color: '#5f5e5a', marginTop: '6px', lineHeight: 1.5 }}>{job.adhoc_bundle?.tech_description || 'No ad-hoc description entered.'}</div>
-                </>
-              ) : selectedDiagnosis ? (
-                <div style={{ fontSize: '14px', fontWeight: 600 }}>{selectedDiagnosis.repair_code}</div>
-              ) : (
-                <div style={{ fontSize: '13px', color: '#888780' }}>None selected</div>
-              )}
-            </div>
-
-            <div style={{ background: '#fff', border: '1px solid #e2e1da', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px' }}>
-              <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>Observations</div>
-              <Row label="Tstat mode" value={tstatLabels[tstatMode] ?? tstatMode} />
-              <Row label="Fan" value={tstatFan === 'auto' ? 'Auto' : tstatFan === 'on' ? 'On' : tstatFan} />
-              <Row label="Outdoor" value={formatReading(tempOutdoor, 'F')} />
-              <Row label="Return air" value={formatReading(tempReturn, 'F')} />
-              <Row label="Supply air" value={formatReading(tempSupply, 'F')} />
-              <Row label="Delta-T" value={formatDelta(tempReturn, tempSupply, tstatMode)} />
-            </div>
-
-            {circuits.map(c => (
-              <div key={c.circuit_number} style={{ background: '#fff', border: '1px solid #e2e1da', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px' }}>
-                <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>Circuit {c.circuit_number}</div>
-                <Row label="Suction" value={formatReading(c.suction_pressure, 'PSI')} />
-                <Row label="SLT" value={formatReading(c.suction_line_temp, 'F')} />
-                <Row label="Liquid" value={formatReading(c.liquid_pressure, 'PSI')} />
-                <Row label="LLT" value={formatReading(c.liquid_line_temp, 'F')} />
-              </div>
-            ))}
-
-            {addOns.length > 0 && (
-              <div style={{ background: '#fff', border: '1px solid #e2e1da', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px' }}>
-                <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>Additional work</div>
-                {addOns.map(a => (
-                  <div key={a.id} style={{ fontSize: '13px', padding: '3px 0' }}>
-                    {a.type === 'bundle' ? a.repair_bundles?.name : a.items?.name}
-                    {a.quantity > 1 && <span style={{ color: '#888780' }}> x{a.quantity}</span>}
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        )}
-
-        {diagnosisEstimateEligible && (
-          <div style={{ background: '#fff', border: '1px solid #e2e1da', borderRadius: '8px', padding: '12px 14px', marginBottom: '16px' }}>
-            <div style={{ fontSize: '10px', fontWeight: 700, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Completion Path</div>
-            <div style={{ display: 'grid', gap: '8px' }}>
-              <button type="button" onClick={() => setCompletionPath('invoice')} style={{ textAlign: 'left', borderRadius: '10px', border: completionPath === 'invoice' ? '1px solid #3b6d11' : '1px solid #e2e1da', background: completionPath === 'invoice' ? '#eef5ea' : '#fff', padding: '12px 14px', cursor: 'pointer', fontFamily: 'inherit' }}>
-                <div style={{ fontSize: '13px', fontWeight: 700, color: '#1a1a18' }}>Direct invoice review</div>
-                <div style={{ fontSize: '12px', color: '#5f5e5a', marginTop: '4px', lineHeight: 1.5 }}>Repair is complete — move straight to owner invoice review.</div>
-              </button>
-              <button type="button" onClick={() => setCompletionPath('estimate')} style={{ textAlign: 'left', borderRadius: '10px', border: completionPath === 'estimate' ? '1px solid #4152a3' : '1px solid #e2e1da', background: completionPath === 'estimate' ? '#eef1fd' : '#fff', padding: '12px 14px', cursor: 'pointer', fontFamily: 'inherit' }}>
-                <div style={{ fontSize: '13px', fontWeight: 700, color: '#1a1a18' }}>Estimate and follow-up</div>
-                <div style={{ fontSize: '12px', color: '#5f5e5a', marginTop: '4px', lineHeight: 1.5 }}>Diagnosis done, work needs estimate + approval + return visit.</div>
-              </button>
-            </div>
+          <div style={{ marginBottom: '28px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#6b6960', marginBottom: '8px' }}>Almost done</div>
+            <h1 style={{ margin: 0, fontSize: '32px', fontWeight: 500, letterSpacing: '-0.03em', lineHeight: 1.15 }}>How did it go?</h1>
+            <p style={{ margin: '12px 0 0', fontSize: '17px', color: '#6b6960', lineHeight: 1.45 }}>
+              {workflowMode === 'adhoc'
+                ? (job.adhoc_bundle?.tech_description || 'Ad-hoc repair on file.')
+                : (selectedDiagnosis?.repair_code || 'No diagnosis selected yet.')}
+              {addOns.length > 0 ? ` · ${addOns.length} extra ${addOns.length === 1 ? 'item' : 'items'}` : ''}
+            </p>
           </div>
         )}
 
-        <div style={{ background: '#faeeda', border: '1px solid #f5c97a', borderRadius: '8px', padding: '12px 14px', marginBottom: '20px', fontSize: '13px', color: '#633806' }}>
-          {effectiveCompletionPath === 'estimate'
-            ? 'This visit moves into estimate review. Owner will generate the estimate PDF and track approval before follow-up.'
-            : 'This job moves to owner review. The invoice will be finalized after repair review.'}
-        </div>
+        {diagnosisEstimateEligible && (
+          <div style={{ display: 'grid', gap: '10px', marginBottom: '28px' }}>
+            <button type="button" onClick={() => setCompletionPath('invoice')} style={{ textAlign: 'left', borderRadius: '16px', border: completionPath === 'invoice' ? '2px solid #1a1a18' : '1px solid #e4e2d8', background: completionPath === 'invoice' ? '#fff' : 'transparent', padding: '16px 18px', cursor: 'pointer', fontFamily: 'inherit' }}>
+              <div style={{ fontSize: '17px', fontWeight: 600, color: '#1a1a18' }}>Fixed today</div>
+              <div style={{ fontSize: '14px', color: '#6b6960', marginTop: '4px', lineHeight: 1.45 }}>Office will invoice it.</div>
+            </button>
+            <button type="button" onClick={() => setCompletionPath('estimate')} style={{ textAlign: 'left', borderRadius: '16px', border: completionPath === 'estimate' ? '2px solid #1a1a18' : '1px solid #e4e2d8', background: completionPath === 'estimate' ? '#fff' : 'transparent', padding: '16px 18px', cursor: 'pointer', fontFamily: 'inherit' }}>
+              <div style={{ fontSize: '17px', fontWeight: 600, color: '#1a1a18' }}>Needs an estimate</div>
+              <div style={{ fontSize: '14px', color: '#6b6960', marginTop: '4px', lineHeight: 1.45 }}>Office will price it and send it out.</div>
+            </button>
+          </div>
+        )}
 
         {!canCloseJob && (
           <div style={{ background: '#fcebeb', border: '1px solid #f7c1c1', borderRadius: '6px', padding: '10px 14px', fontSize: '12px', color: '#a32d2d', marginBottom: '14px' }}>
@@ -267,16 +186,14 @@ export default function CloseClient({ job, workflow, crewMembers, jobMessages, w
           onClick={handleClose}
           disabled={isPending || !canCloseJob}
           style={{
-            width: '100%', padding: '14px', borderRadius: '8px', border: 'none',
-            background: (isPending || !canCloseJob) ? '#b4b2a9' : '#3b6d11',
-            color: '#fff', fontSize: '14px', fontWeight: 600,
+            width: '100%', padding: '18px', borderRadius: '16px', border: 'none',
+            background: (isPending || !canCloseJob) ? '#b4b2a9' : '#1a1a18',
+            color: '#f5f4f0', fontSize: '18px', fontWeight: 600,
             cursor: (isPending || !canCloseJob) ? 'not-allowed' : 'pointer', fontFamily: 'inherit',
             marginBottom: '16px',
           }}
         >
-          {isPending
-            ? effectiveCompletionPath === 'estimate' ? 'Routing to estimate review...' : 'Completing job...'
-            : effectiveCompletionPath === 'estimate' ? 'Complete visit to estimate review' : 'Complete job to invoice review'}
+          {isPending ? 'Wrapping…' : 'Wrap this up'}
         </button>
       </div>
     </div>

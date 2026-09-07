@@ -131,6 +131,9 @@ export default function WorkClient({
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div style={{ flex: 1, overflowY: 'auto', padding: '16px', maxWidth: '600px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
+        <h1 style={{ margin: '0 0 20px', fontSize: '28px', fontWeight: 500, letterSpacing: '-0.03em', lineHeight: 1.15 }}>
+          {workflowMode === 'adhoc' ? 'What did you do?' : 'Need anything extra?'}
+        </h1>
         {workflowMode === 'diagnosis' ? (
           <>
             <div style={{ marginBottom: '20px' }}>

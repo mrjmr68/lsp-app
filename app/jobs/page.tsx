@@ -1,8 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import FieldShell from '@/app/components/FieldShell'
-import JobList, { Customer, ListJob, Location, Tech, UnassignedJob } from './JobList'
-import { addJob } from '@/app/planning/actions'
+import { TodayView, type TodayJob } from './TodayView'
 import { DAILY_OPERATIONS_HIDDEN_COMMERCIAL_STATES_FILTER } from '@/utils/job-lifecycle'
 import { firstRelation } from '@/utils/supabase/relations'
 
@@ -14,150 +12,51 @@ export default async function JobsPage() {
 
   const today = new Date().toISOString().split('T')[0]
 
-  const { data: profile } = await supabase
-    .from('users')
-    .select('role')
-    .eq('id', user.id)
-    .maybeSingle()
-
-  const canViewAllClosedJobs = ['owner', 'admin', 'dispatcher'].includes(profile?.role ?? '')
-
-  const { data: insertedProfiles } = await supabase
-    .rpc('backfill_missing_user_profiles')
-
+  const { data: insertedProfiles } = await supabase.rpc('backfill_missing_user_profiles')
   if ((insertedProfiles ?? 0) > 0) {
     console.log(`Backfilled ${insertedProfiles} missing user profile(s) for jobs page.`)
   }
 
-  // My assigned jobs for today
-  const { data: myJobs } = await supabase
-    .from('jobs')
-    .select(`
-      id, status, job_status, resolution_type, commercial_state,
-      priority, manual_unit, problem_description,
-      queue_position, arrived_at, access_confirmation_needed,
-      customers!jobs_customer_id_fkey(name),
-      locations!jobs_location_id_fkey(name),
-      diagnoses!jobs_diagnosis_id_fkey(repair_code)
-    `)
-    .eq('assigned_tech', user.id)
-    .eq('job_date', today)
-    .neq('job_status', 'completed')
-    .neq('job_status', 'cancelled')
-    .not('commercial_state', 'in', DAILY_OPERATIONS_HIDDEN_COMMERCIAL_STATES_FILTER)
-    .order('queue_position', { ascending: true, nullsFirst: false })
+  const [{ data: profile }, { data: myJobs }] = await Promise.all([
+    supabase
+      .from('users')
+      .select('first_name, last_name')
+      .eq('id', user.id)
+      .maybeSingle(),
+    supabase
+      .from('jobs')
+      .select(`
+        id, job_status, problem_description, queue_position,
+        customers!jobs_customer_id_fkey(name),
+        locations!jobs_location_id_fkey(name)
+      `)
+      .eq('assigned_tech', user.id)
+      .eq('job_date', today)
+      .neq('job_status', 'completed')
+      .neq('job_status', 'cancelled')
+      .not('commercial_state', 'in', DAILY_OPERATIONS_HIDDEN_COMMERCIAL_STATES_FILTER)
+      .order('queue_position', { ascending: true, nullsFirst: false }),
+  ])
 
-  // Completed jobs today (for the done section)
-  const { data: doneJobs } = await supabase
-    .from('jobs')
-    .select(`
-      id, status, job_status, resolution_type, commercial_state,
-      priority, manual_unit, problem_description,
-      queue_position, arrived_at, access_confirmation_needed,
-      customers!jobs_customer_id_fkey(name),
-      locations!jobs_location_id_fkey(name),
-      diagnoses!jobs_diagnosis_id_fkey(repair_code)
-    `)
-    .eq('assigned_tech', user.id)
-    .eq('job_date', today)
-    .eq('job_status', 'completed')
-    .neq('commercial_state', 'invoiced')
-
-  // Unassigned jobs today
-  const { data: unassignedJobs } = await supabase
-    .from('jobs')
-    .select(`
-      id, status, job_status, resolution_type, commercial_state,
-      priority, manual_unit, problem_description,
-      customers!jobs_customer_id_fkey(name),
-      locations!jobs_location_id_fkey(name)
-    `)
-    .is('assigned_tech', null)
-    .eq('job_date', today)
-    .neq('job_status', 'cancelled')
-    .not('commercial_state', 'in', DAILY_OPERATIONS_HIDDEN_COMMERCIAL_STATES_FILTER)
-
-  const { data: techs } = await supabase
-    .rpc('list_assignable_users')
-
-  let recentClosedJobsQuery = supabase
-    .from('jobs')
-    .select(`
-      id, status, job_status, resolution_type, commercial_state,
-      priority, manual_unit, problem_description,
-      queue_position, arrived_at, access_confirmation_needed,
-      job_date, completed_at,
-      customers!jobs_customer_id_fkey(name),
-      locations!jobs_location_id_fkey(name),
-      diagnoses!jobs_diagnosis_id_fkey(repair_code)
-    `)
-    .eq('job_status', 'completed')
-    .neq('job_date', today)
-    .order('completed_at', { ascending: false, nullsFirst: false })
-    .order('job_date', { ascending: false })
-    .limit(30)
-
-  if (!canViewAllClosedJobs) {
-    recentClosedJobsQuery = recentClosedJobsQuery.eq('assigned_tech', user.id)
-  }
-
-  const { data: recentClosedJobs } = await recentClosedJobsQuery
-
-  const { data: customers } = await supabase
-    .from('customers')
-    .select('id, name, type')
-    .order('name')
-
-  const { data: locations } = await supabase
-    .from('locations')
-    .select('id, name, customer_id')
-    .order('name')
-  const normalizedMyJobs = (myJobs ?? []).map(job => ({
-    ...job,
+  const openJobs: TodayJob[] = (myJobs ?? []).map(job => ({
+    id: job.id,
+    problem_description: job.problem_description,
     customers: firstRelation(job.customers),
     locations: firstRelation(job.locations),
-    diagnoses: firstRelation(job.diagnoses),
-  })) as ListJob[]
-  const normalizedDoneJobs = (doneJobs ?? []).map(job => ({
-    ...job,
-    customers: firstRelation(job.customers),
-    locations: firstRelation(job.locations),
-    diagnoses: firstRelation(job.diagnoses),
-  })) as ListJob[]
-  const normalizedRecentClosedJobs = (recentClosedJobs ?? []).map(job => ({
-    ...job,
-    customers: firstRelation(job.customers),
-    locations: firstRelation(job.locations),
-    diagnoses: firstRelation(job.diagnoses),
-  })) as ListJob[]
-  const normalizedUnassignedJobs = (unassignedJobs ?? []).map(job => ({
-    ...job,
-    customers: firstRelation(job.customers),
-    locations: firstRelation(job.locations),
-  })) as UnassignedJob[]
-  const assignableTechs = (techs ?? []) as Tech[]
-  const availableCustomers = (customers ?? []) as Customer[]
-  const availableLocations = (locations ?? []) as Location[]
+  }))
 
-  const todayLabel = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-  })
+  const live = (myJobs ?? []).find(job =>
+    job.job_status === 'on_site' || job.job_status === 'follow_up_active',
+  )
+  const nextJob = (live ? openJobs.find(job => job.id === live.id) : openJobs[0]) ?? null
+  const laterJobs = openJobs.filter(job => job.id !== nextJob?.id)
+  const techName = [profile?.first_name, profile?.last_name].filter(Boolean).join(' ')
 
   return (
-    <FieldShell title="My Jobs" subtitle={todayLabel}>
-      <JobList
-        myJobs={normalizedMyJobs}
-        doneJobs={normalizedDoneJobs}
-        recentClosedJobs={normalizedRecentClosedJobs}
-        unassignedJobs={normalizedUnassignedJobs}
-        techs={assignableTechs}
-        customers={availableCustomers}
-        locations={availableLocations}
-        userId={user.id}
-        addJobAction={addJob}
-      />
-    </FieldShell>
+    <TodayView
+      techName={techName || 'there'}
+      nextJob={nextJob}
+      laterJobs={laterJobs}
+    />
   )
 }

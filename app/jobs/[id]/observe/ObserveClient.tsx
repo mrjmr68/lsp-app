@@ -212,14 +212,9 @@ export default function ObserveClient({ job }: { job: Job }) {
 
       <div className="flex-1 overflow-y-auto">
         <div className="mx-auto flex w-full max-w-lg flex-col gap-4 p-4">
-          <div>
-            <div className="mb-1 text-[11px] font-bold uppercase tracking-wider text-stone-500">
-              Document
-            </div>
-            <h1 className="text-xl font-bold text-stone-900">
-              {tab === 'readings' ? 'What is the system doing?' : 'What is installed?'}
-            </h1>
-          </div>
+          <h1 className="m-0 text-[28px] font-medium leading-tight tracking-[-0.03em] text-[#1a1a18]">
+            {tab === 'readings' ? 'What is the system doing?' : 'What is installed?'}
+          </h1>
 
           {tab === 'readings' && (
             <>

@@ -15,12 +15,6 @@ const PRESSURES: Record<string, { suction: string; liquid: string }> = {
   'R-32': { suction: '170-195 PSI', liquid: '480-540 PSI' },
 }
 
-const SUPERHEAT: Record<string, { txv: string; fixed: string }> = {
-  'R-410A': { txv: '8-12 F', fixed: '10-18 F' },
-  'R-22': { txv: '8-12 F', fixed: '10-18 F' },
-  'R-32': { txv: '6-10 F', fixed: '10-15 F' },
-}
-
 function filterDiagnoses(list: DiagnosisItem[], query: string) {
   if (!query.trim()) return list
   const lower = query.toLowerCase()
@@ -63,10 +57,7 @@ export default function DiagnoseClient({ job, diagnoses }: { job: Job; diagnoses
   )
 
   const referenceRefrigerant = job.systems?.refrigerant_type || 'R-410A'
-  const referenceMetering = job.systems?.metering_device ?? ''
   const pressures = PRESSURES[referenceRefrigerant]
-  const isTxv = referenceMetering.toLowerCase().includes('txv')
-  const superheat = SUPERHEAT[referenceRefrigerant]
 
   function handleNext() {
     if (!canContinue) return
@@ -95,43 +86,21 @@ export default function DiagnoseClient({ job, diagnoses }: { job: Job; diagnoses
     <div className="flex flex-1 flex-col overflow-hidden">
       <div className="flex-1 overflow-y-auto">
         <div className="mx-auto flex w-full max-w-lg flex-col gap-4 p-4">
-          <div>
-            <div className="mb-1 text-[11px] font-bold uppercase tracking-wider text-stone-500">
-              Diagnose
-            </div>
-            <h1 className="text-xl font-bold text-stone-900">What is wrong with it?</h1>
-          </div>
-
-          <Card>
-            <div className="mb-2 text-[11px] font-bold uppercase tracking-wider text-stone-500">
-              Captured readings
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Chip label="Mode" value={tstatLabels[job.tstat_mode ?? ''] ?? '—'} />
-              <Chip label="Fan" value={job.tstat_fan ? job.tstat_fan.toUpperCase() : '—'} />
-              <Chip label="Return" value={job.temp_return != null ? `${job.temp_return} F` : '—'} />
-              <Chip label="Supply" value={job.temp_supply != null ? `${job.temp_supply} F` : '—'} />
-            </div>
-          </Card>
-
-          {pressures && (
-            <Card>
-              <div className="mb-1 text-[11px] font-bold uppercase tracking-wider text-stone-500">
-                Rules of thumb
-              </div>
-              <div className="mb-3 text-sm text-stone-600">
-                {referenceRefrigerant}{referenceMetering ? ` / ${referenceMetering}` : ''}
-              </div>
-              <div className="grid grid-cols-1 gap-2">
-                <RuleRow label="Suction" value={pressures.suction} />
-                <RuleRow label="Liquid" value={pressures.liquid} />
-                <RuleRow
-                  label={isTxv ? 'Superheat (TXV)' : 'Superheat (fixed)'}
-                  value={isTxv ? (superheat?.txv ?? '—') : (superheat?.fixed ?? '—')}
-                />
-              </div>
-            </Card>
-          )}
+          <h1 className="m-0 text-[28px] font-medium leading-tight tracking-[-0.03em] text-[#1a1a18]">
+            What’s going on?
+          </h1>
+          <p className="m-0 text-[15px] leading-snug text-[#6b6960]">
+            {[
+              tstatLabels[job.tstat_mode ?? ''] ?? null,
+              job.tstat_fan ? job.tstat_fan.toUpperCase() : null,
+              job.temp_return != null && job.temp_supply != null
+                ? `${job.temp_return} / ${job.temp_supply} F`
+                : null,
+            ].filter(Boolean).join(' · ') || 'Readings are on the last screen.'}
+            {pressures
+              ? ` · ${referenceRefrigerant} suction ${pressures.suction}`
+              : ''}
+          </p>
 
           <div className="grid grid-cols-2 gap-2">
             <button
@@ -256,24 +225,6 @@ export default function DiagnoseClient({ job, diagnoses }: { job: Job; diagnoses
           {transitioning ? 'Saving…' : 'Continue to repair'}
         </Button>
       </SpokeFooter>
-    </div>
-  )
-}
-
-function Chip({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-xl bg-stone-100 px-3 py-2">
-      <div className="text-[10px] font-bold uppercase tracking-wider text-stone-500">{label}</div>
-      <div className="text-sm font-semibold text-stone-900">{value}</div>
-    </div>
-  )
-}
-
-function RuleRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-baseline justify-between gap-3 rounded-xl bg-stone-50 px-3 py-2">
-      <div className="text-xs font-semibold uppercase tracking-wider text-stone-500">{label}</div>
-      <div className="text-sm font-bold text-stone-900">{value}</div>
     </div>
   )
 }

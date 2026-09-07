@@ -134,15 +134,15 @@ export function getMomentAction(input: MomentInput, jobId: string): MomentAction
   switch (moment) {
     case 'up_next':
       return {
-        label: 'Start run',
-        href: `${base}/go`,
-        hint: 'Directions, access, and who to notify.',
+        label: 'Let’s go',
+        href: base,
+        hint: 'Directions, access, and who to ask for.',
       }
     case 'heading':
       return {
-        label: 'I’m on site',
-        href: `${base}/arrive`,
-        hint: 'Check in so the timer starts and history comes forward.',
+        label: 'I’m here',
+        href: base,
+        hint: 'Check in when you pull up.',
       }
     case 'on_site':
       return {

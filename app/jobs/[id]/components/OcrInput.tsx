@@ -1,24 +1,12 @@
 'use client'
 
-import { useRef, useState, useCallback } from 'react'
-
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  fontSize: '14px',
-  padding: '12px 10px',
-  borderRadius: '12px',
-  border: '1px solid #d3d1c7',
-  fontFamily: 'inherit',
-  outline: 'none',
-  background: '#fff',
-  boxSizing: 'border-box',
-}
+import { useCallback, useRef, useState } from 'react'
+import { fieldControlClass } from '@/utils/field/styles'
 
 export default function OcrInput({
   value,
   onChange,
   placeholder,
-  label,
 }: {
   value: string
   onChange: (value: string) => void
@@ -46,54 +34,35 @@ export default function OcrInput({
       if (text) {
         onChange(text)
       } else {
-        setError('No text detected — try again or type manually')
+        setError('No text detected — try again or type it')
       }
     } catch {
-      setError('OCR failed — type the value manually')
+      setError('OCR failed — type the value')
     } finally {
       setScanning(false)
-      // Reset file input so the same image can be re-captured
       if (fileInputRef.current) fileInputRef.current.value = ''
     }
   }, [onChange])
 
   return (
     <div>
-      <div style={{ position: 'relative' }}>
+      <div className="relative">
         <input
           type="text"
+          autoCapitalize="characters"
           value={value}
           onChange={event => onChange(event.target.value.toUpperCase())}
           placeholder={placeholder}
-          style={inputStyle}
+          className={`${fieldControlClass} pr-14 font-semibold tracking-wide`}
         />
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={scanning}
-          style={{
-            position: 'absolute',
-            right: '4px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            width: '34px',
-            height: '34px',
-            border: '1px solid #d3d1c7',
-            borderRadius: '8px',
-            background: scanning ? '#f0ede5' : '#fff',
-            cursor: scanning ? 'not-allowed' : 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '16px',
-            padding: 0,
-            color: '#5f5e5a',
-          }}
           title="Scan with camera"
+          className="absolute right-1.5 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg border border-stone-300 bg-white text-stone-700 disabled:opacity-50"
         >
-          {scanning ? (
-            <span style={{ fontSize: '11px', fontWeight: 700, color: '#888780' }}>...</span>
-          ) : (
+          {scanning ? '…' : (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
               <circle cx="12" cy="13" r="4" />
@@ -106,28 +75,11 @@ export default function OcrInput({
           accept="image/*"
           capture="environment"
           onChange={handleCapture}
-          style={{ display: 'none' }}
+          className="hidden"
         />
       </div>
-      {scanning && (
-        <div style={{
-          fontSize: '11px',
-          color: '#854f0b',
-          marginTop: '4px',
-          fontWeight: 600,
-        }}>
-          Scanning image...
-        </div>
-      )}
-      {error && (
-        <div style={{
-          fontSize: '11px',
-          color: '#a32d2d',
-          marginTop: '4px',
-        }}>
-          {error}
-        </div>
-      )}
+      {scanning && <div className="mt-1 text-xs font-semibold text-amber-800">Scanning label…</div>}
+      {error && <div className="mt-1 text-xs text-red-700">{error}</div>}
     </div>
   )
 }

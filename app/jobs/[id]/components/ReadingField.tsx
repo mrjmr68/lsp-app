@@ -1,19 +1,5 @@
 'use client'
 
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  padding: '12px 10px',
-  borderRadius: '12px',
-  border: '1px solid #d3d1c7',
-  fontFamily: 'inherit',
-  outline: 'none',
-  background: '#fff',
-  boxSizing: 'border-box',
-  textAlign: 'center',
-  fontWeight: 700,
-  fontSize: '16px',
-}
-
 export default function ReadingField({
   label,
   value,
@@ -31,24 +17,26 @@ export default function ReadingField({
 }) {
   return (
     <div>
-      <div style={{ fontSize: '11px', color: '#6f685b', textTransform: 'uppercase', letterSpacing: '0.07em', textAlign: 'center', marginBottom: '6px' }}>
+      <div className="mb-1.5 text-center text-[11px] font-bold uppercase tracking-wider text-stone-500">
         {label}
       </div>
-      <div style={{ position: 'relative' }}>
+      <div className="relative">
         <input
-          type="number"
+          type="text"
+          inputMode="decimal"
           value={value}
           onChange={event => onChange?.(event.target.value)}
-          placeholder={placeholder ?? '-'}
+          placeholder={placeholder ?? '—'}
           readOnly={readOnly}
-          style={{
-            ...inputStyle,
-            background: readOnly ? '#f6f1e6' : '#fff',
-            color: value ? '#1b1f25' : '#8a8378',
-          }}
+          className={[
+            'w-full min-h-[52px] rounded-xl border px-3 py-3 pr-10 text-center text-lg font-bold outline-none',
+            readOnly
+              ? 'border-stone-200 bg-stone-100 text-stone-700'
+              : 'border-stone-300 bg-white text-stone-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-100',
+          ].join(' ')}
         />
         {suffix && (
-          <span style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', fontSize: '11px', color: '#7a7367', fontWeight: 700 }}>
+          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-stone-500">
             {suffix}
           </span>
         )}

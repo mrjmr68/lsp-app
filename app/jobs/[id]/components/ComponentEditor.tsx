@@ -7,18 +7,7 @@ import {
   METERING_OPTIONS,
   REFRIGERANT_OPTIONS,
 } from '@/utils/hvac/systems'
-
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  fontSize: '14px',
-  padding: '12px 10px',
-  borderRadius: '12px',
-  border: '1px solid #d3d1c7',
-  fontFamily: 'inherit',
-  outline: 'none',
-  background: '#fff',
-  boxSizing: 'border-box',
-}
+import { fieldControlClass } from '@/utils/field/styles'
 
 export default function ComponentEditor({
   components,
@@ -36,22 +25,26 @@ export default function ComponentEditor({
   if (components.length === 0) return null
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '12px' }}>
+    <div className="flex flex-col gap-3">
       {components.map((component, index) => {
         const shareTonnage = systemType === 'heat_pump' || (systemType === 'ac_furnace' && (component.subtype === 'CU' || component.subtype === 'Coil'))
         const shareRefrigerant = systemType === 'heat_pump' || (systemType === 'ac_furnace' && component.subtype !== 'Furnace')
         const showMetering = component.subtype !== 'Furnace'
 
         return (
-          <div key={`${component.key}-${component.subtype}`} style={{ border: '1px solid #ddd5bf', borderRadius: '14px', padding: '14px', background: '#fffdf8' }}>
-            <div style={{ fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#1f2329', marginBottom: '10px' }}>
+          <div key={`${component.key}-${component.subtype}`} className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
+            <div className="mb-3 text-[11px] font-bold uppercase tracking-wider text-stone-500">
               {component.label}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '10px', marginBottom: '10px' }}>
+            <div className="mb-3 grid grid-cols-1 gap-3">
               <div>
                 <SharedLabel>Make</SharedLabel>
-                <select value={component.make} onChange={event => updateComponent(index, { make: event.target.value })} style={inputStyle}>
+                <select
+                  value={component.make}
+                  onChange={event => updateComponent(index, { make: event.target.value })}
+                  className={fieldControlClass}
+                >
                   <option value="">Select make</option>
                   {MAKE_OPTIONS.map(option => <option key={option} value={option}>{option}</option>)}
                 </select>
@@ -59,36 +52,60 @@ export default function ComponentEditor({
               <div>
                 <SharedLabel>Model</SharedLabel>
                 {renderModelInput ? renderModelInput(index, component) : (
-                  <input value={component.model} onChange={event => updateComponent(index, { model: event.target.value })} style={inputStyle} placeholder="Model number" />
+                  <input
+                    value={component.model}
+                    onChange={event => updateComponent(index, { model: event.target.value })}
+                    className={fieldControlClass}
+                    placeholder="Model number"
+                    autoCapitalize="characters"
+                  />
                 )}
               </div>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '10px', marginBottom: '10px' }}>
               <div>
                 <SharedLabel>Serial Number</SharedLabel>
                 {renderSerialInput ? renderSerialInput(index, component) : (
-                  <input value={component.serial_number} onChange={event => updateComponent(index, { serial_number: event.target.value })} style={inputStyle} placeholder="Serial number" />
+                  <input
+                    value={component.serial_number}
+                    onChange={event => updateComponent(index, { serial_number: event.target.value })}
+                    className={fieldControlClass}
+                    placeholder="Serial number"
+                    autoCapitalize="characters"
+                  />
                 )}
               </div>
               {component.subtype === 'Furnace' ? (
                 <div>
                   <SharedLabel>BTU Rating</SharedLabel>
-                  <input type="number" value={component.heating_capacity_btu} onChange={event => updateComponent(index, { heating_capacity_btu: event.target.value })} style={inputStyle} placeholder="80000" />
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={component.heating_capacity_btu}
+                    onChange={event => updateComponent(index, { heating_capacity_btu: event.target.value })}
+                    className={fieldControlClass}
+                    placeholder="80000"
+                  />
                 </div>
               ) : !shareTonnage ? (
                 <div>
                   <SharedLabel>Tonnage</SharedLabel>
-                  <input type="number" step="0.5" value={component.tonnage} onChange={event => updateComponent(index, { tonnage: event.target.value })} style={inputStyle} placeholder="2.5" />
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={component.tonnage}
+                    onChange={event => updateComponent(index, { tonnage: event.target.value })}
+                    className={fieldControlClass}
+                    placeholder="2.5"
+                  />
                 </div>
-              ) : <div />}
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '10px' }}>
+              ) : null}
               {!shareRefrigerant && component.subtype !== 'Furnace' && (
                 <div>
                   <SharedLabel>Refrigerant</SharedLabel>
-                  <select value={component.refrigerant_type} onChange={event => updateComponent(index, { refrigerant_type: event.target.value })} style={inputStyle}>
+                  <select
+                    value={component.refrigerant_type}
+                    onChange={event => updateComponent(index, { refrigerant_type: event.target.value })}
+                    className={fieldControlClass}
+                  >
                     <option value="">Select refrigerant</option>
                     {REFRIGERANT_OPTIONS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
                   </select>
@@ -97,7 +114,11 @@ export default function ComponentEditor({
               {showMetering && (
                 <div>
                   <SharedLabel>Metering Device</SharedLabel>
-                  <select value={component.metering_device} onChange={event => updateComponent(index, { metering_device: event.target.value })} style={inputStyle}>
+                  <select
+                    value={component.metering_device}
+                    onChange={event => updateComponent(index, { metering_device: event.target.value })}
+                    className={fieldControlClass}
+                  >
                     <option value="">Select metering</option>
                     {METERING_OPTIONS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
                   </select>

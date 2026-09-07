@@ -10,33 +10,39 @@ export default function PhotoSlot({
   onChange: (files: File[]) => void
 }) {
   return (
-    <label style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      gap: '12px',
-      background: '#fbf8ef',
-      border: '1px dashed #b7ae98',
-      borderRadius: '14px',
-      padding: '14px 16px',
-      cursor: 'pointer',
-      color: '#403a31',
-    }}>
-      <input
-        type="file"
-        accept="image/*"
-        capture="environment"
-        multiple
-        style={{ display: 'none' }}
-        onChange={event => onChange(event.target.files ? Array.from(event.target.files) : [])}
-      />
-      <div>
-        <div style={{ fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
-        <div style={{ fontSize: '12px', color: '#716a5e', marginTop: '3px' }}>
-          {files.length > 0 ? `${files.length} selected` : 'Tap to add or update'}
+    <div>
+      <label className="flex min-h-[72px] cursor-pointer items-center justify-between gap-3 rounded-2xl border border-dashed border-stone-400 bg-stone-50 px-4 py-4">
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          multiple
+          className="hidden"
+          onChange={event => {
+            const next = event.target.files ? Array.from(event.target.files) : []
+            onChange([...files, ...next])
+            event.target.value = ''
+          }}
+        />
+        <div>
+          <div className="text-sm font-bold text-stone-900">{label}</div>
+          <div className="mt-0.5 text-xs text-stone-500">
+            {files.length > 0 ? `${files.length} photo${files.length === 1 ? '' : 's'} ready` : 'Tap to take or add photos'}
+          </div>
         </div>
-      </div>
-      <span style={{ fontSize: '12px', fontWeight: 700, color: '#8b6a26' }}>Add</span>
-    </label>
+        <span className="rounded-lg bg-blue-700 px-3 py-2 text-xs font-semibold text-white">
+          Camera
+        </span>
+      </label>
+      {files.length > 0 && (
+        <button
+          type="button"
+          onClick={() => onChange([])}
+          className="mt-2 text-xs font-semibold text-stone-500"
+        >
+          Clear photos
+        </button>
+      )}
+    </div>
   )
 }

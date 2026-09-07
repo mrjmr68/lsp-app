@@ -1,20 +1,12 @@
 import { notFound } from 'next/navigation'
-import { getJobFull, getJobSummary, getServiceHistory } from './queries'
-import JobHub from './JobHub'
+import { getJobFull, getJobSummary, getJobTimeline, getServiceHistory, getSiteContacts } from './queries'
+import JobChassis from './JobChassis'
 
 function toTitleLabel(value: string | null | undefined) {
   return value ? value.replace(/_/g, ' ') : ''
 }
 
-function formatJobDate(iso: string) {
-  return new Date(`${iso}T12:00:00`).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
-}
-
-export default async function JobHubPage({
+export default async function JobPage({
   params,
 }: {
   params: Promise<{ id: string }>
@@ -24,7 +16,12 @@ export default async function JobHubPage({
 
   if (!summary || !job) return notFound()
 
-  const serviceHistory = await getServiceHistory(id, job.system_id)
+  const customerId = job.customers?.id
+  const [serviceHistory, people, timeline] = await Promise.all([
+    getServiceHistory(id, job.system_id),
+    customerId ? getSiteContacts(customerId) : Promise.resolve([]),
+    getJobTimeline(id),
+  ])
 
   const equipmentLabel = [
     job.systems?.make,
@@ -32,26 +29,30 @@ export default async function JobHubPage({
     job.systems?.tonnage ? `${job.systems.tonnage}T` : null,
   ].filter(Boolean).join(' · ')
 
-  const lastVisit = serviceHistory[0]
-
   return (
-    <JobHub
+    <JobChassis
       jobId={summary.id}
+      momentInput={{
+        jobStatus: summary.job_status,
+        commercialState: summary.commercial_state,
+        resolutionType: summary.resolution_type,
+        arrivedAt: summary.arrived_at,
+        departedAt: summary.departed_at,
+        completedAt: summary.completed_at,
+        tstatMode: summary.tstat_mode,
+        tstatFan: summary.tstat_fan,
+        diagnosisId: summary.diagnosis_id,
+        hasAdhocBundle: summary.has_adhoc_bundle,
+      }}
       customerName={summary.customer_name}
-      locationName={summary.location_name}
-      unitName={summary.unit_name}
+      location={job.locations}
+      unitLabel={job.units?.name ?? job.manual_unit ?? ''}
       problemDescription={job.problem_description}
       equipmentLabel={equipmentLabel || null}
-      lastVisitLabel={lastVisit ? formatJobDate(lastVisit.job_date) : null}
-      jobStatus={summary.job_status}
-      commercialState={summary.commercial_state}
-      arrivedAt={summary.arrived_at}
-      tstatMode={summary.tstat_mode}
-      tstatFan={summary.tstat_fan}
-      diagnosisId={summary.diagnosis_id}
-      hasAdhocBundle={summary.has_adhoc_bundle}
-      hasWorkflow={summary.has_workflow}
       repairCode={job.diagnoses?.repair_code ?? null}
+      serviceHistory={serviceHistory}
+      people={people}
+      timeline={timeline}
     />
   )
 }

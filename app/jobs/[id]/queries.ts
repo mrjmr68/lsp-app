@@ -22,7 +22,7 @@ export const getJobSummary = cache(async (id: string) => {
     .from('jobs')
     .select(`
       id, job_status, resolution_type, commercial_state,
-      arrived_at, tstat_mode, tstat_fan, diagnosis_id,
+      arrived_at, departed_at, completed_at, tstat_mode, tstat_fan, diagnosis_id,
       customers!jobs_customer_id_fkey(name),
       locations!jobs_location_id_fkey(name),
       units!jobs_unit_id_fkey(name),
@@ -53,6 +53,8 @@ export const getJobSummary = cache(async (id: string) => {
     resolution_type: job.resolution_type,
     commercial_state: job.commercial_state,
     arrived_at: job.arrived_at,
+    departed_at: job.departed_at,
+    completed_at: job.completed_at,
     tstat_mode: job.tstat_mode,
     tstat_fan: job.tstat_fan,
     diagnosis_id: job.diagnosis_id,
@@ -77,7 +79,7 @@ export const getJobFull = cache(async (id: string) => {
       id, status, job_status, resolution_type, commercial_state,
       priority, workflow_type, manual_unit, problem_description,
       access_confirmation_needed, access_confirmed,
-      assigned_tech, actual_tech, job_date, arrived_at, completed_at,
+      assigned_tech, actual_tech, job_date, arrived_at, departed_at, completed_at,
       tstat_mode, tstat_fan, system_response,
       temp_outdoor, temp_outdoor_auto, temp_return, temp_supply,
       arrival_notes, diagnosis_id, needs_admin_review, new_diagnosis_requested,
@@ -207,7 +209,7 @@ export const getSiteContacts = cache(async (customerId: string) => {
         last_name: string
         phone: string | null
       } | null
-      if (!person?.phone) return null
+      if (!person) return null
       return {
         id: person.id,
         first_name: person.first_name,
@@ -219,6 +221,63 @@ export const getSiteContacts = cache(async (customerId: string) => {
     })
     .filter((contact): contact is NonNullable<typeof contact> => contact != null)
 })
+
+export const getJobTimeline = cache(async (jobId: string) => {
+  const supabase = await createClient()
+
+  const [{ data: events }, messages] = await Promise.all([
+    supabase
+      .from('job_events')
+      .select('id, event_type, occurred_at, note')
+      .eq('job_id', jobId)
+      .order('occurred_at', { ascending: false })
+      .limit(20),
+    getJobMessages(jobId),
+  ])
+
+  const eventItems = (events ?? []).map(event => ({
+    id: `event-${event.id}`,
+    kind: 'event' as const,
+    at: event.occurred_at as string,
+    title: eventTitle(event.event_type),
+    detail: event.note ?? null,
+  }))
+
+  const messageItems = messages.map(message => ({
+    id: `message-${message.id}`,
+    kind: 'message' as const,
+    at: message.created_at,
+    title: message.message_type === 'system' ? 'System' : 'Update',
+    detail: message.body,
+  }))
+
+  return mergeTimeline([...eventItems, ...messageItems]).slice(0, 12)
+})
+
+function eventTitle(eventType: string) {
+  switch (eventType) {
+    case 'claimed':
+      return 'Assigned'
+    case 'departed':
+      return 'Headed out'
+    case 'arrived':
+      return 'On site'
+    case 'completed':
+      return 'Visit wrapped'
+    case 'reassigned':
+      return 'Reassigned'
+    case 'helper_added':
+      return 'Helper added'
+    case 'cancelled':
+      return 'Cancelled'
+    default:
+      return eventType.replace(/_/g, ' ')
+  }
+}
+
+function mergeTimeline<T extends { at: string }>(items: T[]) {
+  return [...items].sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
+}
 
 // ─── Workflow + crew + messages ──────────────────────────────────────
 

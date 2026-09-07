@@ -126,6 +126,7 @@ export interface Job {
   actual_tech: string | null
   job_date: string
   arrived_at: string | null
+  departed_at?: string | null
   completed_at: string | null
   tstat_mode: string | null
   tstat_fan: string | null

@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 interface JobShellProps {
   jobId: string
   title: string
+  situation: string
   arrivedAt: string | null
   children: React.ReactNode
 }
@@ -33,20 +34,20 @@ function fmt(seconds: number) {
   return [h, m, s].map(v => String(v).padStart(2, '0')).join(':')
 }
 
-export default function JobShell({ jobId, title, arrivedAt, children }: JobShellProps) {
+export default function JobShell({ jobId, title, situation, arrivedAt, children }: JobShellProps) {
   const pathname = usePathname()
   const elapsed = useElapsed(arrivedAt)
-  const onHub = pathname === `/jobs/${jobId}`
+  const onJobHome = pathname === `/jobs/${jobId}`
 
   return (
     <div className="flex min-h-screen flex-col bg-stone-100 text-stone-900">
       <header className="sticky top-0 z-50 shrink-0 border-b border-stone-200 bg-white">
         <div className="mx-auto flex max-w-lg items-center gap-3 px-4 py-3">
           <Link
-            href={onHub ? '/jobs' : `/jobs/${jobId}`}
+            href={onJobHome ? '/jobs' : `/jobs/${jobId}`}
             className="shrink-0 text-sm font-semibold text-blue-700 no-underline"
           >
-            {onHub ? '← Jobs' : '← Hub'}
+            {onJobHome ? '← Today' : '← Job'}
           </Link>
 
           <div className="min-w-0 flex-1 text-center">
@@ -61,6 +62,9 @@ export default function JobShell({ jobId, title, arrivedAt, children }: JobShell
           >
             {arrivedAt ? fmt(elapsed) : '--:--'}
           </span>
+        </div>
+        <div className="mx-auto max-w-lg border-t border-stone-100 px-4 py-2 text-xs leading-snug text-stone-600">
+          {situation}
         </div>
       </header>
 
